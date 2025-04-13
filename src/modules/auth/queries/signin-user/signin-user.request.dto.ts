@@ -6,12 +6,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export enum UserRole {
-  USER = 'USER',
-  ADMIN = 'ADMIN',
-}
-
-export class SignUpRequestDto {
+export class SignInRequestDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
@@ -20,8 +15,4 @@ export class SignUpRequestDto {
   @MinLength(8)
   @IsNotEmpty()
   password: string;
-
-  @IsEnum(UserRole)
-  @IsNotEmpty()
-  role: 'USER' | 'ADMIN';
 }

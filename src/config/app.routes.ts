@@ -9,5 +9,6 @@ export const routesV1 = {
   auth: {
     signin: `${authRoot}/signin`,
     signup: `${authRoot}/signup`,
+    userInfo: `${authRoot}/user-info`,
   },
 };
