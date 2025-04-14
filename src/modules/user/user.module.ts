@@ -1,4 +1,10 @@
 import { Module } from '@nestjs/common';
+import { FindUserHttpController } from './queries/find-user/find-user.http.controller';
 
-@Module({})
+const httpControllers = [FindUserHttpController];
+
+@Module({
+  controllers: [...httpControllers],
+  providers: [],
+})
 export class UserModule {}

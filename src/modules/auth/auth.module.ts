@@ -5,13 +5,19 @@ import { SignInUserHttpController } from './queries/signin-user/signin-user.http
 import { SignInUserService } from './queries/signin-user/signin-user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthTokenService } from './token.service';
+import { JwtStrategy } from './strategy';
 
 const httpControllers = [CreateUserHttpController, SignInUserHttpController];
 
 @Module({
   imports: [JwtModule.register({})],
   controllers: [...httpControllers],
-  providers: [AuthTokenService, CreateUserService, SignInUserService],
+  providers: [
+    AuthTokenService,
+    CreateUserService,
+    SignInUserService,
+    JwtStrategy,
+  ],
   exports: [AuthTokenService],
 })
 export class AuthModule {}
