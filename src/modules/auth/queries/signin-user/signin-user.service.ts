@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { SignInRequestDto } from './signin-user.request.dto';
 import * as argon from 'argon2';
 import { AuthTokenService } from '../../token.service';
