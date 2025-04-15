@@ -6,8 +6,26 @@ import { SignInUserService } from './queries/signin-user/signin-user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthTokenService } from './token.service';
 import { JwtStrategy } from './strategy';
+import { OtpController } from './application/otp.controller';
+import { OTPService } from './strategy/otp/otp.service';
+import { RequestOTPUseCase } from './application/request-otp.usecase';
+import { VerifyOTPUseCase } from './application/verify-otp.usecase';
+import { NotifierService } from './application/notifier.service';
+import { OTPRepository } from './database/otp.repository';
 
-const httpControllers = [CreateUserHttpController, SignInUserHttpController];
+const httpControllers = [
+  CreateUserHttpController,
+  SignInUserHttpController,
+  OtpController,
+];
+
+const OtpProviders = [
+  OTPService,
+  RequestOTPUseCase,
+  VerifyOTPUseCase,
+  NotifierService,
+  OTPRepository,
+];
 
 @Module({
   imports: [JwtModule.register({})],
@@ -17,6 +35,7 @@ const httpControllers = [CreateUserHttpController, SignInUserHttpController];
     CreateUserService,
     SignInUserService,
     JwtStrategy,
+    ...OtpProviders,
   ],
   exports: [AuthTokenService],
 })

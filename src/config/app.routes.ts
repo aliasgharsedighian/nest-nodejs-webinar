@@ -10,5 +10,7 @@ export const routesV1 = {
     signin: `${authRoot}/signin`,
     signup: `${authRoot}/signup`,
     userInfo: `${authRoot}/user-info`,
+    requestOtp: `${authRoot}/request-otp`,
+    verifyOtp: `${authRoot}/verify-otp`,
   },
 };

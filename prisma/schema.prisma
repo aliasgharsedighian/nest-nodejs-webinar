@@ -15,21 +15,36 @@ datasource db {
 
 model User {
   id        Int       @id @default(autoincrement())
-  email     String    @unique
-  password  String
+  email     String?    @unique
+  phoneNumber String? @unique
+  password  String?
   role      Role      @default(USER)
   profile   Profile?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   products  Product[] @relation("UserProducts")
   cart      Cart?
+
+  otps      OTP[]     @relation("UserOTPs")
+}
+
+model OTP {
+  id        String   @id @default(uuid())
+  userId    Int
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  deliveryTarget String?  // optional field for debugging/logging
+
+  user      User     @relation("UserOTPs", fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model Profile {
   id           Int     @id @default(autoincrement())
   firstname    String?
   lastname     String?
-  mobileNumber String?
   address      String?
   user         User    @relation(fields: [userId], references: [id])
   userId       Int     @unique

@@ -37,13 +37,15 @@ export class CreateUserService {
         },
       });
       //return the saved user
-      const token = await this.tokenService.signToken(user.id, user.email);
-      return {
-        statusCode: 201,
-        message: 'created user successfully',
-        // token,
-        data: token,
-      };
+      if (user.email) {
+        const token = await this.tokenService.signToken(user.id, user?.email);
+        return {
+          statusCode: 201,
+          message: 'created user successfully',
+          // token,
+          data: token,
+        };
+      }
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
