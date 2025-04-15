@@ -40,7 +40,7 @@ export class SignInUserService {
       return {
         statusCode: 200,
         message: 'user login successfully',
-        data: token,
+        data: { token },
       };
     }
   }

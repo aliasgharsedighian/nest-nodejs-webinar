@@ -45,7 +45,12 @@ export class VerifyOTPUseCase {
         user.phoneNumber,
       );
       await this.otpRepo.deleteByUserId(userId);
-      return token;
+      return {
+        statusCode: 200,
+        message: 'You are successfully login',
+        // token,
+        data: { token },
+      };
     }
     // return this.jwtService.sign({ sub: userId });
   }

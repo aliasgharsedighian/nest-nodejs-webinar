@@ -43,7 +43,7 @@ export class CreateUserService {
           statusCode: 201,
           message: 'created user successfully',
           // token,
-          data: token,
+          data: { token },
         };
       }
     } catch (error) {

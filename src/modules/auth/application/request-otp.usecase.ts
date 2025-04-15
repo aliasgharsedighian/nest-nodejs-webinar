@@ -24,7 +24,7 @@ export class RequestOTPUseCase {
       const otp = await this.otpService.generate(user.id);
       await this.otpRepo.save(otp);
       await this.notifier.sendOTP(mobileNumber, otp.code); // implement notifier
-      return { message: 'OTP sent', userId: user.id };
+      return { message: 'OTP sent successfully', userId: user.id };
     } else {
       const user = await this.prisma.user.create({
         data: {
@@ -49,7 +49,7 @@ export class RequestOTPUseCase {
       const otp = await this.otpService.generate(user.id);
       await this.otpRepo.save(otp);
       await this.notifier.sendOTP(mobileNumber, otp.code); // implement notifier
-      return { message: 'OTP sent', userId: user.id };
+      return { message: 'OTP sent successfully', userId: user.id };
     }
   }
 }
