@@ -21,7 +21,7 @@ export class RequestOTPUseCase {
     });
 
     if (user) {
-      const otp = await this.otpService.generate(mobileNumber, user);
+      const otp = await this.otpService.generate(user.id);
       await this.otpRepo.save(otp);
       await this.notifier.sendOTP(mobileNumber, otp.code); // implement notifier
       return { message: 'OTP sent', userId: user.id };
@@ -46,7 +46,7 @@ export class RequestOTPUseCase {
           profile: true,
         },
       });
-      const otp = await this.otpService.generate(mobileNumber, user);
+      const otp = await this.otpService.generate(user.id);
       await this.otpRepo.save(otp);
       await this.notifier.sendOTP(mobileNumber, otp.code); // implement notifier
       return { message: 'OTP sent', userId: user.id };
