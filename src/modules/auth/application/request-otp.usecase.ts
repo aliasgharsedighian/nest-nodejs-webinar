@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { OTPService } from '../strategy/otp/otp.service';
 import { OTPRepository } from '../database/otp.repository';
 import { NotifierService } from './notifier.service';
@@ -18,7 +18,19 @@ export class RequestOTPUseCase {
       where: {
         phoneNumber: mobileNumber,
       },
+      include: {
+        otps: true,
+      },
     });
+
+    if (user?.otps) {
+      // console.log(new Date() > user?.otps.slice(-1)[0].expiresAt);
+      if (new Date() < user?.otps.slice(-1)[0].expiresAt) {
+        throw new ForbiddenException(
+          'Please wait 2 minutes before requesting a new OTP',
+        );
+      }
+    }
 
     if (user) {
       const otp = await this.otpService.generate(user.id);
