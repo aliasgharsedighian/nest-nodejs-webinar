@@ -1,4 +1,17 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module, Provider } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 
-@Module({})
+const httpControllers = [];
+
+const commandHandlers: Provider[] = [];
+
+const queryHandlers: Provider[] = [];
+
+const repositories: Provider[] = [];
+
+@Module({
+  imports: [CqrsModule],
+  controllers: [...httpControllers],
+  providers: [Logger, ...repositories, ...commandHandlers, ...queryHandlers],
+})
 export class ProductModule {}
