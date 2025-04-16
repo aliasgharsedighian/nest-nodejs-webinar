@@ -25,7 +25,7 @@ export class RequestOTPUseCase {
 
     if (user?.otps) {
       // console.log(new Date() > user?.otps.slice(-1)[0].expiresAt);
-      if (new Date() < user?.otps.slice(-1)[0].expiresAt) {
+      if (new Date() < user?.otps?.slice(-1)[0]?.expiresAt) {
         throw new ForbiddenException(
           'Please wait 2 minutes before requesting a new OTP',
         );
