@@ -1,13 +1,16 @@
 import { Logger, Module, Provider } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
+import { CreateProductHttpController } from './commands/create-product/create-product.http.controller';
+import { CreateProductService } from './commands/create-product/create-product.service';
+import { PrismaProductRepository } from './database/product.repository';
 
-const httpControllers = [];
+const httpControllers = [CreateProductHttpController];
 
-const commandHandlers: Provider[] = [];
+const commandHandlers: Provider[] = [CreateProductService];
 
 const queryHandlers: Provider[] = [];
 
-const repositories: Provider[] = [];
+const repositories: Provider[] = [PrismaProductRepository];
 
 @Module({
   imports: [CqrsModule],

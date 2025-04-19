@@ -8,7 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
-    ThrottlerModule.forRoot([{ limit: 5, ttl: 2 * 60 * 1000 }]), //2 minutes
+    ThrottlerModule.forRoot([{ limit: 15, ttl: 2 * 60 * 1000 }]), //2 minutes
     // Modules
     AuthModule,
     UserModule,

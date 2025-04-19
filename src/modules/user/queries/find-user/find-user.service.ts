@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 
 @Injectable()
-export class CreateUserService {
+export class FindUserService {
   constructor(private prisma: PrismaService) {}
   async execute(email?: string, id?: number): Promise<any> {
     try {

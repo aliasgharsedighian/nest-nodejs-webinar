@@ -60,8 +60,8 @@ model Product {
   show          Boolean        @default(false)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  userId        Int?
-  user          User?          @relation("UserProducts", fields: [userId], references: [id])
+  authorId        Int?
+  user          User?          @relation("UserProducts", fields: [authorId], references: [id])
   cartItems     CartItem[]
   Invoice_items InvoiceItems[]
   categories ProductCategory[]

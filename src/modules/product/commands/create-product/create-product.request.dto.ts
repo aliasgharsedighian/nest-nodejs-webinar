@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  ArrayNotEmpty,
   IsArray,
   IsBoolean,
   IsEnum,
@@ -9,10 +10,8 @@ import {
   MaxLength,
   Min,
   MinLength,
-  maxLength,
-  minLength,
 } from 'class-validator';
-enum Stock {
+export enum Stock {
   NEW = 0,
   STOCK = 1,
 }
@@ -41,6 +40,12 @@ export class CreateProductRequestDto {
   @Min(1, { message: 'Price must be greater than or equal to 1' })
   readonly price: number;
 
+  @ApiProperty({ example: ['test11'], description: 'list of image dir' })
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  readonly images: string[];
+
   @ApiProperty({
     example: 0,
     description: '0 for new product 1 for stock product',
@@ -58,8 +63,8 @@ export class CreateProductRequestDto {
   @IsBoolean()
   readonly show: boolean;
 
-  @ApiProperty({ example: ['test11'], description: 'list of image dir' })
+  @ApiProperty({ example: [1], description: 'number of product category' })
   @IsArray()
-  @IsString({ each: true })
-  readonly categories: string[];
+  // @IsNumber()
+  readonly categories: number[];
 }

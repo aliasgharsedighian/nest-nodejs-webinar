@@ -4,16 +4,20 @@ import {
   ConflictException as ConflictHttpException,
   HttpStatus,
   Post,
+  UseGuards,
 } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 import { routesV1 } from 'src/config/app.routes';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { IdResponse } from 'src/libs/api/id.response.dto';
 import { CreateProductRequestDto } from './create-product.request.dto';
+import { User } from '@prisma/client';
+import { GetUser } from 'src/libs/decorators';
+import { JwtGuard } from 'src/libs/guard';
+import { CreateProductService } from './create-product.service';
 
 @Controller(routesV1.version)
 export class CreateProductHttpController {
-  constructor(private readonly commadBus: CommandBus) {}
+  constructor(private createProduct: CreateProductService) {}
 
   @ApiOperation({ summary: 'Create a product' })
   @ApiResponse({
@@ -29,9 +33,15 @@ export class CreateProductHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: '',
   })
+  @UseGuards(JwtGuard)
   @Post(routesV1.product.createProduct)
-  async create(@Body() body: CreateProductRequestDto) {
-    // const command = new CreateProductCommand(body);
-    // const result = await this.commadBus.execute(command);
+  async create(@Body() body: CreateProductRequestDto, @GetUser() user: User) {
+    const result = await this.createProduct.execute(body, user);
+
+    return {
+      statusCode: 201,
+      message: 'created product successfully',
+      data: result,
+    };
   }
 }
