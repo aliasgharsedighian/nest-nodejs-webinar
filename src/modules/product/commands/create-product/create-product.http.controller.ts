@@ -39,8 +39,8 @@ export class CreateProductHttpController {
     const result = await this.createProduct.execute(body, user);
 
     return {
-      statusCode: 201,
-      message: 'created product successfully',
+      statusCode: HttpStatus.CREATED,
+      message: 'product created successfully',
       data: result,
     };
   }

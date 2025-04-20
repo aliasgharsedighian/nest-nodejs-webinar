@@ -65,6 +65,6 @@ export class CreateProductRequestDto {
 
   @ApiProperty({ example: [1], description: 'number of product category' })
   @IsArray()
-  // @IsNumber()
-  readonly categories: number[];
+  @IsNumber({}, { each: true }) // validate that every item is a number
+  categories: number[];
 }
