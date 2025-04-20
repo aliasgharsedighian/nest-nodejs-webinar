@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { OTPRepository } from '../database/otp.repository';
 import { OTPService } from '../strategy/otp/otp.service';
-import { JwtService } from '@nestjs/jwt';
 import { AuthTokenService } from '../token.service';
 import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 
@@ -14,7 +13,6 @@ export class VerifyOTPUseCase {
   constructor(
     private readonly otpRepo: OTPRepository,
     private readonly otpService: OTPService,
-    private readonly jwtService: JwtService,
     private tokenService: AuthTokenService,
     private prisma: PrismaService,
   ) {}

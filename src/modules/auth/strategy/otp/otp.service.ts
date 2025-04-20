@@ -1,4 +1,3 @@
-import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { OTP } from '../../domain/entities/otp.entity';
 
 export class OTPService {

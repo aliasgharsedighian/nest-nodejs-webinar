@@ -13,7 +13,7 @@ export class AuthTokenService {
     };
     const secret = get('JWT_SECRET').required().asString();
     return this.jwt.signAsync(payload, {
-      expiresIn: '15m',
+      expiresIn: '2d',
       secret,
     });
   }
