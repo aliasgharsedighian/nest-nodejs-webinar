@@ -18,7 +18,7 @@ export class FindProductsService {
       );
       return products;
     } catch (error) {
-      throw error;
+      throw new Error(`Service Error: ${error.message}`);
     }
   }
 }

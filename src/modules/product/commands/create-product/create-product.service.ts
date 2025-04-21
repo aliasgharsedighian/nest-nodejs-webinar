@@ -15,7 +15,7 @@ export class CreateProductService {
       const product = await this.productRepo.create(command, user.id);
       return product;
     } catch (error) {
-      throw error;
+      throw new Error(`Service Error: ${error.message}`);
     }
   }
 }

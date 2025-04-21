@@ -100,7 +100,22 @@ export class PrismaProductRepository {
     return updatedProduct;
   }
 
-  async removeById() {}
+  async removeById(productId: number) {
+    const deletedProduct = await this.prisma.product.delete({
+      where: {
+        id: productId,
+      },
+    });
+    return deletedProduct;
+  }
 
-  async createCategory() {}
+  async createCategory(name: string) {
+    const category = await this.prisma.productCategory.create({
+      data: {
+        name,
+      },
+    });
+
+    return category;
+  }
 }

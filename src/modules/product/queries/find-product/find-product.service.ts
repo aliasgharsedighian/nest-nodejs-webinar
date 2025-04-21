@@ -22,7 +22,7 @@ export class FindProductService {
         data: product,
       };
     } catch (error) {
-      throw error;
+      throw new Error(`Service Error: ${error.message}`);
     }
   }
 }
