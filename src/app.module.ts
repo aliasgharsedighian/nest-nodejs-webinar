@@ -5,6 +5,7 @@ import { ProductModule } from './modules/product/product.module';
 import { PrismaModule } from './libs/db/prisma/prisma.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { APP_GUARD } from '@nestjs/core';
     UserModule,
     ProductModule,
     PrismaModule,
+    FileUploadModule,
   ],
   controllers: [],
   providers: [
