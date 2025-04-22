@@ -1,4 +1,9 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateProductRequestDto } from './create-product.request.dto';
 import { User } from '@prisma/client';
 import { PrismaProductRepository } from '../../database/product.repository';
@@ -13,8 +18,16 @@ export class CreateProductService {
         throw new ForbiddenException('You are not Allowed!');
       }
       const product = await this.productRepo.create(command, user.id);
-      return product;
+      return {
+        statusCode: HttpStatus.CREATED,
+        message: 'product created successfully',
+        data: product,
+      };
     } catch (error) {
+      if (error.code === 'P2025') {
+        // P2025: Record to connect not found
+        throw new BadRequestException('One or more categories do not exist.');
+      }
       throw new Error(`Service Error: ${error.message}`);
     }
   }

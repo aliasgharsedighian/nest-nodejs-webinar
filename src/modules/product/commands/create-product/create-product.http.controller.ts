@@ -38,10 +38,6 @@ export class CreateProductHttpController {
   async create(@Body() body: CreateProductRequestDto, @GetUser() user: User) {
     const result = await this.createProduct.execute(body, user);
 
-    return {
-      statusCode: HttpStatus.CREATED,
-      message: 'product created successfully',
-      data: result,
-    };
+    return result;
   }
 }
