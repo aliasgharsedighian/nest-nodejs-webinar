@@ -15,10 +15,6 @@ export class CreateProductCategoryService {
 
   async execute(command: CreateProductCategoryRequestDto, user: User) {
     try {
-      if (user.role !== 'ADMIN') {
-        throw new ForbiddenException('You are not Allowed!');
-      }
-
       const category = await this.productRepo.createCategory(command.name);
 
       return {

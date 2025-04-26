@@ -14,9 +14,6 @@ export class CreateProductService {
 
   async execute(command: CreateProductRequestDto, user: User) {
     try {
-      if (user.role !== 'ADMIN') {
-        throw new ForbiddenException('You are not Allowed!');
-      }
       const product = await this.productRepo.create(command, user.id);
       return {
         statusCode: HttpStatus.CREATED,

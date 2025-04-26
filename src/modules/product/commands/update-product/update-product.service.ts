@@ -9,15 +9,20 @@ export class EditProductService {
 
   async execute(command: EditProductRequestDto, productId: number, user: User) {
     try {
-      if (user.role !== 'ADMIN') {
-        throw new ForbiddenException('You are not Allowed!');
+      const product = await this.productRepo.findById(productId);
+      if (!product) {
+        return {
+          statusCode: HttpStatus.NOT_FOUND,
+          message: 'product not found',
+          data: {},
+        };
       }
-      const product = await this.productRepo.updateById(
+      const updatedProduct = await this.productRepo.updateById(
         command,
         productId,
         user.id,
       );
-      if (!product) {
+      if (!updatedProduct) {
         return {
           statusCode: HttpStatus.NOT_FOUND,
           message: 'product not found',
@@ -27,7 +32,7 @@ export class EditProductService {
       return {
         status: HttpStatus.OK,
         message: 'product updated successfully',
-        data: product,
+        data: updatedProduct,
       };
     } catch (error) {
       throw new Error(`Service Error: ${error.message}`);

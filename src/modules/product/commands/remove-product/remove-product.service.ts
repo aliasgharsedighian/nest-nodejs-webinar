@@ -8,8 +8,13 @@ export class RemoveProductService {
 
   async execute(productId: number, user: User) {
     try {
-      if (user.role !== 'ADMIN') {
-        throw new ForbiddenException('You are not Allowed!');
+      const product = await this.productRepo.findById(productId);
+      if (!product) {
+        return {
+          statusCode: HttpStatus.NOT_FOUND,
+          message: 'product not found',
+          data: {},
+        };
       }
       const deletedProduct = await this.productRepo.removeById(productId);
       if (!deletedProduct) {

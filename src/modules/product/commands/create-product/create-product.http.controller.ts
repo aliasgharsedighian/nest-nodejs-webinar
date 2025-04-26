@@ -14,6 +14,8 @@ import { User } from '@prisma/client';
 import { GetUser } from 'src/libs/decorators';
 import { JwtGuard } from 'src/libs/guard';
 import { CreateProductService } from './create-product.service';
+import { Roles } from 'src/libs/decorators/roles.decorator';
+import { RolesGuard } from 'src/libs/guard/role.guard';
 
 @Controller(routesV1.version)
 export class CreateProductHttpController {
@@ -33,7 +35,8 @@ export class CreateProductHttpController {
     status: HttpStatus.BAD_REQUEST,
     type: '',
   })
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('ADMIN')
   @Post(routesV1.product.createProduct)
   async create(@Body() body: CreateProductRequestDto, @GetUser() user: User) {
     const result = await this.createProduct.execute(body, user);

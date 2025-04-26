@@ -12,12 +12,15 @@ import { RemoveProductService } from './remove-product.service';
 import { JwtGuard } from 'src/libs/guard';
 import { GetUser } from 'src/libs/decorators';
 import { User } from '@prisma/client';
+import { RolesGuard } from 'src/libs/guard/role.guard';
+import { Roles } from 'src/libs/decorators/roles.decorator';
 
 @Controller(routesV1.version)
 export class RemoveProductByIdHttpController {
   constructor(private removeProduct: RemoveProductService) {}
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('ADMIN')
   @Delete(routesV1.product.removeProduct)
   @ApiOperation({ summary: 'find and delete product by id' })
   @ApiResponse({

@@ -102,7 +102,7 @@ export class PrismaProductRepository {
           set: product.categories.map((id) => ({ id })),
         };
       }
-      console.log({ ...updateData, authorId: userId });
+
       const updatedProduct = await this.prisma.product.update({
         where: {
           id: productId,
