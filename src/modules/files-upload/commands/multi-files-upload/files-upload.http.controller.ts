@@ -4,6 +4,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   Body,
+  BadRequestException,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { FileUploadService } from './files-upload.service';
@@ -26,6 +27,17 @@ export class FileUploadController {
         },
       }),
       limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+      fileFilter: (req, file, cb) => {
+        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        if (allowedMimeTypes.includes(file.mimetype)) {
+          cb(null, true); // Accept the file
+        } else {
+          cb(
+            new BadRequestException(`Unsupported file type ${file.mimetype}`),
+            false,
+          ); // Reject the file
+        }
+      },
     }),
   )
   async uploadFile(@UploadedFiles() files: Express.Multer.File[]) {
