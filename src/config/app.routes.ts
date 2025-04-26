@@ -13,6 +13,7 @@ export const routesV1 = {
     userInfo: `${authRoot}/user-info`,
     requestOtp: `${authRoot}/request-otp`,
     verifyOtp: `${authRoot}/verify-otp`,
+    refreshToken: `${authRoot}/refresh-token`,
   },
   product: {
     getAllProducts: `${productRoot}/get-all-products`,

@@ -6,15 +6,27 @@ import { get } from 'env-var';
 export class AuthTokenService {
   constructor(private readonly jwt: JwtService) {}
 
-  signToken(userId: number, email: string): Promise<string> {
+  async signToken(userId: number, email: string) {
     const payload = {
       sub: userId,
       email,
     };
     const secret = get('JWT_SECRET').required().asString();
-    return this.jwt.signAsync(payload, {
+    const refreshSecret = get('JWT_REFRESH_SECRET').required().asString();
+
+    const accessToken = await this.jwt.signAsync(payload, {
       expiresIn: '2d',
       secret,
     });
+
+    const refreshToken = await this.jwt.signAsync(payload, {
+      expiresIn: '7d',
+      secret: refreshSecret,
+    });
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }

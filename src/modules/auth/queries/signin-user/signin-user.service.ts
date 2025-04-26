@@ -40,7 +40,10 @@ export class SignInUserService {
       return {
         statusCode: 200,
         message: 'user login successfully',
-        data: { token },
+        data: {
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
+        },
       };
     }
   }

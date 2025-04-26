@@ -12,11 +12,13 @@ import { RequestOTPUseCase } from './application/request-otp.usecase';
 import { VerifyOTPUseCase } from './application/verify-otp.usecase';
 import { NotifierService } from './application/notifier.service';
 import { OTPRepository } from './database/otp.repository';
+import { AuthRefreshController } from './refresh-token.http.controller';
 
 const httpControllers = [
   CreateUserHttpController,
   SignInUserHttpController,
   OtpController,
+  AuthRefreshController,
 ];
 
 const OtpProviders = [
