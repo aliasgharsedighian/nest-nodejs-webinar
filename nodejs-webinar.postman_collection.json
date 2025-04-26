@@ -109,6 +109,27 @@
           "response": []
         },
         {
+          "name": "refresh-token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"alitest2@example.com\",\r\n    \"password\": \"password\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{nodejs_webinar_app_local}}auth/signin"
+          },
+          "response": []
+        },
+        {
           "name": "user-info",
           "request": {
             "auth": {
@@ -371,6 +392,19 @@
             "method": "GET",
             "header": [],
             "url": "{{nodejs_webinar_app_local}}invoice/show-invoice/11"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "upload-files",
+      "item": [
+        {
+          "name": "upload-files",
+          "request": {
+            "method": "GET",
+            "header": []
           },
           "response": []
         }
