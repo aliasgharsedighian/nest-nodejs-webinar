@@ -1,12 +1,12 @@
 import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
-import { UploadFileRequestDto } from './dto/upload-files.request.dto';
+import { UploadFileRequestDto } from './files-upload.request.dto';
 
 @Injectable()
 export class FileUploadService {
   private readonly allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp']; // allowed types
   private readonly maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
 
-  handleFilesUpload(files: Express.Multer.File[], dto: UploadFileRequestDto) {
+  handleFilesUpload(files: Express.Multer.File[]) {
     if (!files || files.length === 0) {
       throw new BadRequestException('No files uploaded.');
     }

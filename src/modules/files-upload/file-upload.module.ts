@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { FileUploadService } from './file-upload.service';
-import { FileUploadController } from './file-upload.controller';
+import { FileUploadController } from './commands/multi-files-upload/files-upload.http.controller';
 import { MulterModule } from '@nestjs/platform-express';
+import { FileUploadService } from './commands/multi-files-upload/files-upload.service';
 
 @Module({
   controllers: [FileUploadController],

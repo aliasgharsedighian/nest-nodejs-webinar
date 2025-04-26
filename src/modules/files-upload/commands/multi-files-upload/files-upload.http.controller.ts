@@ -6,9 +6,9 @@ import {
   Body,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { FileUploadService } from './file-upload.service';
+import { FileUploadService } from './files-upload.service';
 import { diskStorage } from 'multer';
-import { UploadFileRequestDto } from './dto/upload-files.request.dto';
+import { UploadFileRequestDto } from './files-upload.request.dto';
 
 @Controller('api/v1/file-upload')
 export class FileUploadController {
@@ -25,14 +25,10 @@ export class FileUploadController {
           callback(null, filename);
         },
       }),
-      // limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+      limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
     }),
   )
-  async uploadFile(
-    @UploadedFiles() files: Express.Multer.File[],
-    @Body() uploadFilesDto: UploadFileRequestDto,
-  ) {
-    console.log(files);
-    return this.fileUploadService.handleFilesUpload(files, uploadFilesDto);
+  async uploadFile(@UploadedFiles() files: Express.Multer.File[]) {
+    return this.fileUploadService.handleFilesUpload(files);
   }
 }
