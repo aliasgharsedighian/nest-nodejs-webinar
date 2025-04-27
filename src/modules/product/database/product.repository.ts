@@ -1,25 +1,36 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { Product } from '../domain/entities/create-product.entity';
 import { EditProductRequestDto } from '../commands/update-product/update-product.request.dto';
-import { Prisma } from '@prisma/client';
+import { get } from 'env-var';
 
 @Injectable()
 export class PrismaProductRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(product: Product, userId: number): Promise<any> {
+  async create(
+    product: Product,
+    images: Express.Multer.File[],
+    userId: number,
+  ): Promise<any> {
     try {
+      const uploadFileRecords = await Promise.all(
+        images.map((image) =>
+          this.prisma.uploadFile.create({
+            data: {
+              path: `${get('DOMAIN_ADDRESS').required().asString()}${image.path}`,
+              mimetype: image.mimetype,
+              size: image.size,
+            },
+          }),
+        ),
+      );
+
       const created = await this.prisma.product.create({
         data: {
           title: product.title,
           description: product.description,
           price: product.price,
-          images: product.images,
           stock: product.stock,
           show: product.show,
           authorId: userId,
@@ -31,9 +42,32 @@ export class PrismaProductRepository {
         },
         include: {
           categories: true,
+          images: true,
         },
       });
-      return created;
+      await Promise.all(
+        uploadFileRecords.map((image) =>
+          this.prisma.productImage.create({
+            data: {
+              productId: created.id,
+              uploadFileId: image.id,
+            },
+          }),
+        ),
+      );
+
+      const productWithImages = await this.prisma.product.findUnique({
+        where: { id: created.id },
+        include: {
+          images: {
+            include: {
+              uploadFile: true,
+            },
+          },
+        },
+      });
+
+      return productWithImages;
     } catch (error) {
       throw error;
     }
@@ -41,23 +75,41 @@ export class PrismaProductRepository {
 
   async findAllPaginate(page: number, skip: number, limit: number) {
     try {
-      const products = await this.prisma.product.findMany({
-        where: {
-          show: true,
-        },
-        skip,
-        take: limit,
-        orderBy: {
-          createdAt: 'desc',
-        },
-        include: {
-          categories: true,
-        },
-      });
-      const totalCount = products.length;
+      const [products, totalCount] = await Promise.all([
+        this.prisma.product.findMany({
+          where: {
+            show: true,
+          },
+          skip,
+          take: limit,
+          orderBy: {
+            createdAt: 'desc',
+          },
+          include: {
+            categories: true,
+            images: {
+              select: {
+                uploadFile: {
+                  select: {
+                    path: true,
+                  },
+                },
+              },
+            },
+          },
+        }),
+        this.prisma.product.count({
+          where: {
+            show: true,
+          },
+        }),
+      ]);
 
       return {
-        products,
+        products: products.map((product) => ({
+          ...product,
+          images: product.images.map((img) => img.uploadFile.path), // 🔥 Simplify each product's images
+        })),
         totalCount,
         currentPage: page,
         totalPages: Math.ceil(totalCount / limit),
@@ -74,9 +126,23 @@ export class PrismaProductRepository {
           id: productId,
           show: true,
         },
-        include: { categories: true },
+        include: {
+          categories: true,
+          images: {
+            select: {
+              uploadFile: {
+                select: {
+                  path: true,
+                },
+              },
+            },
+          },
+        },
       });
-      return product;
+      return {
+        ...product,
+        images: product?.images.map((img) => img.uploadFile.path),
+      };
     } catch (error) {
       throw error;
     }
@@ -93,7 +159,7 @@ export class PrismaProductRepository {
       if (product.description !== undefined)
         updateData.description = product.description;
       if (product.price !== undefined) updateData.price = product.price;
-      if (product.images !== undefined) updateData.images = product.images;
+      // if (product.images !== undefined) updateData.images = product.images;
       if (product.stock !== undefined) updateData.stock = product.stock;
       if (product.show !== undefined) updateData.show = product.show;
 
@@ -113,9 +179,21 @@ export class PrismaProductRepository {
         },
         include: {
           categories: true,
+          images: {
+            select: {
+              uploadFile: {
+                select: {
+                  path: true,
+                },
+              },
+            },
+          },
         },
       });
-      return updatedProduct;
+      return {
+        ...updatedProduct,
+        images: updatedProduct.images.map((img) => img.uploadFile.path),
+      };
     } catch (error) {
       throw error;
     }

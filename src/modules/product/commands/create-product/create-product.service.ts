@@ -12,9 +12,13 @@ import { PrismaProductRepository } from '../../database/product.repository';
 export class CreateProductService {
   constructor(private productRepo: PrismaProductRepository) {}
 
-  async execute(command: CreateProductRequestDto, user: User) {
+  async execute(
+    command: CreateProductRequestDto,
+    images: Express.Multer.File[],
+    user: User,
+  ) {
     try {
-      const product = await this.productRepo.create(command, user.id);
+      const product = await this.productRepo.create(command, images, user.id);
       return {
         statusCode: HttpStatus.CREATED,
         message: 'product created successfully',

@@ -4,6 +4,7 @@ import {
   IsArray,
   IsBoolean,
   IsEnum,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsString,
@@ -11,6 +12,8 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
+import { Type, Transform } from 'class-transformer';
+
 export enum Stock {
   NEW = 0,
   STOCK = 1,
@@ -35,22 +38,18 @@ export class CreateProductRequestDto {
   readonly description: string;
 
   @ApiProperty({ example: 1000000, description: '' })
+  @Transform(({ value }) => Number(value))
   @IsNumber()
   @IsNotEmpty({ message: 'Price is required' })
   @Min(1, { message: 'Price must be greater than or equal to 1' })
   readonly price: number;
 
-  @ApiProperty({ example: ['test11'], description: 'list of image dir' })
-  @IsArray()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  readonly images: string[];
-
   @ApiProperty({
     example: 0,
     description: '0 for new product 1 for stock product',
   })
-  @IsNumber()
+  @Transform(({ value }) => Number(value))
+  @IsInt()
   @IsNotEmpty()
   @IsEnum(Stock)
   readonly stock: number;
@@ -59,11 +58,22 @@ export class CreateProductRequestDto {
     example: true,
     description: 'true for show product , false for not showing product',
   })
+  @Transform(({ value }) => value === 'true' || value === 'false')
   @IsNotEmpty()
   @IsBoolean()
   readonly show: boolean;
 
   @ApiProperty({ example: [1], description: 'number of product category' })
+  @Transform(({ value }) => {
+    try {
+      if (typeof value === 'string') {
+        return JSON.parse(value);
+      }
+      return value;
+    } catch {
+      return [];
+    }
+  })
   @IsArray()
   @IsNumber({}, { each: true }) // validate that every item is a number
   categories: number[];
