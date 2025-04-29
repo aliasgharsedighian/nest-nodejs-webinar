@@ -13,6 +13,7 @@ import { RemoveProductByIdHttpController } from './commands/remove-product/remov
 import { RemoveProductService } from './commands/remove-product/remove-product.service';
 import { CreateProductCategoryHttpController } from './commands/create-product-category/create-product-category.http.controller';
 import { CreateProductCategoryService } from './commands/create-product-category/create-product-category.service';
+import { FileUploadModule } from '../files-upload/file-upload.module';
 
 const httpControllers = [
   CreateProductHttpController,
@@ -37,7 +38,7 @@ const queryHandlers: Provider[] = [];
 const repositories: Provider[] = [PrismaProductRepository];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, FileUploadModule],
   controllers: [...httpControllers],
   providers: [Logger, ...repositories, ...commandHandlers, ...queryHandlers],
 })

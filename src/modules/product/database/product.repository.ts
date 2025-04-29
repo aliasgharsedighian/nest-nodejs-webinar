@@ -3,10 +3,14 @@ import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { Product } from '../domain/entities/create-product.entity';
 import { EditProductRequestDto } from '../commands/update-product/update-product.request.dto';
 import { get } from 'env-var';
+import { OptimizedImagesService } from 'src/modules/files-upload/optimizedImages.service';
 
 @Injectable()
 export class PrismaProductRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly fileService: OptimizedImagesService,
+  ) {}
 
   async create(
     product: Product,
@@ -14,11 +18,12 @@ export class PrismaProductRepository {
     userId: number,
   ): Promise<any> {
     try {
+      const uploadedImages = await this.fileService.uploadFiles(images);
       const uploadFileRecords = await Promise.all(
-        images.map((image) =>
+        uploadedImages.map((image) =>
           this.prisma.uploadFile.create({
             data: {
-              path: `${get('DOMAIN_ADDRESS').required().asString()}${image.path}`,
+              path: `${get('DOMAIN_ADDRESS').required().asString()}${image.thumbnailPath}`,
               mimetype: image.mimetype,
               size: image.size,
             },
@@ -26,6 +31,7 @@ export class PrismaProductRepository {
         ),
       );
 
+      //create product without image
       const created = await this.prisma.product.create({
         data: {
           title: product.title,
@@ -67,7 +73,10 @@ export class PrismaProductRepository {
         },
       });
 
-      return productWithImages;
+      return {
+        ...productWithImages,
+        images: productWithImages?.images.map((img) => img.uploadFile.path),
+      };
     } catch (error) {
       throw error;
     }
@@ -108,7 +117,7 @@ export class PrismaProductRepository {
       return {
         products: products.map((product) => ({
           ...product,
-          images: product.images.map((img) => img.uploadFile.path), // 🔥 Simplify each product's images
+          images: product.images.map((img) => img.uploadFile.path),
         })),
         totalCount,
         currentPage: page,
