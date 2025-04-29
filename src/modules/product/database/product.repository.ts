@@ -48,7 +48,16 @@ export class PrismaProductRepository {
         },
         include: {
           categories: true,
-          images: true,
+          images: {
+            select: {
+              uploadFile: {
+                select: {
+                  id: true,
+                  path: true,
+                },
+              },
+            },
+          },
         },
       });
       await Promise.all(
@@ -75,7 +84,12 @@ export class PrismaProductRepository {
 
       return {
         ...productWithImages,
-        images: productWithImages?.images.map((img) => img.uploadFile.path),
+        images: productWithImages?.images.map((img) => {
+          return {
+            id: img.uploadFile.id,
+            images: img.uploadFile.path,
+          };
+        }),
       };
     } catch (error) {
       throw error;
@@ -100,6 +114,7 @@ export class PrismaProductRepository {
               select: {
                 uploadFile: {
                   select: {
+                    id: true,
                     path: true,
                   },
                 },
@@ -117,7 +132,12 @@ export class PrismaProductRepository {
       return {
         products: products.map((product) => ({
           ...product,
-          images: product.images.map((img) => img.uploadFile.path),
+          images: product.images.map((img) => {
+            return {
+              id: img.uploadFile.id,
+              path: img.uploadFile.path,
+            };
+          }),
         })),
         totalCount,
         currentPage: page,
@@ -141,6 +161,7 @@ export class PrismaProductRepository {
             select: {
               uploadFile: {
                 select: {
+                  id: true,
                   path: true,
                 },
               },
@@ -150,7 +171,12 @@ export class PrismaProductRepository {
       });
       return {
         ...product,
-        images: product?.images.map((img) => img.uploadFile.path),
+        images: product?.images.map((img) => {
+          return {
+            id: img.uploadFile.id,
+            path: img.uploadFile.path,
+          };
+        }),
       };
     } catch (error) {
       throw error;
