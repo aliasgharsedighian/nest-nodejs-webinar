@@ -52,7 +52,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"userId\": 25,\r\n    \"code\": \"360213\"\r\n}",
+              "raw": "{\r\n    \"userId\": 25,\r\n    \"code\": \"510016\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -118,14 +118,14 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"alitest2@example.com\",\r\n    \"password\": \"password\"\r\n}",
+              "raw": "{\r\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJlbWFpbCI6ImFsaXRlc3QyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ1NjU3MDA0LCJleHAiOjE3NDYyNjE4MDR9.qmJC0s6jl_Lfpix_ONTijpQM1iX-h-EfwFrvMeWYU2w\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}auth/signin"
+            "url": "{{nodejs_webinar_app_local}}auth/refresh-token"
           },
           "response": []
         },
@@ -186,7 +186,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}shop/show-product/1"
+            "url": "{{nodejs_webinar_app_local}}shop/show-product/69"
           },
           "response": []
         },
@@ -202,13 +202,48 @@
             "method": "POST",
             "header": [],
             "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"title\": \"this is product test11\",\r\n    \"description\" : \"this is pruduct description test 11\",\r\n    \"price\": 1000000,\r\n    \"images\": [\"test11\"],\r\n    \"stock\": 0,\r\n    \"show\": true,\r\n    \"categories\": []\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "title test",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "test description",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "2220000",
+                  "type": "text"
+                },
+                {
+                  "key": "stock",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "show",
+                  "value": "false",
+                  "type": "text"
+                },
+                {
+                  "key": "categories",
+                  "value": "[1,3]",
+                  "type": "text"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/assed/Desktop/images/linkedin-clone-images/file_example_JPG_2500kB.jpg",
+                    "/C:/Users/assed/Desktop/images/linkedin-clone-images/file_example_PNG_3MB.png",
+                    "/C:/Users/assed/Desktop/images/linkedin-clone-images/file_example_WEBP_1500kB.webp"
+                  ]
                 }
-              }
+              ]
             },
             "url": "{{nodejs_webinar_app_local}}shop/add-product"
           },
@@ -227,7 +262,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": \"shoess\"\r\n}",
+              "raw": "{\r\n    \"name\": \"blouse2s\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -258,7 +293,7 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}shop/edit-product/1"
+            "url": "{{nodejs_webinar_app_local}}shop/edit-product/53"
           },
           "response": []
         },
@@ -273,7 +308,7 @@
             },
             "method": "DELETE",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}shop/remove-product/10"
+            "url": "{{nodejs_webinar_app_local}}shop/remove-product/41"
           },
           "response": []
         }
@@ -403,8 +438,40 @@
         {
           "name": "upload-files",
           "request": {
-            "method": "GET",
-            "header": []
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{nodejs_webinar_token}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/assed/Desktop/images/IMG_20240213_120505_489.jpg",
+                    "/C:/Users/assed/Desktop/images/OIG.jpg",
+                    "/C:/Users/assed/Desktop/images/photo_2021-07-10_22-50-13.jpg"
+                  ]
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}file-upload/upload-files",
+              "host": ["{{nodejs_webinar_app_local}}file-upload"],
+              "path": ["upload-files"],
+              "query": [
+                {
+                  "key": "file",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
           },
           "response": []
         }
