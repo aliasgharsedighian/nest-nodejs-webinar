@@ -8,6 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { FileUploadModule } from './modules/files-upload/file-upload.module';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { TestModule } from './test/test.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     ProductModule,
     PrismaModule,
     FileUploadModule,
+    TestModule,
   ],
   controllers: [],
   providers: [
