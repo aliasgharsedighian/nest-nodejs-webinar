@@ -3,7 +3,7 @@ import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { Product } from '../domain/entities/create-product.entity';
 import { EditProductRequestDto } from '../commands/update-product/update-product.request.dto';
 import { get } from 'env-var';
-import { OptimizedImagesService } from 'src/modules/files-upload/optimizedImages.service';
+import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
 
 @Injectable()
 export class PrismaProductRepository {
@@ -18,7 +18,7 @@ export class PrismaProductRepository {
     userId: number,
   ): Promise<any> {
     try {
-      const uploadedImages = await this.fileService.uploadFiles(images);
+      const uploadedImages = await this.fileService.uploadProductImages(images);
       const uploadFileRecords = await Promise.all(
         uploadedImages.map((image) =>
           this.prisma.uploadFile.create({

@@ -20,7 +20,7 @@ export class OptimizedImagesService {
     }
   }
 
-  async uploadFiles(
+  async uploadProductImages(
     files: Express.Multer.File[],
   ): Promise<
     { path: string; thumbnailPath: string; mimetype: string; size: number }[]
