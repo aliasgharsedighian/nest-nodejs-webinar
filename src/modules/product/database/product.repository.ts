@@ -415,7 +415,16 @@ export class PrismaProductRepository {
         where: {
           id: productId,
         },
+        include: {
+          images: true,
+        },
       });
+      const deletedImages = await this.prisma.uploadFile.deleteMany({
+        where: {
+          id: { in: deletedProduct.images.map((item) => item.id) },
+        },
+      });
+
       return deletedProduct;
     } catch (error) {
       throw error;
