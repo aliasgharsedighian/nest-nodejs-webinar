@@ -7,11 +7,13 @@ import * as fs from 'fs';
 export class OptimizedImagesService {
   private uploadsDir = 'uploads/products';
   private thumbnailDir = 'uploads/products/thumbnails';
+  private thumbnailCategoryDir = 'uploads/products/categories';
 
   constructor() {
     // Ensure folders exist
     this.ensureFolder(this.uploadsDir);
     this.ensureFolder(this.thumbnailDir);
+    this.ensureFolder(this.thumbnailCategoryDir);
   }
 
   private ensureFolder(dir: string) {
@@ -47,5 +49,25 @@ export class OptimizedImagesService {
     );
 
     return uploadResults;
+  }
+
+  async uploadProductCategoryImage(file: Express.Multer.File): Promise<{
+    path: string;
+    thumbnailPath: string;
+    mimetype: string;
+    size: number;
+  }> {
+    const thumbnailPath = path.join(
+      this.thumbnailCategoryDir,
+      `thumb-${file.filename}`,
+    );
+    await sharp(file.path).resize(300).toFile(thumbnailPath);
+
+    return {
+      path: `${this.uploadsDir}/${file.filename}`,
+      thumbnailPath: `${thumbnailPath}`,
+      mimetype: file.mimetype,
+      size: file.size,
+    };
   }
 }

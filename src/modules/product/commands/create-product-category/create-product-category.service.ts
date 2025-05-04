@@ -13,9 +13,16 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 export class CreateProductCategoryService {
   constructor(private productRepo: PrismaProductRepository) {}
 
-  async execute(command: CreateProductCategoryRequestDto, user: User) {
+  async execute(
+    command: CreateProductCategoryRequestDto,
+    image: Express.Multer.File,
+    user: User,
+  ) {
     try {
-      const category = await this.productRepo.createCategory(command.name);
+      const category = await this.productRepo.createCategory(
+        command.name,
+        image,
+      );
 
       return {
         status: HttpStatus.CREATED,

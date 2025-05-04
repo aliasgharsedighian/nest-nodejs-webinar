@@ -47,7 +47,11 @@ export class PrismaProductRepository {
           },
         },
         include: {
-          categories: true,
+          categories: {
+            include: {
+              image: true,
+            },
+          },
           images: {
             select: {
               uploadFile: {
@@ -79,6 +83,22 @@ export class PrismaProductRepository {
               uploadFile: true,
             },
           },
+          categories: {
+            select: {
+              id: true,
+              name: true,
+              image: {
+                include: {
+                  uploadFile: {
+                    select: {
+                      id: true,
+                      path: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       });
 
@@ -88,6 +108,13 @@ export class PrismaProductRepository {
           return {
             id: img.uploadFile.id,
             images: img.uploadFile.path,
+          };
+        }),
+        categories: productWithImages?.categories.map((cat) => {
+          return {
+            id: cat.id,
+            name: cat.name,
+            image: cat.image[0].uploadFile.path,
           };
         }),
       };
@@ -109,7 +136,22 @@ export class PrismaProductRepository {
             createdAt: 'desc',
           },
           include: {
-            categories: true,
+            categories: {
+              select: {
+                id: true,
+                name: true,
+                image: {
+                  include: {
+                    uploadFile: {
+                      select: {
+                        id: true,
+                        path: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
             images: {
               select: {
                 uploadFile: {
@@ -138,6 +180,15 @@ export class PrismaProductRepository {
               path: img.uploadFile.path,
             };
           }),
+          categories: product.categories.map((cat) => {
+            return {
+              id: cat.id,
+              name: cat.name,
+              image: cat.image[0]?.uploadFile
+                ? cat.image[0].uploadFile.path
+                : '',
+            };
+          }),
         })),
         totalCount,
         currentPage: page,
@@ -156,7 +207,22 @@ export class PrismaProductRepository {
           show: true,
         },
         include: {
-          categories: true,
+          categories: {
+            select: {
+              id: true,
+              name: true,
+              image: {
+                include: {
+                  uploadFile: {
+                    select: {
+                      id: true,
+                      path: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
           images: {
             select: {
               uploadFile: {
@@ -175,6 +241,13 @@ export class PrismaProductRepository {
           return {
             id: img.uploadFile.id,
             path: img.uploadFile.path,
+          };
+        }),
+        categories: product?.categories.map((cat) => {
+          return {
+            id: cat.id,
+            name: cat.name,
+            image: cat.image[0].uploadFile.path,
           };
         }),
       };
@@ -247,7 +320,16 @@ export class PrismaProductRepository {
     }
   }
 
-  async createCategory(name: string) {
+  async createCategory(name: string, image: Express.Multer.File) {
+    const uploadedImage =
+      await this.fileService.uploadProductCategoryImage(image);
+    const uploadFileRecord = await this.prisma.uploadFile.create({
+      data: {
+        path: `${get('DOMAIN_ADDRESS').required().asString()}${uploadedImage.thumbnailPath}`,
+        mimetype: uploadedImage.mimetype,
+        size: uploadedImage.size,
+      },
+    });
     try {
       const category = await this.prisma.productCategory.create({
         data: {
@@ -255,7 +337,33 @@ export class PrismaProductRepository {
         },
       });
 
-      return category;
+      await this.prisma.categoryImage.create({
+        data: {
+          categoryId: category.id,
+          uploadFileId: uploadFileRecord.id,
+        },
+      });
+
+      const categoryWithImage = await this.prisma.productCategory.findUnique({
+        where: { id: category.id },
+        include: {
+          image: {
+            include: {
+              uploadFile: true,
+            },
+          },
+        },
+      });
+
+      return {
+        ...categoryWithImage,
+        image: categoryWithImage?.image.map((img) => {
+          return {
+            id: img.uploadFile.id,
+            path: img.uploadFile.path,
+          };
+        }),
+      };
     } catch (error) {
       throw error;
     }
