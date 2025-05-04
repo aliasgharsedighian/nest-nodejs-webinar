@@ -7,7 +7,12 @@ import { EditProductRequestDto } from './update-product.request.dto';
 export class EditProductService {
   constructor(private productRepo: PrismaProductRepository) {}
 
-  async execute(command: EditProductRequestDto, productId: number, user: User) {
+  async execute(
+    command: EditProductRequestDto,
+    productId: number,
+    images: Express.Multer.File[],
+    user: User,
+  ) {
     try {
       const product = await this.productRepo.findById(productId);
       if (!product) {
@@ -20,6 +25,7 @@ export class EditProductService {
       const updatedProduct = await this.productRepo.updateById(
         command,
         productId,
+        images,
         user.id,
       );
       if (!updatedProduct) {

@@ -83,8 +83,8 @@ model ProductImage {
   productId     Int
   uploadFileId  Int
 
-  product       Product     @relation(fields: [productId], references: [id])
-  uploadFile    UploadFile  @relation(fields: [uploadFileId], references: [id])
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  uploadFile    UploadFile  @relation(fields: [uploadFileId], references: [id], onDelete: Cascade)
 }
 
 model ProductCategory {
@@ -99,8 +99,8 @@ model CategoryImage {
   categoryId    Int
   uploadFileId  Int
 
-  category      ProductCategory @relation(fields: [categoryId], references: [id])
-  uploadFile    UploadFile       @relation(fields: [uploadFileId], references: [id])
+  category      ProductCategory @relation(fields: [categoryId], references: [id],onDelete: Cascade)
+  uploadFile    UploadFile       @relation(fields: [uploadFileId], references: [id], onDelete: Cascade)
 }
 
 model Cart {

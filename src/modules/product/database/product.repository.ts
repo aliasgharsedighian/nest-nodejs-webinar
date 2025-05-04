@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { Product } from '../domain/entities/create-product.entity';
 import { EditProductRequestDto } from '../commands/update-product/update-product.request.dto';
@@ -247,7 +247,7 @@ export class PrismaProductRepository {
           return {
             id: cat.id,
             name: cat.name,
-            image: cat.image[0].uploadFile.path,
+            image: cat.image[0]?.uploadFile ? cat.image[0].uploadFile.path : '',
           };
         }),
       };
@@ -259,6 +259,7 @@ export class PrismaProductRepository {
   async updateById(
     product: EditProductRequestDto,
     productId: number,
+    images: Express.Multer.File[],
     userId: number,
   ) {
     try {
@@ -267,7 +268,6 @@ export class PrismaProductRepository {
       if (product.description !== undefined)
         updateData.description = product.description;
       if (product.price !== undefined) updateData.price = product.price;
-      // if (product.images !== undefined) updateData.images = product.images;
       if (product.stock !== undefined) updateData.stock = product.stock;
       if (product.show !== undefined) updateData.show = product.show;
 
@@ -277,6 +277,20 @@ export class PrismaProductRepository {
         };
       }
 
+      const uploadedImages = await this.fileService.uploadProductImages(images);
+      const uploadFileRecords = await Promise.all(
+        uploadedImages.map((image) =>
+          this.prisma.uploadFile.create({
+            data: {
+              path: `${get('DOMAIN_ADDRESS').required().asString()}${image.thumbnailPath}`,
+              mimetype: image.mimetype,
+              size: image.size,
+            },
+          }),
+        ),
+      );
+
+      //update product without image
       const updatedProduct = await this.prisma.product.update({
         where: {
           id: productId,
@@ -292,15 +306,103 @@ export class PrismaProductRepository {
               uploadFile: {
                 select: {
                   path: true,
+                  id: true,
                 },
               },
             },
           },
         },
       });
+      //delete all request to delete
+
+      const matchedImages = await this.prisma.uploadFile.findMany({
+        where: {
+          id: { in: product.deletedImages },
+        },
+        select: {
+          id: true,
+        },
+      });
+      const matchedIds = matchedImages.map((img) => img.id);
+      const invalidIds = product.deletedImages.filter(
+        (id) => !matchedIds.includes(id),
+      );
+
+      if (invalidIds.length > 0) {
+        throw new BadRequestException(
+          `These image IDs are not part of the product ${productId}: [${invalidIds.join(', ')}]`,
+        );
+      }
+      //check upload and exist item not more than 5 item
+
+      const newImagesLength =
+        updatedProduct.images.length - matchedIds.length + images.length;
+      if (newImagesLength > 5) {
+        throw new BadRequestException(
+          'Product can not have more than 5 images',
+        );
+      }
+
+      await this.prisma.uploadFile.deleteMany({
+        where: {
+          id: { in: product.deletedImages },
+        },
+      });
+
+      //create new image
+      await Promise.all(
+        uploadFileRecords.map((image) =>
+          this.prisma.productImage.create({
+            data: {
+              productId: updatedProduct.id,
+              uploadFileId: image.id,
+            },
+          }),
+        ),
+      );
+
+      const productWithImages = await this.prisma.product.findUnique({
+        where: { id: updatedProduct.id },
+        include: {
+          images: {
+            include: {
+              uploadFile: true,
+            },
+          },
+          categories: {
+            select: {
+              id: true,
+              name: true,
+              image: {
+                include: {
+                  uploadFile: {
+                    select: {
+                      id: true,
+                      path: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
       return {
-        ...updatedProduct,
-        images: updatedProduct.images.map((img) => img.uploadFile.path),
+        ...productWithImages,
+        images: productWithImages?.images.map((img) => {
+          return {
+            id: img.uploadFile.id,
+            path: img.uploadFile.path,
+          };
+        }),
+        categories: productWithImages?.categories.map((cat) => {
+          return {
+            id: cat.id,
+            name: cat.name,
+            image: cat.image[0]?.uploadFile ? cat.image[0].uploadFile.path : '',
+          };
+        }),
       };
     } catch (error) {
       throw error;

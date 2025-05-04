@@ -72,9 +72,6 @@ export class CreateProductHttpController {
     @Body() body: CreateProductRequestDto,
     @GetUser() user: User,
   ) {
-    // console.log(body);
-    // console.log(user);
-    // console.log(images);
     const result = await this.createProduct.execute(body, images, user);
 
     return result;
