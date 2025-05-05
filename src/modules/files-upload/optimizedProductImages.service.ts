@@ -70,4 +70,24 @@ export class OptimizedImagesService {
       size: file.size,
     };
   }
+
+  async deleteProductImages(files: string[]) {
+    const results: any = [];
+
+    for (const file of files) {
+      const filePath = path.join(
+        process.cwd(),
+
+        file,
+      );
+
+      try {
+        await fs.promises.unlink(filePath);
+        results.push({ file, status: 'deleted' });
+      } catch (err) {
+        results.push({ file, status: 'error', message: err.message });
+      }
+    }
+    return results;
+  }
 }

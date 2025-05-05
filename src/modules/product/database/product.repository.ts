@@ -4,6 +4,7 @@ import { Product } from '../domain/entities/create-product.entity';
 import { EditProductRequestDto } from '../commands/update-product/update-product.request.dto';
 import { get } from 'env-var';
 import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
+import path from 'path';
 
 @Injectable()
 export class PrismaProductRepository {
@@ -235,6 +236,9 @@ export class PrismaProductRepository {
           },
         },
       });
+      if (!product) {
+        return product;
+      }
       return {
         ...product,
         images: product?.images.map((img) => {
@@ -321,9 +325,13 @@ export class PrismaProductRepository {
         },
         select: {
           id: true,
+          path: true,
         },
       });
       const matchedIds = matchedImages.map((img) => img.id);
+      const matchedPaths = matchedImages.map(
+        (img) => new URL(img.path).pathname,
+      );
       const invalidIds = product.deletedImages.filter(
         (id) => !matchedIds.includes(id),
       );
@@ -348,7 +356,7 @@ export class PrismaProductRepository {
           id: { in: product.deletedImages },
         },
       });
-
+      await this.fileService.deleteProductImages(matchedPaths);
       //create new image
       await Promise.all(
         uploadFileRecords.map((image) =>
@@ -416,12 +424,21 @@ export class PrismaProductRepository {
           id: productId,
         },
         include: {
-          images: true,
+          images: {
+            include: {
+              uploadFile: true,
+            },
+          },
         },
       });
-      const deletedImages = await this.prisma.uploadFile.deleteMany({
+      await this.fileService.deleteProductImages(
+        deletedProduct.images.map(
+          (item) => new URL(item.uploadFile.path).pathname,
+        ),
+      );
+      await this.prisma.uploadFile.deleteMany({
         where: {
-          id: { in: deletedProduct.images.map((item) => item.id) },
+          id: { in: deletedProduct.images.map((item) => item.uploadFile.id) },
         },
       });
 
