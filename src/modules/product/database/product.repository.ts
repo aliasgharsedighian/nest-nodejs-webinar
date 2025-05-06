@@ -459,12 +459,14 @@ export class PrismaProductRepository {
       },
     });
     try {
+      // create category without image
       const category = await this.prisma.productCategory.create({
         data: {
           name,
         },
       });
 
+      // create category with image
       await this.prisma.categoryImage.create({
         data: {
           categoryId: category.id,

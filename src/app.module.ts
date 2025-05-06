@@ -9,6 +9,7 @@ import { FileUploadModule } from './modules/files-upload/file-upload.module';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TestModule } from './test/test.module';
+import { ArticleModule } from './modules/articles/article.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TestModule } from './test/test.module';
     AuthModule,
     UserModule,
     ProductModule,
+    ArticleModule,
     PrismaModule,
     FileUploadModule,
     TestModule,

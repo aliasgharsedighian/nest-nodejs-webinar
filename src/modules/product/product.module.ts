@@ -26,14 +26,12 @@ const httpControllers = [
 
 const commandHandlers: Provider[] = [
   CreateProductService,
-  FindProductsService,
-  FindProductService,
   EditProductService,
   RemoveProductService,
   CreateProductCategoryService,
 ];
 
-const queryHandlers: Provider[] = [];
+const queryHandlers: Provider[] = [FindProductsService, FindProductService];
 
 const repositories: Provider[] = [PrismaProductRepository];
 

@@ -1,6 +1,7 @@
 // Root
 const authRoot = 'auth';
 const productRoot = 'shop';
+const articleRoot = 'article';
 
 // Api Versions
 const v1 = 'api/v1';
@@ -22,5 +23,13 @@ export const routesV1 = {
     createProductCategory: `${productRoot}/add-product-category`,
     editProduct: `${productRoot}/edit-product/:id`,
     removeProduct: `${productRoot}/remove-product/:id`,
+  },
+  article: {
+    getAllArticles: `${articleRoot}/get-all-articles`,
+    showArticle: `${articleRoot}/show-article/:id`,
+    createArticle: `${articleRoot}/add-article`,
+    createArticleCategory: `${articleRoot}/add-article-category`,
+    editArticle: `${articleRoot}/edit-article/:id`,
+    removeArticle: `${articleRoot}/remove-article/:id`,
   },
 };

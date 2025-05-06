@@ -8,6 +8,7 @@ export class OptimizedImagesService {
   private uploadsDir = 'uploads/products';
   private thumbnailDir = 'uploads/products/thumbnails';
   private thumbnailCategoryDir = 'uploads/products/categories';
+  private thumbnailArticleDir = 'uploads/articles';
 
   constructor() {
     // Ensure folders exist
@@ -89,5 +90,29 @@ export class OptimizedImagesService {
       }
     }
     return results;
+  }
+
+  async uploadArticleImage(file: Express.Multer.File): Promise<{
+    path: string;
+    thumbnailPath: string;
+    mimetype: string;
+    size: number;
+  }> {
+    const thumbnailPath = path.join(
+      this.thumbnailArticleDir,
+      `thumb-${file.filename}`,
+    );
+
+    await sharp(file.path)
+      .resize()
+      .webp({ quality: 100 })
+      .toFile(thumbnailPath);
+
+    return {
+      path: `${this.uploadsDir}/${file.filename}`,
+      thumbnailPath: `${thumbnailPath}`,
+      mimetype: file.mimetype,
+      size: file.size,
+    };
   }
 }
