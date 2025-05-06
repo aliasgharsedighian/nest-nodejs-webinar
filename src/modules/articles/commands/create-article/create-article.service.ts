@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   HttpStatus,
   Injectable,
   NotFoundException,
@@ -7,6 +8,7 @@ import {
 import { CreateArticleDto } from './create-article.request.dto';
 import { User } from '@prisma/client';
 import { PrismaArticleRepository } from '../../database/article.repository';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class CreateArticleService {
@@ -25,6 +27,11 @@ export class CreateArticleService {
         data: article,
       };
     } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          throw new ConflictException(`slug name must be a unique`);
+        }
+      }
       if (error.code === 'P2025') {
         // P2025: Record to connect not found
         throw new BadRequestException('One or more categories do not exist.');
