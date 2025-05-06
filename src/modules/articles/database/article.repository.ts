@@ -73,6 +73,7 @@ export class PrismaArticleRepository {
         this.prisma.article.findMany({
           where: {
             published: true,
+            deletedAt: null,
           },
           skip,
           take: limit,
@@ -119,6 +120,7 @@ export class PrismaArticleRepository {
       const article = await this.prisma.article.findUnique({
         where: {
           slug: articleSlug,
+          deletedAt: null,
         },
         include: {
           coverImage: {
@@ -228,5 +230,16 @@ export class PrismaArticleRepository {
     } catch (error) {
       throw error;
     }
+  }
+
+  async removeBySlug(articleSlug: string) {
+    const softDelete = this.prisma.article.update({
+      where: { slug: articleSlug },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+
+    return softDelete;
   }
 }

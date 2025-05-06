@@ -12,6 +12,8 @@ import { FindArticleBySlugHttpController } from './queries/find-article/find-art
 import { FindArticleService } from './queries/find-article/find-article.service';
 import { EditArticleBySlugHttpController } from './commands/update-article/update-article.http.controller';
 import { EditArticleService } from './commands/update-article/update-article.service';
+import { RemoveArticleBySlugHttpController } from './commands/remove-article/remove-article.http.controller';
+import { RemoveArticleService } from './commands/remove-article/remove-article.service';
 
 const httpControllers = [
   CreateArticleHttpController,
@@ -19,11 +21,13 @@ const httpControllers = [
   FindAllArticlesHttpController,
   FindArticleBySlugHttpController,
   EditArticleBySlugHttpController,
+  RemoveArticleBySlugHttpController,
 ];
 const commandHandlers: Provider[] = [
   CreateArticleService,
   CreateArticleCategoryService,
   EditArticleService,
+  RemoveArticleService,
 ];
 const queryHandlers: Provider[] = [FindArticlesService, FindArticleService];
 const repositories: Provider[] = [PrismaArticleRepository];
