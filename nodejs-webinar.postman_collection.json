@@ -488,7 +488,8 @@
                     "/C:/Users/assed/Desktop/images/IMG_20240213_120505_489.jpg",
                     "/C:/Users/assed/Desktop/images/OIG.jpg",
                     "/C:/Users/assed/Desktop/images/photo_2021-07-10_22-50-13.jpg"
-                  ]
+                  ],
+                  "disabled": true
                 }
               ]
             },
@@ -504,6 +505,167 @@
                 }
               ]
             }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Article",
+      "item": [
+        {
+          "name": "create-article",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{nodejs_webinar_token}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "article title",
+                  "type": "text"
+                },
+                {
+                  "key": "slug",
+                  "value": "article7",
+                  "type": "text"
+                },
+                {
+                  "key": "excerpt",
+                  "value": "article excerpt",
+                  "type": "text"
+                },
+                {
+                  "key": "body",
+                  "value": "<p>this is a article body</p>",
+                  "type": "text"
+                },
+                {
+                  "key": "published",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "categoryId",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/C:/Users/assed/Desktop/images/OIG.jpg"
+                }
+              ]
+            },
+            "url": "{{nodejs_webinar_app_local}}article/add-article"
+          },
+          "response": []
+        },
+        {
+          "name": "create-article-category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{nodejs_webinar_token}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"test category\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{nodejs_webinar_app_local}}article/add-article-category"
+          },
+          "response": []
+        },
+        {
+          "name": "get-all-article",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}article/get-all-articles?page=1&limit=8",
+              "host": ["{{nodejs_webinar_app_local}}article"],
+              "path": ["get-all-articles"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "8"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "show-article",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{nodejs_webinar_app_local}}article/show-article/article5"
+          },
+          "response": []
+        },
+        {
+          "name": "edit-article",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{nodejs_webinar_token}}"
+              }
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/C:/Users/assed/Desktop/images/Untitled.png"
+                },
+                {
+                  "key": "title",
+                  "value": "article title test2",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{nodejs_webinar_app_local}}article/edit-article/article5"
+          },
+          "response": []
+        },
+        {
+          "name": "remove-article",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{nodejs_webinar_token}}"
+              }
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": "{{nodejs_webinar_app_local}}article/remove-article/article5"
           },
           "response": []
         }
