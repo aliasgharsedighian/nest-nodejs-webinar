@@ -115,4 +115,11 @@ export class OptimizedImagesService {
       size: file.size,
     };
   }
+
+  async deleteArticleCoverImage(file: string) {
+    try {
+      const filePath = path.join(process.cwd(), file);
+      await fs.promises.unlink(filePath);
+    } catch (error) {}
+  }
 }

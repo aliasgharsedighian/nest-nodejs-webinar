@@ -5,7 +5,7 @@ import { GetArticleParamsDto } from './find-article.request.dto';
 import { FindArticleService } from './find-article.service';
 
 @Controller(routesV1.version)
-export class FindArticleByIdHttpController {
+export class FindArticleBySlugHttpController {
   constructor(private findArticle: FindArticleService) {}
   @Get(routesV1.article.showArticle)
   @ApiOperation({ summary: 'find single Article with id' })

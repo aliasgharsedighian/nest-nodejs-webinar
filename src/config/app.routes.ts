@@ -29,7 +29,7 @@ export const routesV1 = {
     showArticle: `${articleRoot}/show-article/:slug`,
     createArticle: `${articleRoot}/add-article`,
     createArticleCategory: `${articleRoot}/add-article-category`,
-    editArticle: `${articleRoot}/edit-article/:id`,
-    removeArticle: `${articleRoot}/remove-article/:id`,
+    editArticle: `${articleRoot}/edit-article/:slug`,
+    removeArticle: `${articleRoot}/remove-article/:slug`,
   },
 };

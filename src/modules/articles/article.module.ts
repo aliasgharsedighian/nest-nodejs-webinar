@@ -8,18 +8,22 @@ import { CreateArticleCategoryHttpController } from './commands/create-article-c
 import { CreateArticleCategoryService } from './commands/create-article-category/create-article-category.service';
 import { FindArticlesService } from './queries/find-articles/find-articles.service';
 import { FindAllArticlesHttpController } from './queries/find-articles/find-articles.http.controller';
-import { FindArticleByIdHttpController } from './queries/find-article/find-article.http.controller';
+import { FindArticleBySlugHttpController } from './queries/find-article/find-article.http.controller';
 import { FindArticleService } from './queries/find-article/find-article.service';
+import { EditArticleBySlugHttpController } from './commands/update-article/update-article.http.controller';
+import { EditArticleService } from './commands/update-article/update-article.service';
 
 const httpControllers = [
   CreateArticleHttpController,
   CreateArticleCategoryHttpController,
   FindAllArticlesHttpController,
-  FindArticleByIdHttpController,
+  FindArticleBySlugHttpController,
+  EditArticleBySlugHttpController,
 ];
 const commandHandlers: Provider[] = [
   CreateArticleService,
   CreateArticleCategoryService,
+  EditArticleService,
 ];
 const queryHandlers: Provider[] = [FindArticlesService, FindArticleService];
 const repositories: Provider[] = [PrismaArticleRepository];

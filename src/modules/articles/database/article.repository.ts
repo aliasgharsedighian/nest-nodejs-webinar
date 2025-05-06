@@ -3,6 +3,7 @@ import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { Article } from '../domain/entities/create-article.entity';
 import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
 import { get } from 'env-var';
+import { EditArticleRequestDto } from '../commands/update-article/update-article.request.dto';
 
 @Injectable()
 export class PrismaArticleRepository {
@@ -29,6 +30,17 @@ export class PrismaArticleRepository {
         include: {
           category: true,
           coverImage: true,
+          author: {
+            select: {
+              email: true,
+              profile: {
+                select: {
+                  firstname: true,
+                  lastname: true,
+                },
+              },
+            },
+          },
         },
       });
 
@@ -73,6 +85,17 @@ export class PrismaArticleRepository {
                 path: true,
               },
             },
+            author: {
+              select: {
+                email: true,
+                profile: {
+                  select: {
+                    firstname: true,
+                    lastname: true,
+                  },
+                },
+              },
+            },
           },
         }),
         this.prisma.article.count({
@@ -91,7 +114,7 @@ export class PrismaArticleRepository {
     } catch (error) {}
   }
 
-  async findById(articleSlug: string) {
+  async findBySlug(articleSlug: string) {
     try {
       const article = await this.prisma.article.findUnique({
         where: {
@@ -101,6 +124,7 @@ export class PrismaArticleRepository {
           coverImage: {
             select: {
               path: true,
+              id: true,
             },
           },
           author: {
@@ -122,6 +146,84 @@ export class PrismaArticleRepository {
       }
       return {
         ...article,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateBySlug(
+    article: EditArticleRequestDto,
+    articleSlug: string,
+    image: Express.Multer.File,
+    userId: number,
+    coverImage,
+  ) {
+    try {
+      let updateData: any = {};
+      if (article.title !== undefined) updateData.title = article.title;
+      if (article.slug !== undefined) updateData.slug = article.slug;
+      if (article.excerpt !== undefined) updateData.excerpt = article.excerpt;
+      if (article.published !== undefined)
+        updateData.published = article.published;
+      if (article.body !== undefined) updateData.body = article.body;
+      if (article.categoryId !== undefined)
+        updateData.categoryId = article.categoryId;
+
+      if (image) {
+        const uploadedImage = await this.fileService.uploadArticleImage(image);
+        const uploadFileRecord = await this.prisma.uploadFile.create({
+          data: {
+            path: `${get('DOMAIN_ADDRESS').required().asString()}${uploadedImage.thumbnailPath}`,
+            mimetype: uploadedImage.mimetype,
+            size: uploadedImage.size,
+          },
+        });
+        updateData.coverImageId = uploadFileRecord.id;
+
+        //delete file form dir
+
+        const imagePath = new URL(coverImage.path).pathname;
+
+        await this.fileService.deleteArticleCoverImage(imagePath);
+      }
+
+      //update article with image
+      const updatedArticle = await this.prisma.article.update({
+        where: { slug: articleSlug },
+        data: {
+          ...updateData,
+          authorId: userId,
+        },
+        include: {
+          category: true,
+          coverImage: true,
+          author: {
+            select: {
+              email: true,
+              profile: {
+                select: {
+                  firstname: true,
+                  lastname: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (image) {
+        //after updated new image delete from database to protect from foreing key
+        await this.prisma.uploadFile.delete({
+          where: {
+            id: coverImage.id,
+          },
+        });
+      }
+
+      return {
+        ...updatedArticle,
+        coverImage: updatedArticle.coverImage.path || '',
       };
     } catch (error) {
       throw error;

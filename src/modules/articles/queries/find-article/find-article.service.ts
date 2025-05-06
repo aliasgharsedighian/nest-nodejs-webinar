@@ -7,7 +7,7 @@ export class FindArticleService {
 
   async execute(articleSlug: string) {
     try {
-      const article = await this.articleRepo.findById(articleSlug);
+      const article = await this.articleRepo.findBySlug(articleSlug);
       if (!article) {
         return {
           statusCode: HttpStatus.NOT_FOUND,
