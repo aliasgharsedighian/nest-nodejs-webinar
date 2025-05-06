@@ -6,16 +6,22 @@ import { PrismaArticleRepository } from './database/article.repository';
 import { FileUploadModule } from '../files-upload/file-upload.module';
 import { CreateArticleCategoryHttpController } from './commands/create-article-category/create-article-category.http.controller';
 import { CreateArticleCategoryService } from './commands/create-article-category/create-article-category.service';
+import { FindArticlesService } from './queries/find-articles/find-articles.service';
+import { FindAllArticlesHttpController } from './queries/find-articles/find-articles.http.controller';
+import { FindArticleByIdHttpController } from './queries/find-article/find-article.http.controller';
+import { FindArticleService } from './queries/find-article/find-article.service';
 
 const httpControllers = [
   CreateArticleHttpController,
   CreateArticleCategoryHttpController,
+  FindAllArticlesHttpController,
+  FindArticleByIdHttpController,
 ];
 const commandHandlers: Provider[] = [
   CreateArticleService,
   CreateArticleCategoryService,
 ];
-const queryHandlers: Provider[] = [];
+const queryHandlers: Provider[] = [FindArticlesService, FindArticleService];
 const repositories: Provider[] = [PrismaArticleRepository];
 
 @Module({

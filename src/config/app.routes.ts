@@ -26,7 +26,7 @@ export const routesV1 = {
   },
   article: {
     getAllArticles: `${articleRoot}/get-all-articles`,
-    showArticle: `${articleRoot}/show-article/:id`,
+    showArticle: `${articleRoot}/show-article/:slug`,
     createArticle: `${articleRoot}/add-article`,
     createArticleCategory: `${articleRoot}/add-article-category`,
     editArticle: `${articleRoot}/edit-article/:id`,

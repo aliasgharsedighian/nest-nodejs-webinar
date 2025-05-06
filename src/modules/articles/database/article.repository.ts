@@ -54,4 +54,77 @@ export class PrismaArticleRepository {
       throw error;
     }
   }
+
+  async findAllPaginate(page: number, skip: number, limit: number) {
+    try {
+      const [articles, totalCount] = await Promise.all([
+        this.prisma.article.findMany({
+          where: {
+            published: true,
+          },
+          skip,
+          take: limit,
+          orderBy: {
+            createdAt: 'desc',
+          },
+          include: {
+            coverImage: {
+              select: {
+                path: true,
+              },
+            },
+          },
+        }),
+        this.prisma.article.count({
+          where: {
+            published: true,
+          },
+        }),
+      ]);
+
+      return {
+        articles,
+        totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+      };
+    } catch (error) {}
+  }
+
+  async findById(articleSlug: string) {
+    try {
+      const article = await this.prisma.article.findUnique({
+        where: {
+          slug: articleSlug,
+        },
+        include: {
+          coverImage: {
+            select: {
+              path: true,
+            },
+          },
+          author: {
+            select: {
+              email: true,
+              profile: {
+                select: {
+                  firstname: true,
+                  lastname: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!article) {
+        return article;
+      }
+      return {
+        ...article,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

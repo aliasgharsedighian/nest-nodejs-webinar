@@ -58,7 +58,7 @@ export class CreateProductRequestDto {
     example: true,
     description: 'true for show product , false for not showing product',
   })
-  @Transform(({ value }) => value === 'true' || value === 'false')
+  @Transform(({ value }) => value === 'true')
   @IsNotEmpty()
   @IsBoolean()
   readonly show: boolean;

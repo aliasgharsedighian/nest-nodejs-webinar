@@ -28,7 +28,7 @@ export class CreateArticleDto {
   @IsString()
   body: string;
 
-  @Transform(({ value }) => value === 'true' || value === 'false')
+  @Transform(({ value }) => value === 'true')
   @IsBoolean()
   published: boolean;
 
