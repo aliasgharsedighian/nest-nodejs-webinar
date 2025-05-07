@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { Product } from '../domain/entities/create-product.entity';
 import { EditProductRequestDto } from '../commands/update-product/update-product.request.dto';
@@ -205,7 +205,7 @@ export class PrismaProductRepository {
       const product = await this.prisma.product.findUnique({
         where: {
           id: productId,
-          show: true,
+          // show: true,
         },
         include: {
           categories: {
@@ -319,44 +319,46 @@ export class PrismaProductRepository {
       });
       //delete all request to delete
 
-      const matchedImages = await this.prisma.uploadFile.findMany({
-        where: {
-          id: { in: product.deletedImages },
-        },
-        select: {
-          id: true,
-          path: true,
-        },
-      });
-      const matchedIds = matchedImages.map((img) => img.id);
-      const matchedPaths = matchedImages.map(
-        (img) => new URL(img.path).pathname,
-      );
-      const invalidIds = product.deletedImages.filter(
-        (id) => !matchedIds.includes(id),
-      );
-
-      if (invalidIds.length > 0) {
-        throw new BadRequestException(
-          `These image IDs are not part of the product ${productId}: [${invalidIds.join(', ')}]`,
+      if (product.deletedImages) {
+        const matchedImages = await this.prisma.uploadFile.findMany({
+          where: {
+            id: { in: product.deletedImages },
+          },
+          select: {
+            id: true,
+            path: true,
+          },
+        });
+        const matchedIds = matchedImages.map((img) => img.id);
+        const matchedPaths = matchedImages.map(
+          (img) => new URL(img.path).pathname,
         );
-      }
-      //check upload and exist item not more than 5 item
-
-      const newImagesLength =
-        updatedProduct.images.length - matchedIds.length + images.length;
-      if (newImagesLength > 5) {
-        throw new BadRequestException(
-          'Product can not have more than 5 images',
+        const invalidIds = product.deletedImages.filter(
+          (id) => !matchedIds.includes(id),
         );
-      }
 
-      await this.prisma.uploadFile.deleteMany({
-        where: {
-          id: { in: product.deletedImages },
-        },
-      });
-      await this.fileService.deleteProductImages(matchedPaths);
+        if (invalidIds.length > 0) {
+          throw new BadRequestException(
+            `These image IDs are not part of the product ${productId}: [${invalidIds.join(', ')}]`,
+          );
+        }
+        //check upload and exist item not more than 5 item
+
+        const newImagesLength =
+          updatedProduct.images.length - matchedIds.length + images.length;
+        if (newImagesLength > 5) {
+          throw new BadRequestException(
+            'Product can not have more than 5 images',
+          );
+        }
+
+        await this.prisma.uploadFile.deleteMany({
+          where: {
+            id: { in: product.deletedImages },
+          },
+        });
+        await this.fileService.deleteProductImages(matchedPaths);
+      }
       //create new image
       await Promise.all(
         uploadFileRecords.map((image) =>

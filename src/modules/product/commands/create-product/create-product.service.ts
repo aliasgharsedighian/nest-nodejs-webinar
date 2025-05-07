@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { CreateProductRequestDto } from './create-product.request.dto';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { PrismaProductRepository } from '../../database/product.repository';
 
 @Injectable()
@@ -28,6 +28,10 @@ export class CreateProductService {
       if (error.code === 'P2025') {
         // P2025: Record to connect not found
         throw new BadRequestException('One or more categories do not exist.');
+      }
+      if (error.code === 'P2003') {
+        // P2003: Foreign key constraint failed
+        throw new BadRequestException('Invalid category ID provided.');
       }
       throw new Error(`Service Error: ${error.message}`);
     }

@@ -1,6 +1,12 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateProductRequestDto } from '../create-product/create-product.request.dto';
-import { ArrayMaxSize, IsArray, IsNumber, MaxLength } from 'class-validator';
+import {
+  ArrayMaxSize,
+  IsArray,
+  IsNumber,
+  IsOptional,
+  MaxLength,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class EditProductRequestDto extends PartialType(
@@ -17,6 +23,7 @@ export class EditProductRequestDto extends PartialType(
       return [];
     }
   })
+  @IsOptional()
   @IsArray()
   @ArrayMaxSize(5, { message: 'You can delete a maximum of 5 images.' })
   @IsNumber({}, { each: true }) // validate that every item is a number

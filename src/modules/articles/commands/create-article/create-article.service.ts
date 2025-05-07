@@ -20,6 +20,12 @@ export class CreateArticleService {
     user: User,
   ) {
     try {
+      if (!image) {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'check your image',
+        };
+      }
       const article = await this.articleRepo.create(body, image, user.id);
       return {
         statusCode: HttpStatus.CREATED,
@@ -35,6 +41,10 @@ export class CreateArticleService {
       if (error.code === 'P2025') {
         // P2025: Record to connect not found
         throw new BadRequestException('One or more categories do not exist.');
+      }
+      if (error.code === 'P2003') {
+        // P2003: Foreign key constraint failed
+        throw new BadRequestException('Invalid category ID provided.');
       }
       throw new Error(`Service Error: ${error.message}`);
     }

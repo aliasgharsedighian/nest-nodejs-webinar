@@ -22,6 +22,7 @@ export class EditProductService {
           data: {},
         };
       }
+
       const updatedProduct = await this.productRepo.updateById(
         command,
         productId,

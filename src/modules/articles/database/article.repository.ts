@@ -14,13 +14,6 @@ export class PrismaArticleRepository {
 
   async create(body: Article, image: Express.Multer.File, userId: number) {
     try {
-      if (!image) {
-        return {
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: 'check your image',
-        };
-      }
-
       const uploadedImage = await this.fileService.uploadArticleImage(image);
 
       const uploadFileRecord = await this.prisma.uploadFile.create({
