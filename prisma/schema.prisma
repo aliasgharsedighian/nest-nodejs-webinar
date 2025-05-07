@@ -25,6 +25,7 @@ model User {
   products  Product[] @relation("UserProducts")
   articles  Article[] @relation("UserArticle")
   cart      Cart?
+  invoice   Invoices[]
 
   otps      OTP[]     @relation("UserOTPs")
 }
@@ -140,7 +141,6 @@ model Cart {
   user        User       @relation(fields: [userId], references: [id])
   cartItems   CartItem[]
   description String?
-  address     String
 }
 
 model CartItem {
@@ -157,6 +157,7 @@ model Invoices {
   total              Decimal
   invoiceDate        DateTime       @default(now())
   customerId         Int
+  user               User           @relation(fields: [customerId], references: [id])
   invoiceAddress     String
   invoiceDescription String?
   InvoiceItems       InvoiceItems[]
