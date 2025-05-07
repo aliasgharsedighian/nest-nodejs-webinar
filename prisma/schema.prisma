@@ -24,8 +24,10 @@ model User {
   updatedAt DateTime  @updatedAt
   products  Product[] @relation("UserProducts")
   articles  Article[] @relation("UserArticle")
+  projects  Project[] @relation("UserProjects")
   cart      Cart?
   invoice   Invoices[]
+  comments  ProjectComment[]
 
   otps      OTP[]     @relation("UserOTPs")
 }
@@ -61,7 +63,9 @@ model UploadFile {
 
   products      ProductImage[]
   categories    CategoryImage[]
-  articles   Article[]        @relation("ArticleCoverImage")
+  articles      Article[]        @relation("ArticleCoverImage")
+  projects      ProjectCategory[]    
+  projectImages ProjectImage[]   
 }
 
 model Product {
@@ -176,4 +180,62 @@ model InvoiceItems {
 enum Role {
   USER
   ADMIN
+}
+
+model Project {
+  id            Int       @id @default(autoincrement())
+  title         String    @unique
+  content       String
+  published     Boolean   @default(false)
+  coverImageId  Int
+  viewCount     Int
+  isFeatured    Boolean   @default(false)
+  implementCity String
+  images        ProjectImage[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?       // for soft delete
+
+  authorId      Int
+  author        User      @relation("UserProjects", fields: [authorId], references: [id])
+
+  categoryId    Int
+  category      ProjectCategory     @relation(fields: [categoryId], references: [id])
+
+  comments    ProjectComment[]
+
+  // external
+}
+
+model ProjectCategory {
+  id            Int         @id @default(autoincrement())
+  name          String      @unique
+  coverImageId       Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  image         UploadFile  @relation(fields: [coverImageId], references: [id])
+  projects      Project[]   // assuming each category can have multiple projects
+}
+
+model ProjectImage {
+  id           Int         @id @default(autoincrement())
+  articleId    Int
+  uploadFileId Int
+
+  project      Project     @relation(fields: [articleId], references: [id])
+  uploadFile   UploadFile  @relation(fields: [uploadFileId], references: [id])
+}
+
+model ProjectComment {
+  id         Int       @id @default(autoincrement())
+  content    String
+  projectId  Int
+  userId     Int?
+  guestName  String?
+  guestEmail String?
+  createdAt  DateTime  @default(now())
+
+  project    Project   @relation(fields: [projectId], references: [id])
+  user       User?      @relation(fields: [userId], references: [id])
 }

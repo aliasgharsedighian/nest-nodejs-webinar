@@ -88,6 +88,12 @@ export class PrismaArticleRepository {
             createdAt: 'desc',
           },
           include: {
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
             coverImage: {
               select: {
                 path: true,
