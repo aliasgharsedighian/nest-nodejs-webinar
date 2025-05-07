@@ -64,7 +64,8 @@ model UploadFile {
   products      ProductImage[]
   categories    CategoryImage[]
   articles      Article[]        @relation("ArticleCoverImage")
-  projects      ProjectCategory[]    
+  projects      Project[]          @relation("ProjectCoverImage")
+  projectsCategory      ProjectCategory[]    
   projectImages ProjectImage[]   
 }
 
@@ -187,7 +188,6 @@ model Project {
   title         String    @unique
   content       String
   published     Boolean   @default(false)
-  coverImageId  Int
   viewCount     Int
   isFeatured    Boolean   @default(false)
   implementCity String
@@ -195,6 +195,9 @@ model Project {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?       // for soft delete
+
+  coverImageId  Int
+  coverImage    UploadFile      @relation("ProjectCoverImage", fields: [coverImageId], references: [id])
 
   authorId      Int
   author        User      @relation("UserProjects", fields: [authorId], references: [id])
@@ -210,11 +213,11 @@ model Project {
 model ProjectCategory {
   id            Int         @id @default(autoincrement())
   name          String      @unique
-  coverImageId       Int
+  ImageId       Int
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  image         UploadFile  @relation(fields: [coverImageId], references: [id])
+  image         UploadFile  @relation(fields: [ImageId], references: [id])
   projects      Project[]   // assuming each category can have multiple projects
 }
 
