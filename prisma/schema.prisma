@@ -220,10 +220,10 @@ model ProjectCategory {
 
 model ProjectImage {
   id           Int         @id @default(autoincrement())
-  articleId    Int
+  projectId    Int
   uploadFileId Int
 
-  project      Project     @relation(fields: [articleId], references: [id])
+  project      Project     @relation(fields: [projectId], references: [id])
   uploadFile   UploadFile  @relation(fields: [uploadFileId], references: [id])
 }
 
@@ -236,6 +236,8 @@ model ProjectComment {
   guestEmail String?
   createdAt  DateTime  @default(now())
 
-  project    Project   @relation(fields: [projectId], references: [id])
+  project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   user       User?      @relation(fields: [userId], references: [id])
+
+  @@index([projectId])
 }
