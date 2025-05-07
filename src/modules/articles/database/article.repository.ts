@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { Article } from '../domain/entities/create-article.entity';
 import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
@@ -14,6 +14,13 @@ export class PrismaArticleRepository {
 
   async create(body: Article, image: Express.Multer.File, userId: number) {
     try {
+      if (!image) {
+        return {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'check your image',
+        };
+      }
+
       const uploadedImage = await this.fileService.uploadArticleImage(image);
 
       const uploadFileRecord = await this.prisma.uploadFile.create({

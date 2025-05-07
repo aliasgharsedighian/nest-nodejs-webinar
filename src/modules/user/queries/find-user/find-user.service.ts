@@ -1,36 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/libs/db/prisma/prisma.service';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { PrismaUserRepository } from '../../database/user.repository';
 
 @Injectable()
 export class FindUserService {
-  constructor(private prisma: PrismaService) {}
-  async execute(email?: string, id?: number): Promise<any> {
+  constructor(private userRepo: PrismaUserRepository) {}
+  async execute(id: number): Promise<any> {
     try {
-      if (!id && !email) {
-        return null;
-      }
-      if (email) {
-        const user = await this.prisma.user.findUnique({
-          where: {
-            email,
-          },
-          include: {
-            profile: true,
-          },
-        });
-        return user;
-      }
-      if (id) {
-        const user = await this.prisma.user.findUnique({
-          where: {
-            id,
-          },
-          include: {
-            profile: true,
-          },
-        });
-        return user;
-      }
+      const user = await this.userRepo.findById(id);
+
+      return {
+        statusCode: HttpStatus.ACCEPTED,
+        message: 'user found successfully',
+        data: user,
+      };
     } catch (error) {
       throw new Error(`Service Error: ${error.message}`);
     }

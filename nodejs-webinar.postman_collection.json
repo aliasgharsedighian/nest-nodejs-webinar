@@ -34,7 +34,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"mobileNumber\": \"09124448207\"\r\n}",
+              "raw": "{\r\n    \"mobileNumber\": \"09036070804\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -52,7 +52,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"userId\": 25,\r\n    \"code\": \"510016\"\r\n}",
+              "raw": "{\r\n    \"userId\": 29,\r\n    \"code\": \"105525\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -534,7 +534,7 @@
                 },
                 {
                   "key": "slug",
-                  "value": "article7",
+                  "value": "article10",
                   "type": "text"
                 },
                 {
@@ -561,6 +561,11 @@
                   "key": "image",
                   "type": "file",
                   "src": "/C:/Users/assed/Desktop/images/OIG.jpg"
+                },
+                {
+                  "key": "isFeatured",
+                  "value": "false",
+                  "type": "text"
                 }
               ]
             },
@@ -620,7 +625,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}article/show-article/article5"
+            "url": "{{nodejs_webinar_app_local}}article/show-article/article9"
           },
           "response": []
         },
@@ -641,16 +646,16 @@
                 {
                   "key": "image",
                   "type": "file",
-                  "src": "/C:/Users/assed/Desktop/images/Untitled.png"
+                  "src": "/C:/Users/assed/Desktop/images/Untitled-1 (4).jpg"
                 },
                 {
                   "key": "title",
-                  "value": "article title test2",
+                  "value": "article9 title test2",
                   "type": "text"
                 }
               ]
             },
-            "url": "{{nodejs_webinar_app_local}}article/edit-article/article5"
+            "url": "{{nodejs_webinar_app_local}}article/edit-article/article9"
           },
           "response": []
         },
@@ -666,6 +671,59 @@
             "method": "DELETE",
             "header": [],
             "url": "{{nodejs_webinar_app_local}}article/remove-article/article5"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "update-profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{nodejs_webinar_token}}"
+              }
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstname\": \"ali asghar\",\r\n    \"lastname\": \"sedighian\",\r\n    \"address\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{nodejs_webinar_app_local}}user/update-profile"
+          },
+          "response": []
+        },
+        {
+          "name": "update-user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{nodejs_webinar_token}}"
+              }
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"role\": \"ADMIN\",\r\n    \"firstname\": \"ali asghar22\",\r\n    \"lastname\": \"sedighian22\",\r\n    \"address\": \"2\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{nodejs_webinar_app_local}}user/update-user/29"
           },
           "response": []
         }

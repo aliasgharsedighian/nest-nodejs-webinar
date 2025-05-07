@@ -2,6 +2,7 @@
 const authRoot = 'auth';
 const productRoot = 'shop';
 const articleRoot = 'article';
+const userRoot = 'user';
 
 // Api Versions
 const v1 = 'api/v1';
@@ -31,5 +32,9 @@ export const routesV1 = {
     createArticleCategory: `${articleRoot}/add-article-category`,
     editArticle: `${articleRoot}/edit-article/:slug`,
     removeArticle: `${articleRoot}/remove-article/:slug`,
+  },
+  user: {
+    updateProfile: `${userRoot}/update-profile`,
+    updateUser: `${userRoot}/update-user/:id`,
   },
 };

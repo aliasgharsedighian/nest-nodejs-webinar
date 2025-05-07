@@ -23,7 +23,7 @@ export class CreateArticleService {
       const article = await this.articleRepo.create(body, image, user.id);
       return {
         statusCode: HttpStatus.CREATED,
-        message: 'product created successfully',
+        message: 'article created successfully',
         data: article,
       };
     } catch (error) {

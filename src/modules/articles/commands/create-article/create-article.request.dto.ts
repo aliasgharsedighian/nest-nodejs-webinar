@@ -6,6 +6,7 @@ import {
   MaxLength,
   MinLength,
   IsNotEmpty,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateArticleDto {
@@ -27,9 +28,15 @@ export class CreateArticleDto {
   @IsString()
   body: string;
 
+  @IsOptional()
   @Transform(({ value }) => value === 'true')
   @IsBoolean()
   published: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => value === 'true')
+  isFeatured?: boolean;
 
   @Transform(({ value }) => {
     try {
