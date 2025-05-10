@@ -14,99 +14,101 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String?    @unique
-  phoneNumber String? @unique
-  password  String?
-  role      Role      @default(USER)
-  profile   Profile?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  products  Product[] @relation("UserProducts")
-  articles  Article[] @relation("UserArticle")
-  projects  Project[] @relation("UserProjects")
-  cart      Cart?
-  invoice   Invoices[]
-  comments  ProjectComment[]
+  id          Int              @id @default(autoincrement())
+  email       String?          @unique
+  phoneNumber String?          @unique
+  password    String?
+  role        Role             @default(USER)
+  profile     Profile?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  products    Product[]        @relation("UserProducts")
+  articles    Article[]        @relation("UserArticle")
+  projects    Project[]        @relation("UserProjects")
+  cart        Cart?
+  invoice     Invoices[]
+  comments    ProjectComment[]
 
-  otps      OTP[]     @relation("UserOTPs")
+  otps OTP[] @relation("UserOTPs")
 }
 
 model OTP {
-  id        String   @id @default(uuid())
-  userId    Int
-  code      String
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  deliveryTarget String?  // optional field for debugging/logging
+  id             String   @id @default(uuid())
+  userId         Int
+  code           String
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+  deliveryTarget String? // optional field for debugging/logging
 
-  user      User     @relation("UserOTPs", fields: [userId], references: [id])
+  user User @relation("UserOTPs", fields: [userId], references: [id])
 
   @@index([userId])
 }
 
 model Profile {
-  id           Int     @id @default(autoincrement())
-  firstname    String?
-  lastname     String?
-  address      String?
-  user         User    @relation(fields: [userId], references: [id])
-  userId       Int     @unique
+  id        Int     @id @default(autoincrement())
+  firstname String?
+  lastname  String?
+  address   String?
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int     @unique
 }
 
 model UploadFile {
-  id            Int       @id @default(autoincrement())
-  path          String
-  mimetype      String
-  size          Int
-  createdAt     DateTime  @default(now())
+  id        Int      @id @default(autoincrement())
+  path      String
+  mimetype  String
+  size      Int
+  createdAt DateTime @default(now())
 
-  products      ProductImage[]
-  categories    CategoryImage[]
-  articles      Article[]        @relation("ArticleCoverImage")
-  projects      Project[]          @relation("ProjectCoverImage")
-  projectsCategory      ProjectCategory[]    
-  projectImages ProjectImage[]   
+  products               ProductImage[]
+  categories             CategoryImage[]
+  articles               Article[]                @relation("ArticleCoverImage")
+  projects               Project[]                @relation("ProjectCoverImage")
+  projectsCategory       ProjectCategory[]
+  projectImages          ProjectImage[]
+  ExternalImages         ExternalImages[]
+  ExternalImagesCategory ExternalImagesCategory[]
 }
 
 model Product {
-  id            Int            @id @default(autoincrement())
+  id            Int               @id @default(autoincrement())
   title         String
   description   String
   price         Decimal
-  stock         Int            @default(0)
-  show          Boolean        @default(false)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  authorId        Int?
-  user          User?          @relation("UserProducts", fields: [authorId], references: [id])
+  stock         Int               @default(0)
+  show          Boolean           @default(false)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  authorId      Int?
+  user          User?             @relation("UserProducts", fields: [authorId], references: [id])
   cartItems     CartItem[]
   Invoice_items InvoiceItems[]
-  categories ProductCategory[]
-  images    ProductImage[] 
+  categories    ProductCategory[]
+  images        ProductImage[]
 }
 
 model Article {
-  id             Int              @id @default(autoincrement())
-  title          String
-  slug           String           @unique
-  excerpt        String           // summary of the article
-  body           String           // full content of the article
-  coverImageId  Int
-  published   Boolean   @default(false) //visible to public
-  viewCount      Int              @default(0)
-  isFeatured    Boolean         @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt      DateTime?        // for soft delete
+  id           Int       @id @default(autoincrement())
+  title        String
+  slug         String    @unique
+  excerpt      String // summary of the article
+  body         String // full content of the article
+  coverImageId Int
+  published    Boolean   @default(false) //visible to public
+  viewCount    Int       @default(0)
+  isFeatured   Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime? // for soft delete
 
-  authorId    Int
-  author     User      @relation("UserArticle",fields: [authorId], references: [id])
+  authorId Int
+  author   User @relation("UserArticle", fields: [authorId], references: [id])
 
-  categoryId     Int
-  category       ArticleCategory  @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  category   ArticleCategory @relation(fields: [categoryId], references: [id])
 
-  coverImage    UploadFile      @relation("ArticleCoverImage", fields: [coverImageId], references: [id])
+  coverImage UploadFile @relation("ArticleCoverImage", fields: [coverImageId], references: [id])
 }
 
 model ArticleCategory {
@@ -116,28 +118,28 @@ model ArticleCategory {
 }
 
 model ProductImage {
-  id            Int         @id @default(autoincrement())
-  productId     Int
-  uploadFileId  Int
+  id           Int @id @default(autoincrement())
+  productId    Int
+  uploadFileId Int
 
-  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  uploadFile    UploadFile  @relation(fields: [uploadFileId], references: [id], onDelete: Cascade)
+  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  uploadFile UploadFile @relation(fields: [uploadFileId], references: [id], onDelete: Cascade)
 }
 
 model ProductCategory {
-  id            Int            @id @default(autoincrement())
-  name  String @unique
+  id       Int             @id @default(autoincrement())
+  name     String          @unique
   products Product[]
-  image        CategoryImage[]
+  image    CategoryImage[]
 }
 
 model CategoryImage {
-  id            Int         @id @default(autoincrement())
-  categoryId    Int
-  uploadFileId  Int
+  id           Int @id @default(autoincrement())
+  categoryId   Int
+  uploadFileId Int
 
-  category      ProductCategory @relation(fields: [categoryId], references: [id],onDelete: Cascade)
-  uploadFile    UploadFile       @relation(fields: [uploadFileId], references: [id], onDelete: Cascade)
+  category   ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  uploadFile UploadFile      @relation(fields: [uploadFileId], references: [id], onDelete: Cascade)
 }
 
 model Cart {
@@ -184,63 +186,90 @@ enum Role {
 }
 
 model Project {
-  id            Int       @id @default(autoincrement())
-  title         String    @unique
+  id            Int            @id @default(autoincrement())
+  title         String         @unique
   content       String
-  published     Boolean   @default(false)
+  published     Boolean        @default(false)
   viewCount     Int
-  isFeatured    Boolean   @default(false)
+  isFeatured    Boolean        @default(false)
   implementCity String
   images        ProjectImage[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  deletedAt     DateTime?       // for soft delete
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  deletedAt     DateTime? // for soft delete
 
-  coverImageId  Int
-  coverImage    UploadFile      @relation("ProjectCoverImage", fields: [coverImageId], references: [id])
+  coverImageId Int
+  coverImage   UploadFile @relation("ProjectCoverImage", fields: [coverImageId], references: [id])
 
-  authorId      Int
-  author        User      @relation("UserProjects", fields: [authorId], references: [id])
+  authorId Int
+  author   User @relation("UserProjects", fields: [authorId], references: [id])
 
-  categoryId    Int
-  category      ProjectCategory     @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  category   ProjectCategory @relation(fields: [categoryId], references: [id])
 
-  comments    ProjectComment[]
+  comments ProjectComment[]
+
+  externalImages ExternalImages[]
 
   // external
 }
 
 model ProjectCategory {
-  id            Int         @id @default(autoincrement())
-  name          String      @unique
-  ImageId       Int
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  imageId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  image         UploadFile  @relation(fields: [ImageId], references: [id])
-  projects      Project[]   // assuming each category can have multiple projects
+  image    UploadFile @relation(fields: [imageId], references: [id])
+  projects Project[] // assuming each category can have multiple projects
 }
 
 model ProjectImage {
-  id           Int         @id @default(autoincrement())
+  id           Int @id @default(autoincrement())
   projectId    Int
   uploadFileId Int
 
-  project      Project     @relation(fields: [projectId], references: [id])
-  uploadFile   UploadFile  @relation(fields: [uploadFileId], references: [id])
+  project    Project    @relation(fields: [projectId], references: [id])
+  uploadFile UploadFile @relation(fields: [uploadFileId], references: [id])
 }
 
 model ProjectComment {
-  id         Int       @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   content    String
   projectId  Int
   userId     Int?
   guestName  String?
   guestEmail String?
-  createdAt  DateTime  @default(now())
+  createdAt  DateTime @default(now())
 
-  project    Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user       User?      @relation(fields: [userId], references: [id])
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [userId], references: [id])
 
   @@index([projectId])
+}
+
+model ExternalImages {
+  id           Int     @id @default(autoincrement())
+  before       String?
+  after        String
+  projectId    Int
+  uploadFileId Int
+  type         Int?
+
+  project                  Project                 @relation(fields: [projectId], references: [id])
+  uploadFile               UploadFile              @relation(fields: [uploadFileId], references: [id])
+  ExternalImagesCategory   ExternalImagesCategory? @relation(fields: [type], references: [id])
+
+}
+
+model ExternalImagesCategory {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  imageId   Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  image     UploadFile       @relation(fields: [imageId], references: [id])
+  imageType ExternalImages[]
 }
