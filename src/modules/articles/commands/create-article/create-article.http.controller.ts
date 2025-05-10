@@ -73,6 +73,9 @@ export class CreateArticleHttpController {
     @Body() body: CreateArticleDto,
     @GetUser() user: User,
   ) {
+    if (!image) {
+      throw new BadRequestException('Check your image(s)');
+    }
     const result = await this.articleService.execute(body, image, user);
 
     return result;

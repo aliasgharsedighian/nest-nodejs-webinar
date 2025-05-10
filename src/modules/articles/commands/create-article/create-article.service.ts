@@ -20,12 +20,6 @@ export class CreateArticleService {
     user: User,
   ) {
     try {
-      if (!image) {
-        return {
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: 'check your image',
-        };
-      }
       const article = await this.articleRepo.create(body, image, user.id);
       return {
         statusCode: HttpStatus.CREATED,

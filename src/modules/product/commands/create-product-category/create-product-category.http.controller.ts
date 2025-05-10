@@ -60,6 +60,9 @@ export class CreateProductCategoryHttpController {
     @Body() body: CreateProductCategoryRequestDto,
     @GetUser() user: User,
   ) {
+    if (!image) {
+      throw new BadRequestException('Check your image(s)');
+    }
     const result = await this.createProductCategory.execute(body, image, user);
     return result;
   }

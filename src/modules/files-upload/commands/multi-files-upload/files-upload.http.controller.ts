@@ -47,6 +47,9 @@ export class FileUploadController {
     }),
   )
   async uploadFile(@UploadedFiles() files: Express.Multer.File[]) {
+    if (!files) {
+      throw new BadRequestException('Check your file(s)');
+    }
     return this.fileUploadService.handleFilesUpload(files);
   }
 }

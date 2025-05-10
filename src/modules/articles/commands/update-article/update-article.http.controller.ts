@@ -64,6 +64,9 @@ export class EditArticleBySlugHttpController {
     @GetUser() user: User,
     @UploadedFile() image: Express.Multer.File,
   ) {
+    if (!image) {
+      throw new BadRequestException('Check your image(s)');
+    }
     const result = await this.editArticle.execute(
       body,
       params.slug,
