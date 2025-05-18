@@ -13,12 +13,16 @@ import { VerifyOTPUseCase } from './application/verify-otp.usecase';
 import { NotifierService } from './application/notifier.service';
 import { OTPRepository } from './database/otp.repository';
 import { AuthRefreshController } from './refresh-token.http.controller';
+import { GoogleAuthController } from './commands/create-user-google/create-user-google.http.controller';
+import { GoogleStrategy } from './strategy/googleAuth/google.strategy';
+import { CreateGoogleUserService } from './commands/create-user-google/create-user-google.service';
 
 const httpControllers = [
   CreateUserHttpController,
   SignInUserHttpController,
   OtpController,
   AuthRefreshController,
+  GoogleAuthController,
 ];
 
 const OtpProviders = [
@@ -36,7 +40,9 @@ const OtpProviders = [
     AuthTokenService,
     CreateUserService,
     SignInUserService,
+    CreateGoogleUserService,
     JwtStrategy,
+    GoogleStrategy,
     ...OtpProviders,
   ],
   exports: [AuthTokenService],

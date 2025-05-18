@@ -17,6 +17,10 @@ export const routesV1 = {
     verifyOtp: `${authRoot}/verify-otp`,
     refreshToken: `${authRoot}/refresh-token`,
   },
+  googleAuth: {
+    googleAuth: `${authRoot}/google`,
+    googleRedirectUrl: `${authRoot}/google/redirect`,
+  },
   product: {
     getAllProducts: `${productRoot}/get-all-products`,
     showProduct: `${productRoot}/show-product/:id`,
