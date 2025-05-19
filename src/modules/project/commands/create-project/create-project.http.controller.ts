@@ -4,11 +4,16 @@ import {
   Controller,
   HttpStatus,
   Post,
+  UploadedFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { diskStorage } from 'multer';
@@ -43,35 +48,53 @@ export class CreateProjectHttpController {
   @Roles('ADMIN')
   @Post(routesV1.project.createProject)
   @UseInterceptors(
-    FilesInterceptor('images', 20, {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          // @ts-ignore
-          const filename = `${Date.now()}-${file.originalname.replaceAll(' ', '-')}`; // Rename the file to include the timestamp
-          callback(null, filename);
+    FileFieldsInterceptor(
+      [
+        { name: 'images', maxCount: 20 },
+        { name: 'coverImage', maxCount: 1 },
+      ],
+      {
+        storage: diskStorage({
+          destination: './uploads',
+          filename: (req, file, callback) => {
+            // @ts-ignore
+            const filename = `${Date.now()}-${file.originalname.replaceAll(' ', '-')}`; // Rename the file to include the timestamp
+            callback(null, filename);
+          },
+        }),
+        limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+        fileFilter: (req, file, cb) => {
+          const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+          if (allowedMimeTypes.includes(file.mimetype)) {
+            cb(null, true); // Accept the file
+          } else {
+            cb(
+              new BadRequestException(`Unsupported file type ${file.mimetype}`),
+              false,
+            ); // Reject the file
+          }
         },
-      }),
-      limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
-      fileFilter: (req, file, cb) => {
-        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
-        if (allowedMimeTypes.includes(file.mimetype)) {
-          cb(null, true); // Accept the file
-        } else {
-          cb(
-            new BadRequestException(`Unsupported file type ${file.mimetype}`),
-            false,
-          ); // Reject the file
-        }
       },
-    }),
+    ),
   )
   async create(
-    @UploadedFiles() images: Express.Multer.File[],
+    @UploadedFiles()
+    files: {
+      images: Express.Multer.File[];
+      coverImage: Express.Multer.File[];
+    },
     @Body() body: CreateProjectRequestDto,
     @GetUser() user: User,
   ) {
-    const result = await this.createProject.execute(body, images, user);
+    if (!files.coverImage[0]) {
+      throw new BadRequestException('Check your image(s)');
+    }
+    const result = await this.createProject.execute(
+      body,
+      files.coverImage[0],
+      files.images,
+      user,
+    );
 
     return result;
   }

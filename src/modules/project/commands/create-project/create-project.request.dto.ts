@@ -71,7 +71,6 @@ export class CreateProjectRequestDto {
       return [];
     }
   })
-  @IsArray()
-  @IsNumber({}, { each: true }) // validate that every item is a number
+  @IsNumber()
   categoryId: number;
 }

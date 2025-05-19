@@ -13,6 +13,7 @@ export class PrismaProjectRepository {
 
   async create(
     project: Project,
+    coverImage: Express.Multer.File,
     images: Express.Multer.File[],
     userId: number,
   ) {
@@ -25,6 +26,17 @@ export class PrismaProjectRepository {
         implementCity,
         categoryId,
       } = project;
+
+      const uploadedImage =
+        await this.fileService.uploadProjectCoverImage(coverImage);
+      const uploadFileRecord = await this.prisma.uploadFile.create({
+        data: {
+          path: `${get('DOMAIN_ADDRESS').required().asString()}${uploadedImage.thumbnailPath}`,
+          mimetype: uploadedImage.mimetype,
+          size: uploadedImage.size,
+        },
+      });
+
       const uploadedImages = await this.fileService.uploadProjectImages(images);
       const uploadFileRecords = await Promise.all(
         uploadedImages.map((image) =>
@@ -38,7 +50,7 @@ export class PrismaProjectRepository {
         ),
       );
 
-      //create project without image
+      //create project without external images
       const created = await this.prisma.project.create({
         data: {
           title,
@@ -48,10 +60,25 @@ export class PrismaProjectRepository {
           implementCity,
           authorId: userId,
           categoryId,
-          //must be dynamic
-          coverImageId: 1,
+          coverImageId: uploadFileRecord.id,
           viewCount: 0,
         },
+      });
+
+      //create project with external images
+      await Promise.all(
+        uploadFileRecords.map((image) =>
+          this.prisma.productImage.create({
+            data: {
+              productId: created.id,
+              uploadFileId: image.id,
+            },
+          }),
+        ),
+      );
+
+      const projectWithImages = await this.prisma.project.findUnique({
+        where: { id: created.id },
         include: {
           category: {
             include: {
@@ -68,10 +95,24 @@ export class PrismaProjectRepository {
               },
             },
           },
+          author: {
+            select: {
+              email: true,
+              profile: true,
+            },
+          },
         },
       });
 
-      //create project without image
+      return {
+        ...projectWithImages,
+        images: projectWithImages?.images.map((img) => {
+          return {
+            id: img.uploadFile.id,
+            images: img.uploadFile.path,
+          };
+        }),
+      };
     } catch (error) {
       throw error;
     }

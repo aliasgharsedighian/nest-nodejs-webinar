@@ -9,11 +9,17 @@ export class CreateProjectService {
 
   async execute(
     command: CreateProjectRequestDto,
+    coverImage: Express.Multer.File,
     images: Express.Multer.File[],
     user: User,
   ) {
     try {
-      const project = await this.projectRepo.create(command, images, user.id);
+      const project = await this.projectRepo.create(
+        command,
+        coverImage,
+        images,
+        user.id,
+      );
       return {
         statusCode: HttpStatus.CREATED,
         message: 'project created successfully',

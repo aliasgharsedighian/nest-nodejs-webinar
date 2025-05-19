@@ -86,6 +86,30 @@ export class OptimizedImagesService {
     return uploadResults;
   }
 
+  async uploadProjectCoverImage(file: Express.Multer.File): Promise<{
+    path: string;
+    thumbnailPath: string;
+    mimetype: string;
+    size: number;
+  }> {
+    const thumbnailPath = path.join(
+      this.thumbnailProjectDir,
+      `thumb-${file.filename}`,
+    );
+
+    await sharp(file.path)
+      .resize()
+      .webp({ quality: 100 })
+      .toFile(thumbnailPath);
+
+    return {
+      path: `${this.uploadsDir}/${file.filename}`,
+      thumbnailPath: `${thumbnailPath}`,
+      mimetype: file.mimetype,
+      size: file.size,
+    };
+  }
+
   async uploadProductCategoryImage(file: Express.Multer.File): Promise<{
     path: string;
     thumbnailPath: string;
