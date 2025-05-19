@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "e0a71e66-d9a9-4182-93cd-14bfedf29d93",
+    "_postman_id": "cfac0681-a412-4da4-a751-e65bfc8215d9",
     "name": "nodejs-webinar",
     "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
     "_exporter_id": "24392755"
@@ -16,7 +16,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"alitest22222@example.com\",\r\n    \"password\": \"password\",\r\n    \"role\": \"ADMIN\"\r\n}",
+              "raw": "{\r\n    \"email\": \"alitest22@example.com\",\r\n    \"password\": \"password\",\r\n    \"role\": \"ADMIN\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -52,7 +52,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"userId\": 29,\r\n    \"code\": \"105525\"\r\n}",
+              "raw": "{\r\n    \"userId\": 3,\r\n    \"code\": \"902968\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -534,7 +534,7 @@
                 },
                 {
                   "key": "slug",
-                  "value": "article10",
+                  "value": "article11",
                   "type": "text"
                 },
                 {
@@ -724,6 +724,105 @@
               }
             },
             "url": "{{nodejs_webinar_app_local}}user/update-user/29"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Project",
+      "item": [
+        {
+          "name": "create-project-category",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{nodejs_webinar_token}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "test4",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/C:/Users/assed/Desktop/images/Untitled-1 (4).jpg"
+                }
+              ]
+            },
+            "url": "{{nodejs_webinar_app_local}}project/add-project-category"
+          },
+          "response": []
+        },
+        {
+          "name": "create-project",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{nodejs_webinar_token}}"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "title test33332",
+                  "type": "text"
+                },
+                {
+                  "key": "content",
+                  "value": "<p>test description</p>",
+                  "type": "text"
+                },
+                {
+                  "key": "published",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "isFeatured",
+                  "value": "false",
+                  "type": "text"
+                },
+                {
+                  "key": "implementCity",
+                  "value": "tehran",
+                  "type": "text"
+                },
+                {
+                  "key": "categoryId",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": [
+                    "/C:/Users/assed/Desktop/images/IMG_20240213_120505_489.jpg",
+                    "/C:/Users/assed/Desktop/images/OIG.jpg",
+                    "/C:/Users/assed/Desktop/images/photo_2021-07-10_22-50-13.jpg"
+                  ]
+                },
+                {
+                  "key": "coverImage",
+                  "type": "file",
+                  "src": "/C:/Users/assed/Desktop/images/OIG.jpg"
+                }
+              ]
+            },
+            "url": "{{nodejs_webinar_app_local}}project/add-project"
           },
           "response": []
         }

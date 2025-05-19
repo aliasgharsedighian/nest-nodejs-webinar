@@ -9,6 +9,8 @@ export class DeleteOriginalsJob {
 
   private readonly uploadsDir = path.resolve('uploads');
   private readonly thumbnailsDir = path.resolve('uploads/products');
+  private readonly ArticlesDir = path.resolve('uploads/articles');
+  private readonly ProjectsDir = path.resolve('uploads/projects');
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handleCron() {
