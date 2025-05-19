@@ -4,16 +4,11 @@ import {
   Controller,
   HttpStatus,
   Post,
-  UploadedFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import {
-  FileFieldsInterceptor,
-  FileInterceptor,
-  FilesInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { diskStorage } from 'multer';

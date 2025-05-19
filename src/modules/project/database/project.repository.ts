@@ -50,7 +50,7 @@ export class PrismaProjectRepository {
         ),
       );
 
-      //create project without external images
+      //create project without images
       const created = await this.prisma.project.create({
         data: {
           title,
@@ -65,24 +65,31 @@ export class PrismaProjectRepository {
         },
       });
 
-      //create project with external images
+      //create project with images
       await Promise.all(
         uploadFileRecords.map((image) =>
-          this.prisma.productImage.create({
+          this.prisma.projectImage.create({
             data: {
-              productId: created.id,
+              projectId: created.id,
               uploadFileId: image.id,
             },
           }),
         ),
       );
 
+      //create external images if exist
+
       const projectWithImages = await this.prisma.project.findUnique({
         where: { id: created.id },
         include: {
           category: {
-            include: {
-              image: true,
+            select: {
+              id: true,
+              image: {
+                select: {
+                  path: true,
+                },
+              },
             },
           },
           images: {
@@ -101,6 +108,9 @@ export class PrismaProjectRepository {
               profile: true,
             },
           },
+          coverImage: true,
+          comments: true,
+          externalImages: true,
         },
       });
 
