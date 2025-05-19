@@ -4,7 +4,6 @@ import { Product } from '../domain/entities/create-product.entity';
 import { EditProductRequestDto } from '../commands/update-product/update-product.request.dto';
 import { get } from 'env-var';
 import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
-import path from 'path';
 
 @Injectable()
 export class PrismaProductRepository {
@@ -65,6 +64,8 @@ export class PrismaProductRepository {
           },
         },
       });
+
+      //create product with image
       await Promise.all(
         uploadFileRecords.map((image) =>
           this.prisma.productImage.create({

@@ -3,6 +3,7 @@ const authRoot = 'auth';
 const productRoot = 'shop';
 const articleRoot = 'article';
 const userRoot = 'user';
+const projectRoot = 'project';
 
 // Api Versions
 const v1 = 'api/v1';
@@ -42,11 +43,11 @@ export const routesV1 = {
     updateUser: `${userRoot}/update-user/:id`,
   },
   project: {
-    getAllProjects: `${productRoot}/get-all-projects`,
-    showProject: `${productRoot}/show-project/:slug`,
-    createProject: `${productRoot}/add-project`,
-    createProjectCategory: `${productRoot}/add-project-category`,
-    editProject: `${productRoot}/edit-project/:slug`,
-    removeProject: `${productRoot}/remove-project/:slug`,
+    getAllProjects: `${projectRoot}/get-all-projects`,
+    showProject: `${projectRoot}/show-project/:slug`,
+    createProject: `${projectRoot}/add-project`,
+    createProjectCategory: `${projectRoot}/add-project-category`,
+    editProject: `${projectRoot}/edit-project/:slug`,
+    removeProject: `${projectRoot}/remove-project/:slug`,
   },
 };

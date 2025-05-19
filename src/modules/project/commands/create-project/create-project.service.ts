@@ -13,10 +13,10 @@ export class CreateProjectService {
     user: User,
   ) {
     try {
-      const project = await this.projectRepo.create();
+      const project = await this.projectRepo.create(command, images, user.id);
       return {
         statusCode: HttpStatus.CREATED,
-        message: 'product created successfully',
+        message: 'project created successfully',
         data: project,
       };
     } catch (error) {

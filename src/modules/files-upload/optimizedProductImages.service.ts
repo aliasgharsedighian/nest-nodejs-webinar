@@ -9,6 +9,8 @@ export class OptimizedImagesService {
   private thumbnailDir = 'uploads/products/thumbnails';
   private thumbnailCategoryDir = 'uploads/products/categories';
   private thumbnailArticleDir = 'uploads/articles';
+  private thumbnailProjectCategoryDir = 'uploads/projects/categories';
+  private thumbnailProjectDir = 'uploads/projects/thumbnails';
 
   constructor() {
     // Ensure folders exist
@@ -52,6 +54,38 @@ export class OptimizedImagesService {
     return uploadResults;
   }
 
+  async uploadProjectImages(
+    files: Express.Multer.File[],
+  ): Promise<
+    { path: string; thumbnailPath: string; mimetype: string; size: number }[]
+  > {
+    const uploadResults = await Promise.all(
+      files.map(async (file) => {
+        const originalPath = path.join(this.uploadsDir, file.filename);
+        const thumbnailFilename = `thumb-${file.filename}`;
+        const thumbnailPath = path.join(
+          this.thumbnailProjectDir,
+          thumbnailFilename,
+        );
+
+        await sharp(file.path)
+          // .resize(300, 300, { fit: sharp.fit.cover })
+          .resize()
+          .jpeg({ quality: 90 })
+          .toFile(thumbnailPath);
+
+        return {
+          path: `${this.uploadsDir}/${file.filename}`,
+          thumbnailPath: `${this.thumbnailProjectDir}/${thumbnailFilename}`,
+          mimetype: file.mimetype,
+          size: file.size,
+        };
+      }),
+    );
+
+    return uploadResults;
+  }
+
   async uploadProductCategoryImage(file: Express.Multer.File): Promise<{
     path: string;
     thumbnailPath: string;
@@ -60,6 +94,26 @@ export class OptimizedImagesService {
   }> {
     const thumbnailPath = path.join(
       this.thumbnailCategoryDir,
+      `thumb-${file.filename}`,
+    );
+    await sharp(file.path).resize(300).toFile(thumbnailPath);
+
+    return {
+      path: `${this.uploadsDir}/${file.filename}`,
+      thumbnailPath: `${thumbnailPath}`,
+      mimetype: file.mimetype,
+      size: file.size,
+    };
+  }
+
+  async uploadProjectCategoryImage(file: Express.Multer.File): Promise<{
+    path: string;
+    thumbnailPath: string;
+    mimetype: string;
+    size: number;
+  }> {
+    const thumbnailPath = path.join(
+      this.thumbnailProjectCategoryDir,
       `thumb-${file.filename}`,
     );
     await sharp(file.path).resize(300).toFile(thumbnailPath);
