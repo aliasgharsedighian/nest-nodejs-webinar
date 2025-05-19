@@ -41,4 +41,12 @@ export const routesV1 = {
     updateProfile: `${userRoot}/update-profile`,
     updateUser: `${userRoot}/update-user/:id`,
   },
+  project: {
+    getAllProjects: `${productRoot}/get-all-projects`,
+    showProject: `${productRoot}/show-project/:slug`,
+    createProject: `${productRoot}/add-project`,
+    createProjectCategory: `${productRoot}/add-project-category`,
+    editProject: `${productRoot}/edit-project/:slug`,
+    removeProject: `${productRoot}/remove-project/:slug`,
+  },
 };
