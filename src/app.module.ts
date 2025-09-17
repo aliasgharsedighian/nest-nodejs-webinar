@@ -11,6 +11,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { TestModule } from './test/test.module';
 import { ArticleModule } from './modules/articles/article.module';
 import { ProjectModule } from './modules/project/project.module';
+import { ConfigModule } from '@nestjs/config';
+import { validateEnv } from './config/env.validation';
 
 const modules = [
   AuthModule,
@@ -26,6 +28,11 @@ const fileUploadModule = [FileUploadModule];
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // So it's available everywhere
+      envFilePath: '.env',
+      validate: validateEnv,
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',

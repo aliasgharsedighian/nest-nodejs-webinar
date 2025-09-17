@@ -5,11 +5,11 @@ import { get } from 'env-var';
 
 export const databaseConfig = {
   type: 'postgres',
-  host: get('DB_HOST').required().asString(),
-  port: get('DB_PORT').required().asIntPositive(),
-  username: get('DB_USERNAME').required().asString(),
-  password: get('DB_PASSWORD').required().asString(),
-  database: get('DB_NAME').required().asString(),
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 };
 
 export const postgresConnectionUri = `postgresql://${databaseConfig.username}:${databaseConfig.password}@${databaseConfig.host}:${databaseConfig.port}/${databaseConfig.database}`;

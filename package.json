@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/cqrs": "^11.0.3",
     "@nestjs/jwt": "^11.0.0",
@@ -36,6 +37,7 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.5.0",
     "env-var": "^7.5.0",
+    "joi": "^18.0.1",
     "multer": "^1.4.5-lts.2",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
