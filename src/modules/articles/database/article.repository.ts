@@ -1,8 +1,7 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { Article } from '../domain/entities/create-article.entity';
 import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
-import { get } from 'env-var';
 import { EditArticleRequestDto } from '../commands/update-article/update-article.request.dto';
 
 @Injectable()
@@ -18,7 +17,7 @@ export class PrismaArticleRepository {
 
       const uploadFileRecord = await this.prisma.uploadFile.create({
         data: {
-          path: `${get('DOMAIN_ADDRESS').required().asString()}${uploadedImage.thumbnailPath}`,
+          path: `${process.env.DOMAIN_ADDRESS}${uploadedImage.thumbnailPath}`,
           mimetype: uploadedImage.mimetype,
           size: uploadedImage.size,
         },
@@ -182,7 +181,7 @@ export class PrismaArticleRepository {
         const uploadedImage = await this.fileService.uploadArticleImage(image);
         const uploadFileRecord = await this.prisma.uploadFile.create({
           data: {
-            path: `${get('DOMAIN_ADDRESS').required().asString()}${uploadedImage.thumbnailPath}`,
+            path: `${process.env.DOMAIN_ADDRESS}${uploadedImage.thumbnailPath}`,
             mimetype: uploadedImage.mimetype,
             size: uploadedImage.size,
           },

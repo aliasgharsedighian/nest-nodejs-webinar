@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { routesV1 } from 'src/config/app.routes';
-import { get } from 'env-var';
 
 @Controller(routesV1.version)
 export class AuthRefreshController {
@@ -18,8 +17,8 @@ export class AuthRefreshController {
   @Post(routesV1.auth.refreshToken)
   async refresh(@Body() body: { refreshToken: string }) {
     try {
-      const secret = get('JWT_SECRET').required().asString();
-      const refreshSecret = get('JWT_REFRESH_SECRET').required().asString();
+      const secret = process.env.JWT_SECRET;
+      const refreshSecret = process.env.JWT_REFRESH_SECRET;
 
       const payload = await this.jwtService.verifyAsync(body.refreshToken, {
         secret: refreshSecret,

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
-import { get } from 'env-var';
 import { Project } from '../domain/entities/create-project.entity';
 
 @Injectable()
@@ -31,7 +30,7 @@ export class PrismaProjectRepository {
         await this.fileService.uploadProjectCoverImage(coverImage);
       const uploadFileRecord = await this.prisma.uploadFile.create({
         data: {
-          path: `${get('DOMAIN_ADDRESS').required().asString()}${uploadedImage.thumbnailPath}`,
+          path: `${process.env.DOMAIN_ADDRESS}${uploadedImage.thumbnailPath}`,
           mimetype: uploadedImage.mimetype,
           size: uploadedImage.size,
         },
@@ -42,7 +41,7 @@ export class PrismaProjectRepository {
         uploadedImages.map((image) =>
           this.prisma.uploadFile.create({
             data: {
-              path: `${get('DOMAIN_ADDRESS').required().asString()}${image.thumbnailPath}`,
+              path: `${process.env.DOMAIN_ADDRESS}${image.thumbnailPath}`,
               mimetype: image.mimetype,
               size: image.size,
             },
@@ -162,7 +161,7 @@ export class PrismaProjectRepository {
       await this.fileService.uploadProjectCategoryImage(image);
     const uploadFileRecord = await this.prisma.uploadFile.create({
       data: {
-        path: `${get('DOMAIN_ADDRESS').required().asString()}${uploadedImage.thumbnailPath}`,
+        path: `${process.env.DOMAIN_ADDRESS}${uploadedImage.thumbnailPath}`,
         mimetype: uploadedImage.mimetype,
         size: uploadedImage.size,
       },

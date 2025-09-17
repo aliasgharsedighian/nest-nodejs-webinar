@@ -2,7 +2,6 @@ import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { Product } from '../domain/entities/create-product.entity';
 import { EditProductRequestDto } from '../commands/update-product/update-product.request.dto';
-import { get } from 'env-var';
 import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
 
 @Injectable()
@@ -23,7 +22,7 @@ export class PrismaProductRepository {
         uploadedImages.map((image) =>
           this.prisma.uploadFile.create({
             data: {
-              path: `${get('DOMAIN_ADDRESS').required().asString()}${image.thumbnailPath}`,
+              path: `${process.env.DOMAIN_ADDRESS}${image.thumbnailPath}`,
               mimetype: image.mimetype,
               size: image.size,
             },
@@ -287,7 +286,7 @@ export class PrismaProductRepository {
         uploadedImages.map((image) =>
           this.prisma.uploadFile.create({
             data: {
-              path: `${get('DOMAIN_ADDRESS').required().asString()}${image.thumbnailPath}`,
+              path: `${process.env.DOMAIN_ADDRESS}${image.thumbnailPath}`,
               mimetype: image.mimetype,
               size: image.size,
             },
@@ -456,7 +455,7 @@ export class PrismaProductRepository {
       await this.fileService.uploadProductCategoryImage(image);
     const uploadFileRecord = await this.prisma.uploadFile.create({
       data: {
-        path: `${get('DOMAIN_ADDRESS').required().asString()}${uploadedImage.thumbnailPath}`,
+        path: `${process.env.DOMAIN_ADDRESS}${uploadedImage.thumbnailPath}`,
         mimetype: uploadedImage.mimetype,
         size: uploadedImage.size,
       },

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { get } from 'env-var';
 
 @Injectable()
 export class AuthTokenService {
@@ -11,8 +10,8 @@ export class AuthTokenService {
       sub: userId,
       email,
     };
-    const secret = get('JWT_SECRET').required().asString();
-    const refreshSecret = get('JWT_REFRESH_SECRET').required().asString();
+    const secret = process.env.JWT_SECRET;
+    const refreshSecret = process.env.JWT_REFRESH_SECRET;
 
     const accessToken = await this.jwt.signAsync(payload, {
       expiresIn: '2d',
