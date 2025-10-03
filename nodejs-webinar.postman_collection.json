@@ -186,7 +186,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}shop/show-product/85"
+            "url": "{{nodejs_webinar_app_local}}shop/show-product/3"
           },
           "response": []
         },
@@ -231,17 +231,13 @@
                 },
                 {
                   "key": "categories",
-                  "value": "[22]",
+                  "value": "[1]",
                   "type": "text"
                 },
                 {
                   "key": "images",
                   "type": "file",
-                  "src": [
-                    "/C:/Users/assed/Desktop/images/IMG_20240213_120505_489.jpg",
-                    "/C:/Users/assed/Desktop/images/OIG.jpg",
-                    "/C:/Users/assed/Desktop/images/photo_2021-07-10_22-50-13.jpg"
-                  ]
+                  "src": "/D:/Gallery/DCIM Note 8/Camera sd/20180712_214758.jpg"
                 }
               ]
             },
@@ -271,7 +267,7 @@
                 {
                   "key": "image",
                   "type": "file",
-                  "src": "/C:/Users/assed/Desktop/images/IMG_20240213_120505_489.jpg"
+                  "src": "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0146.JPG"
                 }
               ]
             },
@@ -296,36 +292,39 @@
                 {
                   "key": "title",
                   "value": "test edit title44",
-                  "type": "text"
+                  "type": "text",
+                  "disabled": true
                 },
                 {
                   "key": "description",
                   "value": "test edit description44",
-                  "type": "text"
+                  "type": "text",
+                  "disabled": true
                 },
                 {
                   "key": "categories",
                   "value": "[22,20]",
-                  "type": "text"
+                  "type": "text",
+                  "disabled": true
                 },
                 {
                   "key": "images",
                   "type": "file",
-                  "src": [
-                    "/C:/Users/assed/Desktop/images/defailt dns sJPG.JPG",
-                    "/C:/Users/assed/Desktop/images/google-impression.JPG",
-                    "/C:/Users/assed/Desktop/images/google-impression3.JPG",
-                    "/C:/Users/assed/Desktop/images/google-impression4.JPG"
-                  ]
+                  "src": "/D:/Gallery/DCIM Note 8/Camera sd/20180712_214758.jpg"
                 },
                 {
                   "key": "deletedImages",
-                  "value": "[89,87]",
+                  "value": "[31]",
+                  "type": "text"
+                },
+                {
+                  "key": "show",
+                  "value": "true",
                   "type": "text"
                 }
               ]
             },
-            "url": "{{nodejs_webinar_app_local}}shop/edit-product/85"
+            "url": "{{nodejs_webinar_app_local}}shop/edit-product/3"
           },
           "response": []
         },
@@ -485,11 +484,12 @@
                   "key": "files",
                   "type": "file",
                   "src": [
-                    "/C:/Users/assed/Desktop/images/IMG_20240213_120505_489.jpg",
-                    "/C:/Users/assed/Desktop/images/OIG.jpg",
-                    "/C:/Users/assed/Desktop/images/photo_2021-07-10_22-50-13.jpg"
-                  ],
-                  "disabled": true
+                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0238.JPG",
+                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0239.JPG",
+                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0248.JPG",
+                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0732.JPG",
+                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0740.JPG"
+                  ]
                 }
               ]
             },
@@ -625,7 +625,7 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}article/show-article/article9"
+            "url": "{{nodejs_webinar_app_local}}article/show-article/article22"
           },
           "response": []
         },
@@ -754,7 +754,7 @@
                 {
                   "key": "image",
                   "type": "file",
-                  "src": "/C:/Users/assed/Desktop/images/Untitled-1 (4).jpg"
+                  "src": "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0238.JPG"
                 }
               ]
             },
@@ -810,19 +810,113 @@
                   "key": "images",
                   "type": "file",
                   "src": [
-                    "/C:/Users/assed/Desktop/images/IMG_20240213_120505_489.jpg",
-                    "/C:/Users/assed/Desktop/images/OIG.jpg",
-                    "/C:/Users/assed/Desktop/images/photo_2021-07-10_22-50-13.jpg"
+                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0238.JPG",
+                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0239.JPG"
                   ]
                 },
                 {
                   "key": "coverImage",
                   "type": "file",
-                  "src": "/C:/Users/assed/Desktop/images/OIG.jpg"
+                  "src": "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0744.JPG"
                 }
               ]
             },
             "url": "{{nodejs_webinar_app_local}}project/add-project"
+          },
+          "response": []
+        },
+        {
+          "name": "update-project",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{nodejs_webinar_token}}"
+              }
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "title test23",
+                  "type": "text"
+                },
+                {
+                  "key": "content",
+                  "value": "<p>test description</p>",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "published",
+                  "value": "true",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "isFeatured",
+                  "value": "false",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "implementCity",
+                  "value": "tehran",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "categoryId",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": [
+                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0238.JPG",
+                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0239.JPG",
+                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0248.JPG"
+                  ],
+                  "disabled": true
+                },
+                {
+                  "key": "coverImage",
+                  "type": "file",
+                  "src": "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0072.JPG",
+                  "disabled": true
+                },
+                {
+                  "key": "deletedImages",
+                  "value": "[12,13]",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": "{{nodejs_webinar_app_local}}project/edit-project/1"
+          },
+          "response": []
+        },
+        {
+          "name": "show-project",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{nodejs_webinar_app_local}}project/show-project/1"
+          },
+          "response": []
+        },
+        {
+          "name": "show-all-project",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{nodejs_webinar_app_local}}project/get-all-projects"
           },
           "response": []
         }

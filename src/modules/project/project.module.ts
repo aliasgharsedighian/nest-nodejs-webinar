@@ -6,18 +6,28 @@ import { CreateProjectHttpController } from './commands/create-project/create-pr
 import { CreateProjectService } from './commands/create-project/create-project.service';
 import { CreateProjectCategoryHttpController } from './commands/create-project-category/create-project-category.http.controller';
 import { CreateProjectCategoryService } from './commands/create-project-category/create-project-category.service';
+import { UpdateProjectService } from './commands/update-project/update-project.service';
+import { UpdateProjectHttpController } from './commands/update-project/update-project.http.controller';
+import { FindProjectByIdHttpController } from './queries/find-single-project/find-single-project.http.controller';
+import { FindProjectService } from './queries/find-single-project/find-single-project.service';
+import { FindAllProjectsHttpController } from './queries/find-projects/find-projects.http.controller';
+import { FindProjectsService } from './queries/find-projects/find-projects.service';
 
 const httpControllers = [
+  FindProjectByIdHttpController,
   CreateProjectHttpController,
   CreateProjectCategoryHttpController,
+  UpdateProjectHttpController,
+  FindAllProjectsHttpController,
 ];
 
 const commandHandlers: Provider[] = [
   CreateProjectService,
   CreateProjectCategoryService,
+  UpdateProjectService,
 ];
 
-const queryHandlers: Provider[] = [];
+const queryHandlers: Provider[] = [FindProjectService, FindProjectsService];
 
 const repositories: Provider[] = [PrismaProjectRepository];
 

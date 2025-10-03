@@ -44,10 +44,10 @@ export const routesV1 = {
   },
   project: {
     getAllProjects: `${projectRoot}/get-all-projects`,
-    showProject: `${projectRoot}/show-project/:slug`,
+    showProject: `${projectRoot}/show-project/:id`,
     createProject: `${projectRoot}/add-project`,
     createProjectCategory: `${projectRoot}/add-project-category`,
-    editProject: `${projectRoot}/edit-project/:slug`,
-    removeProject: `${projectRoot}/remove-project/:slug`,
+    editProject: `${projectRoot}/edit-project/:id`,
+    removeProject: `${projectRoot}/remove-project/:id`,
   },
 };
