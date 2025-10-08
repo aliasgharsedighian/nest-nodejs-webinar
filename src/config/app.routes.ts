@@ -4,6 +4,7 @@ const productRoot = 'shop';
 const articleRoot = 'article';
 const userRoot = 'user';
 const projectRoot = 'project';
+const searchRoot = 'search';
 
 // Api Versions
 const v1 = 'api/v1';
@@ -51,5 +52,8 @@ export const routesV1 = {
     removeProject: `${projectRoot}/remove-project/:id`,
     projectLabelImagesById: `${projectRoot}/projects-label/:projectId`,
     projectLabelImagesByLabel: `${projectRoot}/all-projects-label/:label`,
+  },
+  search: {
+    searchAll: `${searchRoot}/search-all`,
   },
 };

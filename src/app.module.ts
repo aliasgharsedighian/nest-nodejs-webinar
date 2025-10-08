@@ -13,6 +13,7 @@ import { ArticleModule } from './modules/articles/article.module';
 import { ProjectModule } from './modules/project/project.module';
 import { ConfigModule } from '@nestjs/config';
 import { validateEnv } from './config/env.validation';
+import { SearchModule } from './modules/search/search.module';
 
 const modules = [
   AuthModule,
@@ -20,6 +21,7 @@ const modules = [
   ProductModule,
   ArticleModule,
   ProjectModule,
+  SearchModule,
 ];
 
 const prismaModule = [PrismaModule];

@@ -1,8 +1,8 @@
 {
   "info": {
-    "_postman_id": "cfac0681-a412-4da4-a751-e65bfc8215d9",
+    "_postman_id": "468a5131-e567-4cc5-b993-d4dabe239e10",
     "name": "nodejs-webinar",
-    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "24392755"
   },
   "item": [
@@ -23,7 +23,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}auth/signup"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}auth/signup",
+              "host": ["{{nodejs_webinar_app_local}}auth"],
+              "path": ["signup"]
+            }
           },
           "response": []
         },
@@ -41,7 +45,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}auth/request-otp"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}auth/request-otp",
+              "host": ["{{nodejs_webinar_app_local}}auth"],
+              "path": ["request-otp"]
+            }
           },
           "response": []
         },
@@ -59,7 +67,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}auth/verify-otp"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}auth/verify-otp",
+              "host": ["{{nodejs_webinar_app_local}}auth"],
+              "path": ["verify-otp"]
+            }
           },
           "response": []
         },
@@ -68,9 +80,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "PUT",
             "header": [],
@@ -83,7 +99,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}auth/update-user-info"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}auth/update-user-info",
+              "host": ["{{nodejs_webinar_app_local}}auth"],
+              "path": ["update-user-info"]
+            }
           },
           "response": []
         },
@@ -104,7 +124,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}auth/signin"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}auth/signin",
+              "host": ["{{nodejs_webinar_app_local}}auth"],
+              "path": ["signin"]
+            }
           },
           "response": []
         },
@@ -125,7 +149,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}auth/refresh-token"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}auth/refresh-token",
+              "host": ["{{nodejs_webinar_app_local}}auth"],
+              "path": ["refresh-token"]
+            }
           },
           "response": []
         },
@@ -134,13 +162,21 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}auth/user-info"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}auth/user-info",
+              "host": ["{{nodejs_webinar_app_local}}auth"],
+              "path": ["user-info"]
+            }
           },
           "response": []
         },
@@ -149,7 +185,11 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}user/1"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}user/1",
+              "host": ["{{nodejs_webinar_app_local}}user"],
+              "path": ["1"]
+            }
           },
           "response": []
         }
@@ -186,7 +226,11 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}shop/show-product/3"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}shop/show-product/3",
+              "host": ["{{nodejs_webinar_app_local}}shop"],
+              "path": ["show-product", "3"]
+            }
           },
           "response": []
         },
@@ -195,9 +239,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "POST",
             "header": [],
@@ -206,7 +254,7 @@
               "formdata": [
                 {
                   "key": "title",
-                  "value": "title test",
+                  "value": "title test2",
                   "type": "text"
                 },
                 {
@@ -231,17 +279,21 @@
                 },
                 {
                   "key": "categories",
-                  "value": "[1]",
+                  "value": "[25]",
                   "type": "text"
                 },
                 {
                   "key": "images",
                   "type": "file",
-                  "src": "/D:/Gallery/DCIM Note 8/Camera sd/20180712_214758.jpg"
+                  "src": "/C:/Users/assed/Desktop/images/OIG.jpg"
                 }
               ]
             },
-            "url": "{{nodejs_webinar_app_local}}shop/add-product"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}shop/add-product",
+              "host": ["{{nodejs_webinar_app_local}}shop"],
+              "path": ["add-product"]
+            }
           },
           "response": []
         },
@@ -250,9 +302,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "POST",
             "header": [],
@@ -261,17 +317,21 @@
               "formdata": [
                 {
                   "key": "name",
-                  "value": "test7",
+                  "value": "test72",
                   "type": "text"
                 },
                 {
                   "key": "image",
                   "type": "file",
-                  "src": "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0146.JPG"
+                  "src": "/C:/Users/assed/Desktop/images/OIG.jpg"
                 }
               ]
             },
-            "url": "{{nodejs_webinar_app_local}}shop/add-product-category"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}shop/add-product-category",
+              "host": ["{{nodejs_webinar_app_local}}shop"],
+              "path": ["add-product-category"]
+            }
           },
           "response": []
         },
@@ -280,9 +340,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "PUT",
             "header": [],
@@ -324,7 +388,11 @@
                 }
               ]
             },
-            "url": "{{nodejs_webinar_app_local}}shop/edit-product/3"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}shop/edit-product/3",
+              "host": ["{{nodejs_webinar_app_local}}shop"],
+              "path": ["edit-product", "3"]
+            }
           },
           "response": []
         },
@@ -333,13 +401,21 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "DELETE",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}shop/remove-product/84"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}shop/remove-product/84",
+              "host": ["{{nodejs_webinar_app_local}}shop"],
+              "path": ["remove-product", "84"]
+            }
           },
           "response": []
         }
@@ -353,9 +429,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "POST",
             "header": [],
@@ -368,7 +448,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}cart/cart-store"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}cart/cart-store",
+              "host": ["{{nodejs_webinar_app_local}}cart"],
+              "path": ["cart-store"]
+            }
           },
           "response": []
         },
@@ -377,13 +461,21 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}cart/get-cart"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}cart/get-cart",
+              "host": ["{{nodejs_webinar_app_local}}cart"],
+              "path": ["get-cart"]
+            }
           },
           "response": []
         },
@@ -392,9 +484,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "POST",
             "header": [],
@@ -407,7 +503,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}cart/update-cart"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}cart/update-cart",
+              "host": ["{{nodejs_webinar_app_local}}cart"],
+              "path": ["update-cart"]
+            }
           },
           "response": []
         },
@@ -416,13 +516,21 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "POST",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}cart/registration-cart"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}cart/registration-cart",
+              "host": ["{{nodejs_webinar_app_local}}cart"],
+              "path": ["registration-cart"]
+            }
           },
           "response": []
         }
@@ -436,13 +544,21 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}invoice/get-all-invoice"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}invoice/get-all-invoice",
+              "host": ["{{nodejs_webinar_app_local}}invoice"],
+              "path": ["get-all-invoice"]
+            }
           },
           "response": []
         },
@@ -451,13 +567,21 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}invoice/show-invoice/11"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}invoice/show-invoice/11",
+              "host": ["{{nodejs_webinar_app_local}}invoice"],
+              "path": ["show-invoice", "11"]
+            }
           },
           "response": []
         }
@@ -471,9 +595,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "POST",
             "header": [],
@@ -484,11 +612,11 @@
                   "key": "files",
                   "type": "file",
                   "src": [
-                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0238.JPG",
-                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0239.JPG",
-                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0248.JPG",
-                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0732.JPG",
-                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0740.JPG"
+                    "/C:/Users/assed/Desktop/images/defailt dns sJPG.JPG",
+                    "/C:/Users/assed/Desktop/images/google-impression4.JPG",
+                    "/C:/Users/assed/Desktop/images/google-search.jpg",
+                    "/C:/Users/assed/Desktop/images/google-search2.jpg",
+                    "/C:/Users/assed/Desktop/images/ali asfg har.jpg"
                   ]
                 }
               ]
@@ -518,9 +646,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "POST",
             "header": [],
@@ -569,7 +701,11 @@
                 }
               ]
             },
-            "url": "{{nodejs_webinar_app_local}}article/add-article"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}article/add-article",
+              "host": ["{{nodejs_webinar_app_local}}article"],
+              "path": ["add-article"]
+            }
           },
           "response": []
         },
@@ -578,9 +714,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "POST",
             "header": [],
@@ -593,7 +733,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}article/add-article-category"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}article/add-article-category",
+              "host": ["{{nodejs_webinar_app_local}}article"],
+              "path": ["add-article-category"]
+            }
           },
           "response": []
         },
@@ -625,7 +769,11 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}article/show-article/article22"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}article/show-article/article22",
+              "host": ["{{nodejs_webinar_app_local}}article"],
+              "path": ["show-article", "article22"]
+            }
           },
           "response": []
         },
@@ -634,9 +782,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "PUT",
             "header": [],
@@ -655,7 +807,11 @@
                 }
               ]
             },
-            "url": "{{nodejs_webinar_app_local}}article/edit-article/article9"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}article/edit-article/article9",
+              "host": ["{{nodejs_webinar_app_local}}article"],
+              "path": ["edit-article", "article9"]
+            }
           },
           "response": []
         },
@@ -664,13 +820,21 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "DELETE",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}article/remove-article/article5"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}article/remove-article/article5",
+              "host": ["{{nodejs_webinar_app_local}}article"],
+              "path": ["remove-article", "article5"]
+            }
           },
           "response": []
         }
@@ -684,9 +848,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "PUT",
             "header": [],
@@ -699,7 +867,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}user/update-profile"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}user/update-profile",
+              "host": ["{{nodejs_webinar_app_local}}user"],
+              "path": ["update-profile"]
+            }
           },
           "response": []
         },
@@ -708,9 +880,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "PUT",
             "header": [],
@@ -723,7 +899,11 @@
                 }
               }
             },
-            "url": "{{nodejs_webinar_app_local}}user/update-user/29"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}user/update-user/29",
+              "host": ["{{nodejs_webinar_app_local}}user"],
+              "path": ["update-user", "29"]
+            }
           },
           "response": []
         }
@@ -737,9 +917,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "POST",
             "header": [],
@@ -748,17 +932,21 @@
               "formdata": [
                 {
                   "key": "name",
-                  "value": "test4",
+                  "value": "پروژه چیتگر",
                   "type": "text"
                 },
                 {
                   "key": "image",
                   "type": "file",
-                  "src": "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0238.JPG"
+                  "src": "/C:/Users/assed/Desktop/nest-project/project-category1.jpg"
                 }
               ]
             },
-            "url": "{{nodejs_webinar_app_local}}project/add-project-category"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}project/add-project-category",
+              "host": ["{{nodejs_webinar_app_local}}project"],
+              "path": ["add-project-category"]
+            }
           },
           "response": []
         },
@@ -767,9 +955,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "POST",
             "header": [],
@@ -778,7 +970,7 @@
               "formdata": [
                 {
                   "key": "title",
-                  "value": "title test33332",
+                  "value": "پروژه چیتگر",
                   "type": "text"
                 },
                 {
@@ -798,7 +990,7 @@
                 },
                 {
                   "key": "implementCity",
-                  "value": "tehran",
+                  "value": "تهران",
                   "type": "text"
                 },
                 {
@@ -810,18 +1002,38 @@
                   "key": "images",
                   "type": "file",
                   "src": [
-                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0238.JPG",
-                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0239.JPG"
+                    "/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg",
+                    "/C:/Users/assed/Desktop/nest-project/images3-service.jpg",
+                    "/C:/Users/assed/Desktop/nest-project/images-kitchen1.jpg"
                   ]
                 },
                 {
                   "key": "coverImage",
                   "type": "file",
-                  "src": "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0744.JPG"
+                  "src": "/C:/Users/assed/Desktop/nest-project/project-category1.jpg"
+                },
+                {
+                  "key": "labels[0]",
+                  "value": "اتاق خواب",
+                  "type": "text"
+                },
+                {
+                  "key": "labels[1]",
+                  "value": "سرویس بهداشتی",
+                  "type": "text"
+                },
+                {
+                  "key": "labels[2]",
+                  "value": "آشپزخانه",
+                  "type": "text"
                 }
               ]
             },
-            "url": "{{nodejs_webinar_app_local}}project/add-project"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}project/add-project",
+              "host": ["{{nodejs_webinar_app_local}}project"],
+              "path": ["add-project"]
+            }
           },
           "response": []
         },
@@ -830,9 +1042,13 @@
           "request": {
             "auth": {
               "type": "bearer",
-              "bearer": {
-                "token": "{{nodejs_webinar_token}}"
-              }
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
             },
             "method": "PUT",
             "header": [],
@@ -898,7 +1114,11 @@
                 }
               ]
             },
-            "url": "{{nodejs_webinar_app_local}}project/edit-project/1"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}project/edit-project/1",
+              "host": ["{{nodejs_webinar_app_local}}project"],
+              "path": ["edit-project", "1"]
+            }
           },
           "response": []
         },
@@ -907,7 +1127,11 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}project/show-project/1"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}project/show-project/1",
+              "host": ["{{nodejs_webinar_app_local}}project"],
+              "path": ["show-project", "1"]
+            }
           },
           "response": []
         },
@@ -916,18 +1140,29 @@
           "request": {
             "method": "GET",
             "header": [],
-            "url": "{{nodejs_webinar_app_local}}project/get-all-projects"
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}project/get-all-projects",
+              "host": ["{{nodejs_webinar_app_local}}project"],
+              "path": ["get-all-projects"]
+            }
           },
           "response": []
         }
       ]
     },
     {
+      "name": "Search",
+      "item": []
+    },
+    {
       "name": "test",
       "request": {
         "method": "POST",
         "header": [],
-        "url": "{{nodejs_webinar_app_local}}run-delete-job"
+        "url": {
+          "raw": "{{nodejs_webinar_app_local}}run-delete-job",
+          "host": ["{{nodejs_webinar_app_local}}run-delete-job"]
+        }
       },
       "response": []
     }
