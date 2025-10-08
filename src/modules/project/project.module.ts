@@ -12,6 +12,8 @@ import { FindProjectByIdHttpController } from './queries/find-single-project/fin
 import { FindProjectService } from './queries/find-single-project/find-single-project.service';
 import { FindAllProjectsHttpController } from './queries/find-projects/find-projects.http.controller';
 import { FindProjectsService } from './queries/find-projects/find-projects.service';
+import { FindProjectLabelImagesHttpController } from './queries/find-projects-label/find-projects-label.http.controller';
+import { FindProjectLabelImageService } from './queries/find-projects-label/find-projects-label.service';
 
 const httpControllers = [
   FindProjectByIdHttpController,
@@ -19,6 +21,7 @@ const httpControllers = [
   CreateProjectCategoryHttpController,
   UpdateProjectHttpController,
   FindAllProjectsHttpController,
+  FindProjectLabelImagesHttpController,
 ];
 
 const commandHandlers: Provider[] = [
@@ -27,7 +30,11 @@ const commandHandlers: Provider[] = [
   UpdateProjectService,
 ];
 
-const queryHandlers: Provider[] = [FindProjectService, FindProjectsService];
+const queryHandlers: Provider[] = [
+  FindProjectService,
+  FindProjectsService,
+  FindProjectLabelImageService,
+];
 
 const repositories: Provider[] = [PrismaProjectRepository];
 

@@ -81,7 +81,12 @@ export class CreateProjectHttpController {
     @Body() body: CreateProjectRequestDto,
     @GetUser() user: User,
   ) {
-    if (!files.coverImage[0]) {
+    // console.log(files);
+    if (!files.coverImage) {
+      throw new BadRequestException('Check your cover image');
+    }
+
+    if (!files.images) {
       throw new BadRequestException('Check your image(s)');
     }
     const result = await this.createProject.execute(

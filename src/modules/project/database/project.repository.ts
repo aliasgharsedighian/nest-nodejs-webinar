@@ -56,6 +56,8 @@ export class PrismaProjectRepository {
   ) {
     try {
       let updateData: any = {};
+
+      // ✅ Handle main fields
       if (command.title !== undefined) updateData.title = command.title;
       if (command.content !== undefined) updateData.content = command.content;
       if (command.published !== undefined)
@@ -66,7 +68,8 @@ export class PrismaProjectRepository {
         updateData.implementCity = command.implementCity;
       if (command.categoryId !== undefined)
         updateData.categoryId = command.categoryId;
-      // Handle cover image update
+
+      // ✅ Handle cover image update
       if (coverImage) {
         const uploadedCoverImage =
           await this.fileService.uploadProjectCoverImage(coverImage);
@@ -80,7 +83,7 @@ export class PrismaProjectRepository {
         updateData.coverImageId = coverImageRecord.id;
       }
 
-      // Handle images upload
+      // ✅ Upload new images (if any)
       const uploadedImages = await this.fileService.uploadProjectImages(
         images || [],
       );
@@ -96,7 +99,7 @@ export class PrismaProjectRepository {
         ),
       );
 
-      // Update project main fields
+      // ✅ Update main project info
       const updatedProject = await this.prisma.project.update({
         where: { id: projectId },
         data: {
@@ -108,27 +111,20 @@ export class PrismaProjectRepository {
           images: {
             select: {
               uploadFile: {
-                select: {
-                  id: true,
-                  path: true,
-                },
+                select: { id: true, path: true },
               },
             },
           },
         },
       });
 
-      // Handle deleted images
+      // ✅ Handle deleted images
       if (command.deletedImages) {
         const matchedImages = await this.prisma.uploadFile.findMany({
-          where: {
-            id: { in: command.deletedImages },
-          },
-          select: {
-            id: true,
-            path: true,
-          },
+          where: { id: { in: command.deletedImages } },
+          select: { id: true, path: true },
         });
+
         const matchedIds = matchedImages.map((img) => img.id);
         const matchedPaths = matchedImages.map(
           (img) => new URL(img.path).pathname,
@@ -143,7 +139,8 @@ export class PrismaProjectRepository {
             `These image IDs are not part of the project ${projectId}: [${invalidIds.join(', ')}]`,
           );
         }
-        // Check upload and exist item not more than 20 images
+
+        // ✅ Enforce max 20 images
         const newImagesLength =
           updatedProject.images.length -
           matchedIds.length +
@@ -154,27 +151,27 @@ export class PrismaProjectRepository {
           );
         }
 
+        // ✅ Delete from DB + filesystem
         await this.prisma.uploadFile.deleteMany({
-          where: {
-            id: { in: command.deletedImages },
-          },
+          where: { id: { in: command.deletedImages } },
         });
         await this.fileService.deleteProjectImages(matchedPaths);
       }
 
-      // Create new images
+      // ✅ Create new project images with labels (optional)
       await Promise.all(
-        uploadFileRecords.map((image) =>
+        uploadFileRecords.map((image, index) =>
           this.prisma.projectImage.create({
             data: {
               projectId: updatedProject.id,
               uploadFileId: image.id,
+              label: command.labels?.[index]?.toLowerCase() ?? null, // 🟢 NEW: attach label
             },
           }),
         ),
       );
 
-      // Return updated project with images
+      // ✅ Return updated project with labeled images
       const projectWithImages = await this.prisma.project.findUnique({
         where: { id: updatedProject.id },
         include: {
@@ -189,12 +186,11 @@ export class PrismaProjectRepository {
 
       return {
         ...projectWithImages,
-        images: projectWithImages?.images.map((img) => {
-          return {
-            id: img.uploadFile.id,
-            images: img.uploadFile.path,
-          };
-        }),
+        images: projectWithImages?.images.map((img) => ({
+          id: img.uploadFile.id,
+          path: img.uploadFile.path,
+          label: img.label ?? null, // 🟢 Include label
+        })),
       };
     } catch (error) {
       throw error;
@@ -215,8 +211,10 @@ export class PrismaProjectRepository {
         isFeatured,
         implementCity,
         categoryId,
-      } = project;
+        labels, // ✅ add labels from DTO
+      } = project as any; // you can also type this to a DTO interface instead of `Project`
 
+      // 1️⃣ Upload cover image
       const uploadedImage =
         await this.fileService.uploadProjectCoverImage(coverImage);
       const uploadFileRecord = await this.prisma.uploadFile.create({
@@ -227,6 +225,7 @@ export class PrismaProjectRepository {
         },
       });
 
+      // 2️⃣ Upload normal project images
       const uploadedImages = await this.fileService.uploadProjectImages(images);
       const uploadFileRecords = await Promise.all(
         uploadedImages.map((image) =>
@@ -240,7 +239,7 @@ export class PrismaProjectRepository {
         ),
       );
 
-      //create project without images
+      // 3️⃣ Create project
       const created = await this.prisma.project.create({
         data: {
           title,
@@ -255,20 +254,21 @@ export class PrismaProjectRepository {
         },
       });
 
-      //create project with images
+      // 4️⃣ Create project images + labels (matched by index)
       await Promise.all(
-        uploadFileRecords.map((image) =>
+        uploadFileRecords.map((image, index) =>
           this.prisma.projectImage.create({
             data: {
               projectId: created.id,
               uploadFileId: image.id,
+              // ✅ add label if provided (from DTO)
+              label: labels?.[index]?.toLowerCase() ?? null,
             },
           }),
         ),
       );
 
-      //create external images if exist
-
+      // 5️⃣ Fetch the project with relations
       const projectWithImages = await this.prisma.project.findUnique({
         where: { id: created.id },
         include: {
@@ -284,6 +284,7 @@ export class PrismaProjectRepository {
           },
           images: {
             select: {
+              label: true, // ✅ include label in result
               uploadFile: {
                 select: {
                   id: true,
@@ -304,14 +305,14 @@ export class PrismaProjectRepository {
         },
       });
 
+      // 6️⃣ Transform output
       return {
         ...projectWithImages,
-        images: projectWithImages?.images.map((img) => {
-          return {
-            id: img.uploadFile.id,
-            images: img.uploadFile.path,
-          };
-        }),
+        images: projectWithImages?.images.map((img) => ({
+          id: img.uploadFile.id,
+          path: img.uploadFile.path,
+          label: img.label, // ✅ include label
+        })),
       };
     } catch (error) {
       throw error;
@@ -409,5 +410,63 @@ export class PrismaProjectRepository {
     } catch (error) {
       throw error;
     }
+  }
+
+  async findByLabel(label: string) {
+    return this.prisma.projectImage.findMany({
+      where: {
+        label: label.toLowerCase(),
+      },
+      select: {
+        id: true,
+        label: true,
+        project: {
+          select: {
+            id: true,
+            title: true,
+            category: {
+              select: { name: true },
+            },
+          },
+        },
+        uploadFile: {
+          select: {
+            id: true,
+            path: true,
+            mimetype: true,
+            size: true,
+            createdAt: true,
+          },
+        },
+      },
+    });
+  }
+
+  async findByProjectAndLabel(projectId: number, label?: string) {
+    return this.prisma.projectImage.findMany({
+      where: {
+        projectId,
+        ...(label ? { label: label.toLowerCase() } : {}),
+      },
+      select: {
+        id: true,
+        label: true,
+        project: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+        uploadFile: {
+          select: {
+            id: true,
+            path: true,
+            mimetype: true,
+            size: true,
+            createdAt: true,
+          },
+        },
+      },
+    });
   }
 }

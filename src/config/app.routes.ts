@@ -49,5 +49,7 @@ export const routesV1 = {
     createProjectCategory: `${projectRoot}/add-project-category`,
     editProject: `${projectRoot}/edit-project/:id`,
     removeProject: `${projectRoot}/remove-project/:id`,
+    projectLabelImagesById: `${projectRoot}/projects-label/:projectId`,
+    projectLabelImagesByLabel: `${projectRoot}/all-projects-label/:label`,
   },
 };

@@ -23,7 +23,7 @@ export class FileUploadController {
   @Post('upload-files')
   @Roles('ADMIN')
   @UseInterceptors(
-    FilesInterceptor('files', 5, {
+    FilesInterceptor('files', 10, {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, callback) => {

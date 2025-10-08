@@ -5,6 +5,7 @@ import {
   IsBoolean,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -60,12 +61,13 @@ export class CreateProjectRequestDto {
   @IsString()
   readonly implementCity: string;
 
-  @ApiProperty({ example: [1], description: 'number of product category' })
+  @ApiProperty({
+    example: [1],
+    description: 'number of product category',
+  })
   @Transform(({ value }) => {
     try {
-      if (typeof value === 'string') {
-        return JSON.parse(value);
-      }
+      if (typeof value === 'string') return JSON.parse(value);
       return value;
     } catch {
       return [];
@@ -73,4 +75,26 @@ export class CreateProjectRequestDto {
   })
   @IsNumber()
   categoryId: number;
+
+  // ✅ NEW FIELD
+  @ApiProperty({
+    example: ['kitchen', 'path', 'living-room'],
+    required: false,
+    description:
+      'Optional labels for each image (in same order as uploaded files)',
+  })
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      try {
+        return JSON.parse(value);
+      } catch {
+        return value.split(',').map((v: string) => v.trim());
+      }
+    }
+    return value;
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  readonly labels?: string[];
 }

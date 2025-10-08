@@ -1,12 +1,19 @@
 import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 import { UploadFileRequestDto } from './files-upload.request.dto';
+import { OptimizedImagesService } from '../../optimizedProductImages.service';
+import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 
 @Injectable()
 export class FileUploadService {
   private readonly allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp']; // allowed types
   private readonly maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
 
-  handleFilesUpload(files: Express.Multer.File[]) {
+  constructor(
+    private readonly fileService: OptimizedImagesService,
+    private readonly prisma: PrismaService,
+  ) {}
+
+  async handleFilesUpload(files: Express.Multer.File[]) {
     if (!files || files.length === 0) {
       throw new BadRequestException('No files uploaded.');
     }
@@ -15,12 +22,30 @@ export class FileUploadService {
       this.validateFile(file);
     }
 
+    const uploadedFiles = await this.fileService.uploadFilesImages(files);
+    const uploadFileRecords = await Promise.all(
+      uploadedFiles.map((image) =>
+        this.prisma.uploadFile.create({
+          data: {
+            path: `${process.env.DOMAIN_ADDRESS}${image.thumbnailPath}`,
+            mimetype: image.mimetype,
+            size: image.size,
+          },
+        }),
+      ),
+    );
+
     // After validation passed
     return {
       statusCode: HttpStatus.CREATED,
       message: 'Files uploaded successfully',
       data: {
-        files: files.map((file) => file.path),
+        files: uploadFileRecords.map((file) => {
+          return {
+            id: file.id,
+            path: file.path,
+          };
+        }),
       },
     };
   }

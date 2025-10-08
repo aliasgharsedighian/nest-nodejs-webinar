@@ -190,6 +190,57 @@ export class OptimizedImagesService {
     return results;
   }
 
+  async uploadFilesImages(
+    files: Express.Multer.File[],
+  ): Promise<
+    { path: string; thumbnailPath: string; mimetype: string; size: number }[]
+  > {
+    const uploadResults = await Promise.all(
+      files.map(async (file) => {
+        const thumbnailFilename = `thumb-${file.filename}`;
+        const thumbnailPath = path.join(
+          this.thumbnailArticleDir,
+          thumbnailFilename,
+        );
+
+        await sharp(file.path)
+          // .resize(300, 300, { fit: sharp.fit.cover })
+          .resize()
+          .jpeg({ quality: 90 })
+          .toFile(thumbnailPath);
+
+        return {
+          path: `${this.uploadsDir}/${file.filename}`,
+          thumbnailPath: `${thumbnailPath}`,
+          mimetype: file.mimetype,
+          size: file.size,
+        };
+      }),
+    );
+
+    return uploadResults;
+  }
+
+  async deleteFilesImages(files: string[]) {
+    const results: any = [];
+
+    for (const file of files) {
+      const filePath = path.join(
+        process.cwd(),
+
+        file,
+      );
+
+      try {
+        await fs.promises.unlink(filePath);
+        results.push({ file, status: 'deleted' });
+      } catch (err) {
+        results.push({ file, status: 'error', message: err.message });
+      }
+    }
+    return results;
+  }
+
   async uploadArticleImage(file: Express.Multer.File): Promise<{
     path: string;
     thumbnailPath: string;

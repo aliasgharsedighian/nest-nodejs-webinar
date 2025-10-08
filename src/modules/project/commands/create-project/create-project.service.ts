@@ -1,4 +1,9 @@
-import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaProjectRepository } from '../../database/project.repository';
 import { CreateProjectRequestDto } from './create-project.request.dto';
 import { User } from '@prisma/client';
@@ -26,6 +31,9 @@ export class CreateProjectService {
         data: project,
       };
     } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException(`title name must be a unique`);
+      }
       if (error.code === 'P2025') {
         // P2025: Record to connect not found
         throw new BadRequestException('One or more categories do not exist.');

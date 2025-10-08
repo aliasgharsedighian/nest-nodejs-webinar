@@ -72,6 +72,9 @@ export class CreateProductHttpController {
     @Body() body: CreateProductRequestDto,
     @GetUser() user: User,
   ) {
+    if (!images || images.length === 0) {
+      throw new BadRequestException('Check your image(s)');
+    }
     const result = await this.createProduct.execute(body, images, user);
 
     return result;
