@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaSearchRepository } from '../../database/search.repository';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class AllSearchService {
     const lowerQuery = query.toLowerCase();
 
     // 1️⃣ Search products
-    const products = await this.searchRepo.searchProjects(lowerQuery);
+    const products = await this.searchRepo.searchProducts(lowerQuery);
 
     // 2️⃣ Search projects
     const projects = await this.searchRepo.searchProjects(lowerQuery);
@@ -17,6 +17,10 @@ export class AllSearchService {
     // 3️⃣ Search labeled images
     const images = await this.searchRepo.searchImagesByLabel(lowerQuery);
 
-    return { products, projects, images };
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'search all successfully',
+      data: { products, projects, images },
+    };
   }
 }

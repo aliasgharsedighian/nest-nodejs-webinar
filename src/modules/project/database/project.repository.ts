@@ -19,7 +19,13 @@ export class PrismaProjectRepository {
           category: true,
           images: {
             select: {
-              uploadFile: true,
+              label: true,
+              uploadFile: {
+                select: {
+                  id: true,
+                  path: true,
+                },
+              },
             },
           },
           author: true,
@@ -39,6 +45,7 @@ export class PrismaProjectRepository {
           return {
             id: img.uploadFile.id,
             images: img.uploadFile.path,
+            label: img.label,
           };
         }),
       };
@@ -346,6 +353,7 @@ export class PrismaProjectRepository {
             },
             images: {
               select: {
+                label: true,
                 uploadFile: {
                   select: {
                     id: true,
@@ -370,6 +378,7 @@ export class PrismaProjectRepository {
             return {
               id: img.uploadFile.id,
               path: img.uploadFile.path,
+              label: img.label,
             };
           }),
         })),

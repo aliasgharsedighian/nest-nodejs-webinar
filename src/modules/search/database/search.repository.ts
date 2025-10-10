@@ -26,6 +26,29 @@ export class PrismaSearchRepository {
     });
   }
 
+  async searchProducts(query: string) {
+    return this.prisma.product.findMany({
+      where: {
+        OR: [
+          { title: { contains: query, mode: 'insensitive' } },
+          {
+            categories: {
+              some: { name: { contains: query, mode: 'insensitive' } },
+            },
+          },
+        ],
+      },
+      include: {
+        categories: true, // include related category info
+        images: {
+          include: {
+            uploadFile: true, // include image file info
+          },
+        },
+      },
+    });
+  }
+
   // Search project images by label
   async searchImagesByLabel(query: string) {
     return this.prisma.projectImage.findMany({
