@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "468a5131-e567-4cc5-b993-d4dabe239e10",
+    "_postman_id": "1157f6c5-583b-4c2f-974f-dabbdd50dd8a",
     "name": "nodejs-webinar",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "24392755"
@@ -117,7 +117,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"email\": \"alitest2@example.com\",\r\n    \"password\": \"password\"\r\n}",
+              "raw": "{\r\n    \"email\": \"alitest22@example.com\",\r\n    \"password\": \"password\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -227,9 +227,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/show-product/3",
+              "raw": "{{nodejs_webinar_app_local}}shop/show-product/2",
               "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["show-product", "3"]
+              "path": ["show-product", "2"]
             }
           },
           "response": []
@@ -279,13 +279,13 @@
                 },
                 {
                   "key": "categories",
-                  "value": "[25]",
+                  "value": "[1]",
                   "type": "text"
                 },
                 {
                   "key": "images",
                   "type": "file",
-                  "src": "/C:/Users/assed/Desktop/images/OIG.jpg"
+                  "src": "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-09-24-452_com.android.chrome.jpg"
                 }
               ]
             },
@@ -323,7 +323,7 @@
                 {
                   "key": "image",
                   "type": "file",
-                  "src": "/C:/Users/assed/Desktop/images/OIG.jpg"
+                  "src": "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-18-07-492_com.android.chrome.jpg"
                 }
               ]
             },
@@ -374,12 +374,14 @@
                 {
                   "key": "images",
                   "type": "file",
-                  "src": "/D:/Gallery/DCIM Note 8/Camera sd/20180712_214758.jpg"
+                  "src": "/D:/Gallery/DCIM Note 8/Camera sd/20180712_214758.jpg",
+                  "disabled": true
                 },
                 {
                   "key": "deletedImages",
                   "value": "[31]",
-                  "type": "text"
+                  "type": "text",
+                  "disabled": true
                 },
                 {
                   "key": "show",
@@ -389,9 +391,9 @@
               ]
             },
             "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/edit-product/3",
+              "raw": "{{nodejs_webinar_app_local}}shop/edit-product/2",
               "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["edit-product", "3"]
+              "path": ["edit-product", "2"]
             }
           },
           "response": []
@@ -938,7 +940,7 @@
                 {
                   "key": "image",
                   "type": "file",
-                  "src": "/C:/Users/assed/Desktop/nest-project/project-category1.jpg"
+                  "src": "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-09-24-452_com.android.chrome.jpg"
                 }
               ]
             },
@@ -1002,15 +1004,15 @@
                   "key": "images",
                   "type": "file",
                   "src": [
-                    "/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg",
-                    "/C:/Users/assed/Desktop/nest-project/images3-service.jpg",
-                    "/C:/Users/assed/Desktop/nest-project/images-kitchen1.jpg"
+                    "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-15-19-003_com.android.chrome.jpg",
+                    "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-18-07-492_com.android.chrome.jpg",
+                    "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-20-30-378_com.android.chrome.jpg"
                   ]
                 },
                 {
                   "key": "coverImage",
                   "type": "file",
-                  "src": "/C:/Users/assed/Desktop/nest-project/project-category1.jpg"
+                  "src": "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-09-24-452_com.android.chrome.jpg"
                 },
                 {
                   "key": "labels[0]",
@@ -1128,9 +1130,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{nodejs_webinar_app_local}}project/show-project/1",
+              "raw": "{{nodejs_webinar_app_local}}project/show-project/2",
               "host": ["{{nodejs_webinar_app_local}}project"],
-              "path": ["show-project", "1"]
+              "path": ["show-project", "2"]
             }
           },
           "response": []
@@ -1152,7 +1154,27 @@
     },
     {
       "name": "Search",
-      "item": []
+      "item": [
+        {
+          "name": "search-all",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}search/search-all?query=چیتگر",
+              "host": ["{{nodejs_webinar_app_local}}search"],
+              "path": ["search-all"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "چیتگر"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     },
     {
       "name": "test",
