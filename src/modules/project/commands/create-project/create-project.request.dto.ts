@@ -26,7 +26,6 @@ export class CreateProjectRequestDto {
     example: 'projectBody',
     description: 'body content for projects',
   })
-  @MaxLength(320)
   @MinLength(5)
   @IsString()
   @IsNotEmpty({ message: 'content is required' })

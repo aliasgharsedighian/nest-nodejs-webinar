@@ -14,6 +14,8 @@ import { FindAllProjectsHttpController } from './queries/find-projects/find-proj
 import { FindProjectsService } from './queries/find-projects/find-projects.service';
 import { FindProjectLabelImagesHttpController } from './queries/find-projects-label/find-projects-label.http.controller';
 import { FindProjectLabelImageService } from './queries/find-projects-label/find-projects-label.service';
+import { FindAllAdminProjectsHttpController } from './queries/find-all-projects-admin/find-all-projects-admin.http.controller';
+import { FindAllProjectsAdminService } from './queries/find-all-projects-admin/find-all-projects-admin.service';
 
 const httpControllers = [
   FindProjectByIdHttpController,
@@ -22,6 +24,7 @@ const httpControllers = [
   UpdateProjectHttpController,
   FindAllProjectsHttpController,
   FindProjectLabelImagesHttpController,
+  FindAllAdminProjectsHttpController,
 ];
 
 const commandHandlers: Provider[] = [
@@ -34,6 +37,7 @@ const queryHandlers: Provider[] = [
   FindProjectService,
   FindProjectsService,
   FindProjectLabelImageService,
+  FindAllProjectsAdminService,
 ];
 
 const repositories: Provider[] = [PrismaProjectRepository];

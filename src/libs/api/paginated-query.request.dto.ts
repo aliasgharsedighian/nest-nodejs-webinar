@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, Max, Min } from 'class-validator';
+import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class PaginatedQueryRequestDto {
   @IsOptional()
@@ -22,4 +22,22 @@ export class PaginatedQueryRequestDto {
   @Type(() => Number)
   @ApiProperty({ example: 0, description: 'Page number', required: false })
   readonly page?: number;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({
+    example: 'id',
+    description: 'Field to sort by',
+    required: false,
+  })
+  readonly sortBy?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({
+    example: 'ASC',
+    description: 'Sort order (ASC or DESC)',
+    required: false,
+  })
+  readonly order?: 'ASC' | 'DESC';
 }

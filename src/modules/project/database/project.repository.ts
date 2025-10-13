@@ -14,6 +14,49 @@ export class PrismaProjectRepository {
   async findById(projectId: number) {
     try {
       const project = await this.prisma.project.findUnique({
+        where: { id: projectId, published: true },
+        include: {
+          category: true,
+          images: {
+            select: {
+              label: true,
+              uploadFile: {
+                select: {
+                  id: true,
+                  path: true,
+                },
+              },
+            },
+          },
+          author: true,
+          coverImage: true,
+          comments: true,
+          externalImages: true,
+        },
+      });
+
+      if (!project) {
+        return null;
+      }
+
+      return {
+        ...project,
+        images: project.images.map((img) => {
+          return {
+            id: img.uploadFile.id,
+            images: img.uploadFile.path,
+            label: img.label,
+          };
+        }),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findByIdAdmin(projectId: number) {
+    try {
+      const project = await this.prisma.project.findUnique({
         where: { id: projectId },
         include: {
           category: true,
@@ -326,6 +369,74 @@ export class PrismaProjectRepository {
     }
   }
 
+  async findAllAdminPaginate(page: number, skip: number, limit: number) {
+    try {
+      const [projects, totalCount] = await Promise.all([
+        this.prisma.project.findMany({
+          skip,
+          take: limit,
+          orderBy: {
+            createdAt: 'desc',
+          },
+          include: {
+            category: {
+              select: {
+                id: true,
+                name: true,
+                image: {
+                  select: {
+                    id: true,
+                    path: true,
+                  },
+                },
+              },
+            },
+            coverImage: {
+              select: {
+                id: true,
+                path: true,
+              },
+            },
+            images: {
+              select: {
+                label: true,
+                uploadFile: {
+                  select: {
+                    id: true,
+                    path: true,
+                  },
+                },
+              },
+            },
+          },
+        }),
+        this.prisma.project.count({
+          where: {
+            published: true,
+          },
+        }),
+      ]);
+
+      return {
+        projects: projects.map((project) => ({
+          ...project,
+          images: project.images.map((img) => {
+            return {
+              id: img.uploadFile.id,
+              path: img.uploadFile.path,
+              label: img.label,
+            };
+          }),
+        })),
+        totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findAllPaginate(page: number, skip: number, limit: number) {
     try {
       const [projects, totalCount] = await Promise.all([
@@ -349,6 +460,12 @@ export class PrismaProjectRepository {
                     path: true,
                   },
                 },
+              },
+            },
+            coverImage: {
+              select: {
+                id: true,
+                path: true,
               },
             },
             images: {

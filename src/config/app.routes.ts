@@ -14,6 +14,7 @@ export const routesV1 = {
   auth: {
     signin: `${authRoot}/signin`,
     signup: `${authRoot}/signup`,
+    logout: `${authRoot}/logout`,
     userInfo: `${authRoot}/user-info`,
     requestOtp: `${authRoot}/request-otp`,
     verifyOtp: `${authRoot}/verify-otp`,
@@ -45,7 +46,9 @@ export const routesV1 = {
   },
   project: {
     getAllProjects: `${projectRoot}/get-all-projects`,
+    getAllAdminProjects: `${projectRoot}/get-all-admin-projects`,
     showProject: `${projectRoot}/show-project/:id`,
+    showAdminProject: `${projectRoot}/show-admin-project/:id`,
     createProject: `${projectRoot}/add-project`,
     createProjectCategory: `${projectRoot}/add-project-category`,
     editProject: `${projectRoot}/edit-project/:id`,

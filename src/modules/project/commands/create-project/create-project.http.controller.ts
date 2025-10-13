@@ -46,6 +46,7 @@ export class CreateProjectHttpController {
     FileFieldsInterceptor(
       [
         { name: 'images', maxCount: 20 },
+        { name: 'images[]', maxCount: 20 },
         { name: 'coverImage', maxCount: 1 },
       ],
       {

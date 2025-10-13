@@ -16,6 +16,8 @@ import { AuthRefreshController } from './refresh-token.http.controller';
 import { GoogleAuthController } from './commands/create-user-google/create-user-google.http.controller';
 import { GoogleStrategy } from './strategy/googleAuth/google.strategy';
 import { CreateGoogleUserService } from './commands/create-user-google/create-user-google.service';
+import { LogoutUserHttpController } from './queries/logout-user/logout-user.http.controller';
+import { LogoutUserService } from './queries/logout-user/logout-user.service';
 
 const httpControllers = [
   CreateUserHttpController,
@@ -23,6 +25,7 @@ const httpControllers = [
   OtpController,
   AuthRefreshController,
   GoogleAuthController,
+  LogoutUserHttpController,
 ];
 
 const OtpProviders = [
@@ -40,6 +43,7 @@ const OtpProviders = [
     AuthTokenService,
     CreateUserService,
     SignInUserService,
+    LogoutUserService,
     CreateGoogleUserService,
     JwtStrategy,
     GoogleStrategy,
