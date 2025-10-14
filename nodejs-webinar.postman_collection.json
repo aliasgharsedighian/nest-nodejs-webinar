@@ -133,6 +133,29 @@
           "response": []
         },
         {
+          "name": "logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}auth/logout",
+              "host": ["{{nodejs_webinar_app_local}}auth"],
+              "path": ["logout"]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "refresh-token",
           "request": {
             "auth": {
@@ -227,9 +250,22 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/show-product/2",
+              "raw": "{{nodejs_webinar_app_local}}shop/show-product/3",
               "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["show-product", "2"]
+              "path": ["show-product", "3"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "show-category-product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}shop/show-category-product",
+              "host": ["{{nodejs_webinar_app_local}}shop"],
+              "path": ["show-category-product"]
             }
           },
           "response": []
@@ -285,7 +321,10 @@
                 {
                   "key": "images",
                   "type": "file",
-                  "src": "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-09-24-452_com.android.chrome.jpg"
+                  "src": [
+                    "/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg",
+                    "/C:/Users/assed/Desktop/nest-project/images3-service.jpg"
+                  ]
                 }
               ]
             },
@@ -323,7 +362,7 @@
                 {
                   "key": "image",
                   "type": "file",
-                  "src": "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-18-07-492_com.android.chrome.jpg"
+                  "src": "/C:/Users/assed/Desktop/nest-project/کابینت-حمام-5-2.jpg"
                 }
               ]
             },
@@ -972,7 +1011,7 @@
               "formdata": [
                 {
                   "key": "title",
-                  "value": "پروژه چیتگر",
+                  "value": "پروژه چیتگر23",
                   "type": "text"
                 },
                 {
@@ -1004,15 +1043,16 @@
                   "key": "images",
                   "type": "file",
                   "src": [
-                    "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-15-19-003_com.android.chrome.jpg",
-                    "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-18-07-492_com.android.chrome.jpg",
-                    "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-20-30-378_com.android.chrome.jpg"
-                  ]
+                    "/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg",
+                    "/C:/Users/assed/Desktop/nest-project/images3-service.jpg",
+                    "/C:/Users/assed/Desktop/nest-project/images-kitchen1.jpg"
+                  ],
+                  "disabled": true
                 },
                 {
                   "key": "coverImage",
                   "type": "file",
-                  "src": "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-09-24-452_com.android.chrome.jpg"
+                  "src": "/C:/Users/assed/Desktop/nest-project/project-category1.jpg"
                 },
                 {
                   "key": "labels[0]",
@@ -1028,6 +1068,16 @@
                   "key": "labels[2]",
                   "value": "آشپزخانه",
                   "type": "text"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": "/C:/Users/assed/Desktop/nest-project/کابینت-حمام-5-2.jpg"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": "/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg"
                 }
               ]
             },
@@ -1130,9 +1180,32 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{nodejs_webinar_app_local}}project/show-project/2",
+              "raw": "{{nodejs_webinar_app_local}}project/show-project/10",
               "host": ["{{nodejs_webinar_app_local}}project"],
-              "path": ["show-project", "2"]
+              "path": ["show-project", "10"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "show-admin-project",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}project/show-admin-project/10",
+              "host": ["{{nodejs_webinar_app_local}}project"],
+              "path": ["show-admin-project", "10"]
             }
           },
           "response": []
@@ -1143,9 +1216,52 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{nodejs_webinar_app_local}}project/get-all-projects",
+              "raw": "{{nodejs_webinar_app_local}}project/get-all-projects?page=1&limit=12",
               "host": ["{{nodejs_webinar_app_local}}project"],
-              "path": ["get-all-projects"]
+              "path": ["get-all-projects"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "12"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "show-all-admin-project",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}project/get-all-admin-projects?page=1&limit=12",
+              "host": ["{{nodejs_webinar_app_local}}project"],
+              "path": ["get-all-admin-projects"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "12"
+                }
+              ]
             }
           },
           "response": []

@@ -25,7 +25,7 @@ export class CreateProductCategoryService {
       );
 
       return {
-        status: HttpStatus.CREATED,
+        statusCode: HttpStatus.CREATED,
         message: 'product category created successfully.',
         data: category,
       };

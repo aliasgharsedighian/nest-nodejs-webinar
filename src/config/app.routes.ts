@@ -27,6 +27,7 @@ export const routesV1 = {
   product: {
     getAllProducts: `${productRoot}/get-all-products`,
     showProduct: `${productRoot}/show-product/:id`,
+    showCategoryProduct: `${productRoot}/show-category-product`,
     createProduct: `${productRoot}/add-product`,
     createProductCategory: `${productRoot}/add-product-category`,
     editProduct: `${productRoot}/edit-product/:id`,

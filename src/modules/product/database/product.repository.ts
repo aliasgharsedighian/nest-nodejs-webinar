@@ -500,4 +500,31 @@ export class PrismaProductRepository {
       throw error;
     }
   }
+
+  async findAllProductCategory() {
+    try {
+      const categoryProduct = await this.prisma.productCategory.findMany({
+        include: {
+          image: {
+            include: {
+              uploadFile: {
+                select: {
+                  id: true,
+                  path: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return categoryProduct.map((category) => ({
+        id: category.id,
+        name: category.name,
+        image: category.image[0].uploadFile.path || null, // or undefined
+      }));
+    } catch (error) {
+      throw error;
+    }
+  }
 }
