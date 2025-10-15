@@ -1,1364 +1,1552 @@
 {
-  "info": {
-    "_postman_id": "1157f6c5-583b-4c2f-974f-dabbdd50dd8a",
-    "name": "nodejs-webinar",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "24392755"
-  },
-  "item": [
-    {
-      "name": "Auth",
-      "item": [
-        {
-          "name": "signup",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"email\": \"alitest22@example.com\",\r\n    \"password\": \"password\",\r\n    \"role\": \"ADMIN\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}auth/signup",
-              "host": ["{{nodejs_webinar_app_local}}auth"],
-              "path": ["signup"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "request-otp",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"mobileNumber\": \"09036070804\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}auth/request-otp",
-              "host": ["{{nodejs_webinar_app_local}}auth"],
-              "path": ["request-otp"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "verify-otp",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"userId\": 3,\r\n    \"code\": \"902968\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}auth/verify-otp",
-              "host": ["{{nodejs_webinar_app_local}}auth"],
-              "path": ["verify-otp"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "update",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"firstname\": \"ali asghar22\",\r\n    \"lastname\": \"sedighian\",\r\n    \"role\": \"ADMIN\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}auth/update-user-info",
-              "host": ["{{nodejs_webinar_app_local}}auth"],
-              "path": ["update-user-info"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "signin",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"email\": \"alitest22@example.com\",\r\n    \"password\": \"password\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}auth/signin",
-              "host": ["{{nodejs_webinar_app_local}}auth"],
-              "path": ["signin"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "logout",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}auth/logout",
-              "host": ["{{nodejs_webinar_app_local}}auth"],
-              "path": ["logout"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "refresh-token",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJlbWFpbCI6ImFsaXRlc3QyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ1NjU3MDA0LCJleHAiOjE3NDYyNjE4MDR9.qmJC0s6jl_Lfpix_ONTijpQM1iX-h-EfwFrvMeWYU2w\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}auth/refresh-token",
-              "host": ["{{nodejs_webinar_app_local}}auth"],
-              "path": ["refresh-token"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "user-info",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}auth/user-info",
-              "host": ["{{nodejs_webinar_app_local}}auth"],
-              "path": ["user-info"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "get-user",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}user/1",
-              "host": ["{{nodejs_webinar_app_local}}user"],
-              "path": ["1"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Product",
-      "item": [
-        {
-          "name": "get-all-products",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/get-all-products?page=1&limit=12",
-              "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["get-all-products"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "12"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "get-all-products-admin",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/get-all-admin-products?page=1&limit=12",
-              "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["get-all-admin-products"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "12"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "show-product",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/show-product/3",
-              "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["show-product", "3"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "show-product-admin",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/show-admin-product/5",
-              "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["show-admin-product", "5"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "show-category-product",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/show-category-product",
-              "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["show-category-product"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "create-product",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "title",
-                  "value": "title test2",
-                  "type": "text"
-                },
-                {
-                  "key": "description",
-                  "value": "test description",
-                  "type": "text"
-                },
-                {
-                  "key": "price",
-                  "value": "2220000",
-                  "type": "text"
-                },
-                {
-                  "key": "stock",
-                  "value": "1",
-                  "type": "text"
-                },
-                {
-                  "key": "show",
-                  "value": "false",
-                  "type": "text"
-                },
-                {
-                  "key": "categories",
-                  "value": "[1]",
-                  "type": "text"
-                },
-                {
-                  "key": "images",
-                  "type": "file",
-                  "src": [
-                    "/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg",
-                    "/C:/Users/assed/Desktop/nest-project/images3-service.jpg"
-                  ]
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/add-product",
-              "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["add-product"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "create-product-category",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "name",
-                  "value": "test72",
-                  "type": "text"
-                },
-                {
-                  "key": "image",
-                  "type": "file",
-                  "src": "/C:/Users/assed/Desktop/nest-project/کابینت-حمام-5-2.jpg"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/add-product-category",
-              "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["add-product-category"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "edit-product",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "title",
-                  "value": "test edit title44",
-                  "type": "text",
-                  "disabled": true
-                },
-                {
-                  "key": "description",
-                  "value": "test edit description44",
-                  "type": "text",
-                  "disabled": true
-                },
-                {
-                  "key": "categories",
-                  "value": "[22,20]",
-                  "type": "text",
-                  "disabled": true
-                },
-                {
-                  "key": "images",
-                  "type": "file",
-                  "src": "/D:/Gallery/DCIM Note 8/Camera sd/20180712_214758.jpg",
-                  "disabled": true
-                },
-                {
-                  "key": "deletedImages",
-                  "value": "[31]",
-                  "type": "text",
-                  "disabled": true
-                },
-                {
-                  "key": "show",
-                  "value": "true",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/edit-product/2",
-              "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["edit-product", "2"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "remove-product",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}shop/remove-product/84",
-              "host": ["{{nodejs_webinar_app_local}}shop"],
-              "path": ["remove-product", "84"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Cart",
-      "item": [
-        {
-          "name": "cart-store",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"description\": \"test description\",\r\n    \"address\": \"test address\",\r\n    \"cartItems\" : [\r\n        {\r\n           \"productId\":1,\r\n            \"quantity\":1\r\n        },\r\n                {\r\n           \"productId\":2,\r\n            \"quantity\":2\r\n        },\r\n                {\r\n           \"productId\":3,\r\n            \"quantity\":3\r\n        }\r\n    ]\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}cart/cart-store",
-              "host": ["{{nodejs_webinar_app_local}}cart"],
-              "path": ["cart-store"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "cart-show",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}cart/get-cart",
-              "host": ["{{nodejs_webinar_app_local}}cart"],
-              "path": ["get-cart"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "update-cart",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"description\": \"\",\r\n    \"updateItem\" : {\r\n           \"id\": 28,\r\n           \"productId\":1,\r\n            \"quantity\":5\r\n        }\r\n   \r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}cart/update-cart",
-              "host": ["{{nodejs_webinar_app_local}}cart"],
-              "path": ["update-cart"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "registration-cart",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}cart/registration-cart",
-              "host": ["{{nodejs_webinar_app_local}}cart"],
-              "path": ["registration-cart"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Invoice",
-      "item": [
-        {
-          "name": "get-all-invoice",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}invoice/get-all-invoice",
-              "host": ["{{nodejs_webinar_app_local}}invoice"],
-              "path": ["get-all-invoice"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "show-invoice",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}invoice/show-invoice/11",
-              "host": ["{{nodejs_webinar_app_local}}invoice"],
-              "path": ["show-invoice", "11"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "upload-files",
-      "item": [
-        {
-          "name": "upload-files",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "files",
-                  "type": "file",
-                  "src": [
-                    "/C:/Users/assed/Desktop/images/defailt dns sJPG.JPG",
-                    "/C:/Users/assed/Desktop/images/google-impression4.JPG",
-                    "/C:/Users/assed/Desktop/images/google-search.jpg",
-                    "/C:/Users/assed/Desktop/images/google-search2.jpg",
-                    "/C:/Users/assed/Desktop/images/ali asfg har.jpg"
-                  ]
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}file-upload/upload-files",
-              "host": ["{{nodejs_webinar_app_local}}file-upload"],
-              "path": ["upload-files"],
-              "query": [
-                {
-                  "key": "file",
-                  "value": null,
-                  "disabled": true
-                }
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Article",
-      "item": [
-        {
-          "name": "create-article",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "title",
-                  "value": "article title",
-                  "type": "text"
-                },
-                {
-                  "key": "slug",
-                  "value": "article11",
-                  "type": "text"
-                },
-                {
-                  "key": "excerpt",
-                  "value": "article excerpt",
-                  "type": "text"
-                },
-                {
-                  "key": "body",
-                  "value": "<p>this is a article body</p>",
-                  "type": "text"
-                },
-                {
-                  "key": "published",
-                  "value": "true",
-                  "type": "text"
-                },
-                {
-                  "key": "categoryId",
-                  "value": "1",
-                  "type": "text"
-                },
-                {
-                  "key": "image",
-                  "type": "file",
-                  "src": "/C:/Users/assed/Desktop/images/OIG.jpg"
-                },
-                {
-                  "key": "isFeatured",
-                  "value": "false",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}article/add-article",
-              "host": ["{{nodejs_webinar_app_local}}article"],
-              "path": ["add-article"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "create-article-category",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"test category\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}article/add-article-category",
-              "host": ["{{nodejs_webinar_app_local}}article"],
-              "path": ["add-article-category"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "get-all-article",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}article/get-all-articles?page=1&limit=8",
-              "host": ["{{nodejs_webinar_app_local}}article"],
-              "path": ["get-all-articles"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "8"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "show-article",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}article/show-article/article22",
-              "host": ["{{nodejs_webinar_app_local}}article"],
-              "path": ["show-article", "article22"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "edit-article",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "image",
-                  "type": "file",
-                  "src": "/C:/Users/assed/Desktop/images/Untitled-1 (4).jpg"
-                },
-                {
-                  "key": "title",
-                  "value": "article9 title test2",
-                  "type": "text"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}article/edit-article/article9",
-              "host": ["{{nodejs_webinar_app_local}}article"],
-              "path": ["edit-article", "article9"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "remove-article",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}article/remove-article/article5",
-              "host": ["{{nodejs_webinar_app_local}}article"],
-              "path": ["remove-article", "article5"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "User",
-      "item": [
-        {
-          "name": "update-profile",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"firstname\": \"ali asghar\",\r\n    \"lastname\": \"sedighian\",\r\n    \"address\": \"\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}user/update-profile",
-              "host": ["{{nodejs_webinar_app_local}}user"],
-              "path": ["update-profile"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "update-user",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"role\": \"ADMIN\",\r\n    \"firstname\": \"ali asghar22\",\r\n    \"lastname\": \"sedighian22\",\r\n    \"address\": \"2\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}user/update-user/29",
-              "host": ["{{nodejs_webinar_app_local}}user"],
-              "path": ["update-user", "29"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Project",
-      "item": [
-        {
-          "name": "create-project-category",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "name",
-                  "value": "پروژه چیتگر",
-                  "type": "text"
-                },
-                {
-                  "key": "image",
-                  "type": "file",
-                  "src": "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-09-24-452_com.android.chrome.jpg"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}project/add-project-category",
-              "host": ["{{nodejs_webinar_app_local}}project"],
-              "path": ["add-project-category"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "create-project",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "title",
-                  "value": "پروژه چیتگر23",
-                  "type": "text"
-                },
-                {
-                  "key": "content",
-                  "value": "<p>test description</p>",
-                  "type": "text"
-                },
-                {
-                  "key": "published",
-                  "value": "true",
-                  "type": "text"
-                },
-                {
-                  "key": "isFeatured",
-                  "value": "false",
-                  "type": "text"
-                },
-                {
-                  "key": "implementCity",
-                  "value": "تهران",
-                  "type": "text"
-                },
-                {
-                  "key": "categoryId",
-                  "value": "1",
-                  "type": "text"
-                },
-                {
-                  "key": "images",
-                  "type": "file",
-                  "src": [
-                    "/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg",
-                    "/C:/Users/assed/Desktop/nest-project/images3-service.jpg",
-                    "/C:/Users/assed/Desktop/nest-project/images-kitchen1.jpg"
-                  ],
-                  "disabled": true
-                },
-                {
-                  "key": "coverImage",
-                  "type": "file",
-                  "src": "/C:/Users/assed/Desktop/nest-project/project-category1.jpg"
-                },
-                {
-                  "key": "labels[0]",
-                  "value": "اتاق خواب",
-                  "type": "text"
-                },
-                {
-                  "key": "labels[1]",
-                  "value": "سرویس بهداشتی",
-                  "type": "text"
-                },
-                {
-                  "key": "labels[2]",
-                  "value": "آشپزخانه",
-                  "type": "text"
-                },
-                {
-                  "key": "images",
-                  "type": "file",
-                  "src": "/C:/Users/assed/Desktop/nest-project/کابینت-حمام-5-2.jpg"
-                },
-                {
-                  "key": "images",
-                  "type": "file",
-                  "src": "/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg"
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}project/add-project",
-              "host": ["{{nodejs_webinar_app_local}}project"],
-              "path": ["add-project"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "update-project",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "title",
-                  "value": "title test23",
-                  "type": "text"
-                },
-                {
-                  "key": "content",
-                  "value": "<p>test description</p>",
-                  "type": "text",
-                  "disabled": true
-                },
-                {
-                  "key": "published",
-                  "value": "true",
-                  "type": "text",
-                  "disabled": true
-                },
-                {
-                  "key": "isFeatured",
-                  "value": "false",
-                  "type": "text",
-                  "disabled": true
-                },
-                {
-                  "key": "implementCity",
-                  "value": "tehran",
-                  "type": "text",
-                  "disabled": true
-                },
-                {
-                  "key": "categoryId",
-                  "value": "1",
-                  "type": "text",
-                  "disabled": true
-                },
-                {
-                  "key": "images",
-                  "type": "file",
-                  "src": [
-                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0238.JPG",
-                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0239.JPG",
-                    "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0248.JPG"
-                  ],
-                  "disabled": true
-                },
-                {
-                  "key": "coverImage",
-                  "type": "file",
-                  "src": "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0072.JPG",
-                  "disabled": true
-                },
-                {
-                  "key": "deletedImages",
-                  "value": "[12,13]",
-                  "type": "text",
-                  "disabled": true
-                }
-              ]
-            },
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}project/edit-project/1",
-              "host": ["{{nodejs_webinar_app_local}}project"],
-              "path": ["edit-project", "1"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "show-project",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}project/show-project/10",
-              "host": ["{{nodejs_webinar_app_local}}project"],
-              "path": ["show-project", "10"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "show-admin-project",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}project/show-admin-project/10",
-              "host": ["{{nodejs_webinar_app_local}}project"],
-              "path": ["show-admin-project", "10"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "show-all-project",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}project/get-all-projects?page=1&limit=12",
-              "host": ["{{nodejs_webinar_app_local}}project"],
-              "path": ["get-all-projects"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "12"
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "show-all-admin-project",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{nodejs_webinar_token}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}project/get-all-admin-projects?page=1&limit=12",
-              "host": ["{{nodejs_webinar_app_local}}project"],
-              "path": ["get-all-admin-projects"],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "12"
-                }
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Search",
-      "item": [
-        {
-          "name": "search-all",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{nodejs_webinar_app_local}}search/search-all?query=چیتگر",
-              "host": ["{{nodejs_webinar_app_local}}search"],
-              "path": ["search-all"],
-              "query": [
-                {
-                  "key": "query",
-                  "value": "چیتگر"
-                }
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "test",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": "{{nodejs_webinar_app_local}}run-delete-job",
-          "host": ["{{nodejs_webinar_app_local}}run-delete-job"]
-        }
-      },
-      "response": []
-    }
-  ]
+	"info": {
+		"_postman_id": "1157f6c5-583b-4c2f-974f-dabbdd50dd8a",
+		"name": "nodejs-webinar",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24392755"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"alitest22@example.com\",\r\n    \"password\": \"password\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}auth/signup",
+							"host": [
+								"{{nodejs_webinar_app_local}}auth"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request-otp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobileNumber\": \"09036070804\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}auth/request-otp",
+							"host": [
+								"{{nodejs_webinar_app_local}}auth"
+							],
+							"path": [
+								"request-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify-otp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 3,\r\n    \"code\": \"902968\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}auth/verify-otp",
+							"host": [
+								"{{nodejs_webinar_app_local}}auth"
+							],
+							"path": [
+								"verify-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"ali asghar22\",\r\n    \"lastname\": \"sedighian\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}auth/update-user-info",
+							"host": [
+								"{{nodejs_webinar_app_local}}auth"
+							],
+							"path": [
+								"update-user-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"alitest22@example.com\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}auth/signin",
+							"host": [
+								"{{nodejs_webinar_app_local}}auth"
+							],
+							"path": [
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}auth/logout",
+							"host": [
+								"{{nodejs_webinar_app_local}}auth"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh-token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJlbWFpbCI6ImFsaXRlc3QyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ1NjU3MDA0LCJleHAiOjE3NDYyNjE4MDR9.qmJC0s6jl_Lfpix_ONTijpQM1iX-h-EfwFrvMeWYU2w\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}auth/refresh-token",
+							"host": [
+								"{{nodejs_webinar_app_local}}auth"
+							],
+							"path": [
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user-info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}auth/user-info",
+							"host": [
+								"{{nodejs_webinar_app_local}}auth"
+							],
+							"path": [
+								"user-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}user/1",
+							"host": [
+								"{{nodejs_webinar_app_local}}user"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "get-all-products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}shop/get-all-products?page=1&limit=12",
+							"host": [
+								"{{nodejs_webinar_app_local}}shop"
+							],
+							"path": [
+								"get-all-products"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-products-admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}shop/get-all-admin-products?page=1&limit=12",
+							"host": [
+								"{{nodejs_webinar_app_local}}shop"
+							],
+							"path": [
+								"get-all-admin-products"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show-product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}shop/show-product/3",
+							"host": [
+								"{{nodejs_webinar_app_local}}shop"
+							],
+							"path": [
+								"show-product",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show-product-admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}shop/show-admin-product/4",
+							"host": [
+								"{{nodejs_webinar_app_local}}shop"
+							],
+							"path": [
+								"show-admin-product",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show-category-product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}shop/show-category-product?page=1&limit=12",
+							"host": [
+								"{{nodejs_webinar_app_local}}shop"
+							],
+							"path": [
+								"show-category-product"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "title test2",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "test description",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "2220000",
+									"type": "text"
+								},
+								{
+									"key": "stock",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "show",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "categories",
+									"value": "[1]",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg",
+										"/C:/Users/assed/Desktop/nest-project/images3-service.jpg"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}shop/add-product",
+							"host": [
+								"{{nodejs_webinar_app_local}}shop"
+							],
+							"path": [
+								"add-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-product-category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "test72",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/assed/Desktop/nest-project/کابینت-حمام-5-2.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}shop/add-product-category",
+							"host": [
+								"{{nodejs_webinar_app_local}}shop"
+							],
+							"path": [
+								"add-product-category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit-product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "test edit title44",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "test edit description44",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "categories",
+									"value": "[22,20]",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/D:/Gallery/DCIM Note 8/Camera sd/20180712_214758.jpg",
+									"disabled": true
+								},
+								{
+									"key": "deletedImages",
+									"value": "[31]",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "show",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}shop/edit-product/2",
+							"host": [
+								"{{nodejs_webinar_app_local}}shop"
+							],
+							"path": [
+								"edit-product",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove-product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}shop/remove-product/84",
+							"host": [
+								"{{nodejs_webinar_app_local}}shop"
+							],
+							"path": [
+								"remove-product",
+								"84"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "cart-store",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"test description\",\r\n    \"address\": \"test address\",\r\n    \"cartItems\" : [\r\n        {\r\n           \"productId\":1,\r\n            \"quantity\":1\r\n        },\r\n                {\r\n           \"productId\":2,\r\n            \"quantity\":2\r\n        },\r\n                {\r\n           \"productId\":3,\r\n            \"quantity\":3\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}cart/cart-store",
+							"host": [
+								"{{nodejs_webinar_app_local}}cart"
+							],
+							"path": [
+								"cart-store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cart-show",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}cart/get-cart",
+							"host": [
+								"{{nodejs_webinar_app_local}}cart"
+							],
+							"path": [
+								"get-cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"\",\r\n    \"updateItem\" : {\r\n           \"id\": 28,\r\n           \"productId\":1,\r\n            \"quantity\":5\r\n        }\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}cart/update-cart",
+							"host": [
+								"{{nodejs_webinar_app_local}}cart"
+							],
+							"path": [
+								"update-cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "registration-cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}cart/registration-cart",
+							"host": [
+								"{{nodejs_webinar_app_local}}cart"
+							],
+							"path": [
+								"registration-cart"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invoice",
+			"item": [
+				{
+					"name": "get-all-invoice",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}invoice/get-all-invoice",
+							"host": [
+								"{{nodejs_webinar_app_local}}invoice"
+							],
+							"path": [
+								"get-all-invoice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show-invoice",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}invoice/show-invoice/11",
+							"host": [
+								"{{nodejs_webinar_app_local}}invoice"
+							],
+							"path": [
+								"show-invoice",
+								"11"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "upload-files",
+			"item": [
+				{
+					"name": "upload-files",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": [
+										"/C:/Users/assed/Desktop/images/defailt dns sJPG.JPG",
+										"/C:/Users/assed/Desktop/images/google-impression4.JPG",
+										"/C:/Users/assed/Desktop/images/google-search.jpg",
+										"/C:/Users/assed/Desktop/images/google-search2.jpg",
+										"/C:/Users/assed/Desktop/images/ali asfg har.jpg"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}file-upload/upload-files",
+							"host": [
+								"{{nodejs_webinar_app_local}}file-upload"
+							],
+							"path": [
+								"upload-files"
+							],
+							"query": [
+								{
+									"key": "file",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Article",
+			"item": [
+				{
+					"name": "create-article",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "article title",
+									"type": "text"
+								},
+								{
+									"key": "slug",
+									"value": "article11",
+									"type": "text"
+								},
+								{
+									"key": "excerpt",
+									"value": "article excerpt",
+									"type": "text"
+								},
+								{
+									"key": "body",
+									"value": "<p>this is a article body</p>",
+									"type": "text"
+								},
+								{
+									"key": "published",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "categoryId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/assed/Desktop/images/OIG.jpg"
+								},
+								{
+									"key": "isFeatured",
+									"value": "false",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}article/add-article",
+							"host": [
+								"{{nodejs_webinar_app_local}}article"
+							],
+							"path": [
+								"add-article"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-article-category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test category\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}article/add-article-category",
+							"host": [
+								"{{nodejs_webinar_app_local}}article"
+							],
+							"path": [
+								"add-article-category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-article",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}article/get-all-articles?page=1&limit=8",
+							"host": [
+								"{{nodejs_webinar_app_local}}article"
+							],
+							"path": [
+								"get-all-articles"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show-article",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}article/show-article/article22",
+							"host": [
+								"{{nodejs_webinar_app_local}}article"
+							],
+							"path": [
+								"show-article",
+								"article22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit-article",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/assed/Desktop/images/Untitled-1 (4).jpg"
+								},
+								{
+									"key": "title",
+									"value": "article9 title test2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}article/edit-article/article9",
+							"host": [
+								"{{nodejs_webinar_app_local}}article"
+							],
+							"path": [
+								"edit-article",
+								"article9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove-article",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}article/remove-article/article5",
+							"host": [
+								"{{nodejs_webinar_app_local}}article"
+							],
+							"path": [
+								"remove-article",
+								"article5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "update-profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"ali asghar\",\r\n    \"lastname\": \"sedighian\",\r\n    \"address\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}user/update-profile",
+							"host": [
+								"{{nodejs_webinar_app_local}}user"
+							],
+							"path": [
+								"update-profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role\": \"ADMIN\",\r\n    \"firstname\": \"ali asghar22\",\r\n    \"lastname\": \"sedighian22\",\r\n    \"address\": \"2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}user/update-user/29",
+							"host": [
+								"{{nodejs_webinar_app_local}}user"
+							],
+							"path": [
+								"update-user",
+								"29"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "create-project-category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "پروژه چیتگر",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/D:/Backup iphone 13/Adm/پرداخت جریمه مرداد/Screenshot_2020-07-29-11-09-24-452_com.android.chrome.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}project/add-project-category",
+							"host": [
+								"{{nodejs_webinar_app_local}}project"
+							],
+							"path": [
+								"add-project-category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "پروژه چیتگر23",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "<p>test description</p>",
+									"type": "text"
+								},
+								{
+									"key": "published",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "isFeatured",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "implementCity",
+									"value": "تهران",
+									"type": "text"
+								},
+								{
+									"key": "categoryId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg",
+										"/C:/Users/assed/Desktop/nest-project/images3-service.jpg",
+										"/C:/Users/assed/Desktop/nest-project/images-kitchen1.jpg"
+									],
+									"disabled": true
+								},
+								{
+									"key": "coverImage",
+									"type": "file",
+									"src": "/C:/Users/assed/Desktop/nest-project/project-category1.jpg"
+								},
+								{
+									"key": "labels[0]",
+									"value": "اتاق خواب",
+									"type": "text"
+								},
+								{
+									"key": "labels[1]",
+									"value": "سرویس بهداشتی",
+									"type": "text"
+								},
+								{
+									"key": "labels[2]",
+									"value": "آشپزخانه",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/C:/Users/assed/Desktop/nest-project/کابینت-حمام-5-2.jpg"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/C:/Users/assed/Desktop/nest-project/images2bedroom.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}project/add-project",
+							"host": [
+								"{{nodejs_webinar_app_local}}project"
+							],
+							"path": [
+								"add-project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "title test23",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "<p>test description</p>",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "published",
+									"value": "true",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "isFeatured",
+									"value": "false",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "implementCity",
+									"value": "tehran",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "categoryId",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0238.JPG",
+										"/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0239.JPG",
+										"/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0248.JPG"
+									],
+									"disabled": true
+								},
+								{
+									"key": "coverImage",
+									"type": "file",
+									"src": "/D:/Gallery/DCIM Note 8/100ANDRO/DSC_0072.JPG",
+									"disabled": true
+								},
+								{
+									"key": "deletedImages",
+									"value": "[12,13]",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}project/edit-project/1",
+							"host": [
+								"{{nodejs_webinar_app_local}}project"
+							],
+							"path": [
+								"edit-project",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show-project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}project/show-project/10",
+							"host": [
+								"{{nodejs_webinar_app_local}}project"
+							],
+							"path": [
+								"show-project",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show-admin-project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}project/show-admin-project/10",
+							"host": [
+								"{{nodejs_webinar_app_local}}project"
+							],
+							"path": [
+								"show-admin-project",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show-all-project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}project/get-all-projects?page=1&limit=12",
+							"host": [
+								"{{nodejs_webinar_app_local}}project"
+							],
+							"path": [
+								"get-all-projects"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show-all-admin-project",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{nodejs_webinar_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}project/get-all-admin-projects?page=1&limit=12",
+							"host": [
+								"{{nodejs_webinar_app_local}}project"
+							],
+							"path": [
+								"get-all-admin-projects"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "search-all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nodejs_webinar_app_local}}search/search-all?query=چیتگر",
+							"host": [
+								"{{nodejs_webinar_app_local}}search"
+							],
+							"path": [
+								"search-all"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "چیتگر"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{nodejs_webinar_app_local}}run-delete-job",
+					"host": [
+						"{{nodejs_webinar_app_local}}run-delete-job"
+					]
+				}
+			},
+			"response": []
+		}
+	]
 }
