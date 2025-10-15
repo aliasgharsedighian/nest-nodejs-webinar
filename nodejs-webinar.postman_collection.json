@@ -245,6 +245,39 @@
           "response": []
         },
         {
+          "name": "get-all-products-admin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}shop/get-all-admin-products?page=1&limit=12",
+              "host": ["{{nodejs_webinar_app_local}}shop"],
+              "path": ["get-all-admin-products"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "12"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "show-product",
           "request": {
             "method": "GET",
@@ -253,6 +286,29 @@
               "raw": "{{nodejs_webinar_app_local}}shop/show-product/3",
               "host": ["{{nodejs_webinar_app_local}}shop"],
               "path": ["show-product", "3"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "show-product-admin",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{nodejs_webinar_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{nodejs_webinar_app_local}}shop/show-admin-product/5",
+              "host": ["{{nodejs_webinar_app_local}}shop"],
+              "path": ["show-admin-product", "5"]
             }
           },
           "response": []
