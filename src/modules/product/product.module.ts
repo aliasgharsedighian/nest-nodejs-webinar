@@ -16,6 +16,8 @@ import { CreateProductCategoryService } from './commands/create-product-category
 import { FileUploadModule } from '../files-upload/file-upload.module';
 import { FindCategoryProjectService } from './queries/show-product-category/show-product-category.service';
 import { FindCategoryProjectHttpController } from './queries/show-product-category/show-product-category.http.controller';
+import { FindAllAdminProductsHttpController } from './queries/find-all-products-admin/find-all-products-admin.http.controller';
+import { FindAllProductsAdminService } from './queries/find-all-products-admin/find-all-products-admin.service';
 
 const httpControllers = [
   CreateProductHttpController,
@@ -25,6 +27,7 @@ const httpControllers = [
   RemoveProductByIdHttpController,
   CreateProductCategoryHttpController,
   FindCategoryProjectHttpController,
+  FindAllAdminProductsHttpController,
 ];
 
 const commandHandlers: Provider[] = [
@@ -38,6 +41,7 @@ const queryHandlers: Provider[] = [
   FindProductsService,
   FindProductService,
   FindCategoryProjectService,
+  FindAllProductsAdminService,
 ];
 
 const repositories: Provider[] = [PrismaProductRepository];

@@ -200,7 +200,141 @@ export class PrismaProductRepository {
     }
   }
 
+  async;
+  async findAllAdminPaginate(page: number, skip: number, limit: number) {
+    try {
+      const [products, totalCount] = await Promise.all([
+        this.prisma.product.findMany({
+          skip,
+          take: limit,
+          orderBy: {
+            createdAt: 'desc',
+          },
+          include: {
+            categories: {
+              select: {
+                id: true,
+                name: true,
+                image: {
+                  include: {
+                    uploadFile: {
+                      select: {
+                        id: true,
+                        path: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            images: {
+              select: {
+                uploadFile: {
+                  select: {
+                    id: true,
+                    path: true,
+                  },
+                },
+              },
+            },
+          },
+        }),
+        this.prisma.product.count({
+          where: {
+            show: true,
+          },
+        }),
+      ]);
+
+      return {
+        products: products.map((product) => ({
+          ...product,
+          images: product.images.map((img) => {
+            return {
+              id: img.uploadFile.id,
+              path: img.uploadFile.path,
+            };
+          }),
+          categories: product.categories.map((cat) => {
+            return {
+              id: cat.id,
+              name: cat.name,
+              image: cat.image[0]?.uploadFile
+                ? cat.image[0].uploadFile.path
+                : '',
+            };
+          }),
+        })),
+        totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findById(productId: number) {
+    try {
+      const product = await this.prisma.product.findUnique({
+        where: {
+          id: productId,
+          show: true,
+        },
+        include: {
+          categories: {
+            select: {
+              id: true,
+              name: true,
+              image: {
+                include: {
+                  uploadFile: {
+                    select: {
+                      id: true,
+                      path: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          images: {
+            select: {
+              uploadFile: {
+                select: {
+                  id: true,
+                  path: true,
+                },
+              },
+            },
+          },
+        },
+      });
+      if (!product) {
+        return product;
+      }
+      return {
+        ...product,
+        images: product?.images.map((img) => {
+          return {
+            id: img.uploadFile.id,
+            path: img.uploadFile.path,
+          };
+        }),
+        categories: product?.categories.map((cat) => {
+          return {
+            id: cat.id,
+            name: cat.name,
+            image: cat.image[0]?.uploadFile ? cat.image[0].uploadFile.path : '',
+          };
+        }),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findByIdAdmin(productId: number) {
     try {
       const product = await this.prisma.product.findUnique({
         where: {
@@ -501,28 +635,38 @@ export class PrismaProductRepository {
     }
   }
 
-  async findAllProductCategory() {
+  async findAllProductCategory(page: number, skip: number, limit: number) {
     try {
-      const categoryProduct = await this.prisma.productCategory.findMany({
-        include: {
-          image: {
-            include: {
-              uploadFile: {
-                select: {
-                  id: true,
-                  path: true,
+      const [categoryProduct, totalCount] = await Promise.all([
+        this.prisma.productCategory.findMany({
+          skip,
+          take: limit,
+          include: {
+            image: {
+              include: {
+                uploadFile: {
+                  select: {
+                    id: true,
+                    path: true,
+                  },
                 },
               },
             },
           },
-        },
-      });
+        }),
+        this.prisma.productCategory.count(),
+      ]);
 
-      return categoryProduct.map((category) => ({
-        id: category.id,
-        name: category.name,
-        image: category.image[0].uploadFile.path || null, // or undefined
-      }));
+      return {
+        productCategories: categoryProduct.map((category) => ({
+          id: category.id,
+          name: category.name,
+          image: category.image[0].uploadFile.path || null, // or undefined
+        })),
+        totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+      };
     } catch (error) {
       throw error;
     }

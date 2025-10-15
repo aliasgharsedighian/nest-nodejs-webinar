@@ -14,7 +14,7 @@ export class EditProductService {
     user: User,
   ) {
     try {
-      const product = await this.productRepo.findById(productId);
+      const product = await this.productRepo.findByIdAdmin(productId);
       if (!product) {
         return {
           statusCode: HttpStatus.NOT_FOUND,
