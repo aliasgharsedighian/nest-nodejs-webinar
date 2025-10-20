@@ -18,6 +18,10 @@ import { FindCategoryProjectService } from './queries/show-product-category/show
 import { FindCategoryProjectHttpController } from './queries/show-product-category/show-product-category.http.controller';
 import { FindAllAdminProductsHttpController } from './queries/find-all-products-admin/find-all-products-admin.http.controller';
 import { FindAllProductsAdminService } from './queries/find-all-products-admin/find-all-products-admin.service';
+import { UpdateProductCategoryHttpController } from './commands/update-product-category/update-product-category.http.controller';
+import { UpdateProductCategoryService } from './commands/update-product-category/update-product-category.service';
+import { FindProductCategoryByIdHttpController } from './queries/show-single-product-category/show-single-product-category.http.controller';
+import { FindProductCategoryService } from './queries/show-single-product-category/show-single-product-category.service';
 
 const httpControllers = [
   CreateProductHttpController,
@@ -28,6 +32,8 @@ const httpControllers = [
   CreateProductCategoryHttpController,
   FindCategoryProjectHttpController,
   FindAllAdminProductsHttpController,
+  UpdateProductCategoryHttpController,
+  FindProductCategoryByIdHttpController,
 ];
 
 const commandHandlers: Provider[] = [
@@ -35,6 +41,7 @@ const commandHandlers: Provider[] = [
   EditProductService,
   RemoveProductService,
   CreateProductCategoryService,
+  UpdateProductCategoryService,
 ];
 
 const queryHandlers: Provider[] = [
@@ -42,6 +49,7 @@ const queryHandlers: Provider[] = [
   FindProductService,
   FindCategoryProjectService,
   FindAllProductsAdminService,
+  FindProductCategoryService,
 ];
 
 const repositories: Provider[] = [PrismaProductRepository];

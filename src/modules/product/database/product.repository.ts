@@ -200,7 +200,6 @@ export class PrismaProductRepository {
     }
   }
 
-  async;
   async findAllAdminPaginate(page: number, skip: number, limit: number) {
     try {
       const [products, totalCount] = await Promise.all([
@@ -328,6 +327,35 @@ export class PrismaProductRepository {
             image: cat.image[0]?.uploadFile ? cat.image[0].uploadFile.path : '',
           };
         }),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findCategoryProductById(categoryId: number) {
+    try {
+      const category = await this.prisma.productCategory.findUnique({
+        where: {
+          id: categoryId,
+        },
+        include: {
+          image: {
+            include: {
+              uploadFile: {
+                select: {
+                  id: true,
+                  path: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return {
+        ...category,
+        image: category?.image[0].uploadFile.path || null,
       };
     } catch (error) {
       throw error;
@@ -666,6 +694,82 @@ export class PrismaProductRepository {
         totalCount,
         currentPage: page,
         totalPages: Math.ceil(totalCount / limit),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateProductCategoryById(name, productCategoryId, image) {
+    try {
+      const categoryExists = await this.prisma.productCategory.findUnique({
+        where: {
+          id: productCategoryId,
+        },
+      });
+      if (!categoryExists) {
+        return null;
+      }
+      let updateData: any = {};
+      if (name !== undefined) updateData.name = name;
+
+      const uploadedImage =
+        await this.fileService.uploadProductCategoryImage(image);
+      const uploadFileRecord = await this.prisma.uploadFile.create({
+        data: {
+          path: `${process.env.DOMAIN_ADDRESS}${uploadedImage.thumbnailPath}`,
+          mimetype: uploadedImage.mimetype,
+          size: uploadedImage.size,
+        },
+      });
+
+      //update product category without image
+      const updatedProductCategory = await this.prisma.productCategory.update({
+        where: {
+          id: productCategoryId,
+        },
+        data: {
+          ...updateData,
+        },
+        include: {
+          image: true,
+        },
+      });
+
+      //delete old image
+      if (updatedProductCategory.image.length > 0) {
+        const oldImage = updatedProductCategory.image[0];
+        await this.prisma.uploadFile.delete({
+          where: {
+            id: oldImage.uploadFileId,
+          },
+        });
+        // await this.fileService.deleteProductImages([
+        //   new URL(oldImage.uploadFile.path).pathname,
+        // ]);
+      }
+
+      //create new image
+      await this.prisma.categoryImage.create({
+        data: {
+          categoryId: updatedProductCategory.id,
+          uploadFileId: uploadFileRecord.id,
+        },
+      });
+
+      const categoryWithImage = await this.prisma.productCategory.findUnique({
+        where: { id: updatedProductCategory.id },
+        include: {
+          image: {
+            include: {
+              uploadFile: true,
+            },
+          },
+        },
+      });
+
+      return {
+        ...categoryWithImage,
       };
     } catch (error) {
       throw error;

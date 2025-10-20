@@ -118,15 +118,15 @@ export class OptimizedImagesService {
   }> {
     const thumbnailPath = path.join(
       this.thumbnailCategoryDir,
-      `thumb-${file.filename}`,
+      `thumb-${file?.filename}`,
     );
-    await sharp(file.path).resize(300).toFile(thumbnailPath);
+    await sharp(file?.path).resize(300).toFile(thumbnailPath);
 
     return {
-      path: `${this.uploadsDir}/${file.filename}`,
+      path: `${this.uploadsDir}/${file?.filename}`,
       thumbnailPath: `${thumbnailPath}`,
-      mimetype: file.mimetype,
-      size: file.size,
+      mimetype: file?.mimetype,
+      size: file?.size,
     };
   }
 

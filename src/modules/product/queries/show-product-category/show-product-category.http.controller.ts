@@ -14,7 +14,7 @@ export class FindCategoryProjectHttpController {
     status: HttpStatus.OK,
     type: '',
   })
-  async findProductById(@Query() queryParams: PaginatedQueryRequestDto) {
+  async findProductCategries(@Query() queryParams: PaginatedQueryRequestDto) {
     const result = await this.findProduct.execute(queryParams);
 
     return result;
