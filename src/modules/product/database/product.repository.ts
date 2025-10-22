@@ -700,7 +700,11 @@ export class PrismaProductRepository {
     }
   }
 
-  async updateProductCategoryById(name, productCategoryId, image) {
+  async updateProductCategoryById(
+    name: string | undefined,
+    productCategoryId: number,
+    image: Express.Multer.File | undefined,
+  ) {
     try {
       const categoryExists = await this.prisma.productCategory.findUnique({
         where: {
@@ -713,15 +717,19 @@ export class PrismaProductRepository {
       let updateData: any = {};
       if (name !== undefined) updateData.name = name;
 
-      const uploadedImage =
-        await this.fileService.uploadProductCategoryImage(image);
-      const uploadFileRecord = await this.prisma.uploadFile.create({
-        data: {
-          path: `${process.env.DOMAIN_ADDRESS}${uploadedImage.thumbnailPath}`,
-          mimetype: uploadedImage.mimetype,
-          size: uploadedImage.size,
-        },
-      });
+      // 3️⃣ Handle new image upload (optional)
+      let newImageRecord: any = null;
+      if (image) {
+        const uploadedImage =
+          await this.fileService.uploadProductCategoryImage(image);
+        newImageRecord = await this.prisma.uploadFile.create({
+          data: {
+            path: `${process.env.DOMAIN_ADDRESS}${uploadedImage.thumbnailPath}`,
+            mimetype: uploadedImage.mimetype,
+            size: uploadedImage.size,
+          },
+        });
+      }
 
       //update product category without image
       const updatedProductCategory = await this.prisma.productCategory.update({
@@ -736,26 +744,28 @@ export class PrismaProductRepository {
         },
       });
 
-      //delete old image
-      if (updatedProductCategory.image.length > 0) {
-        const oldImage = updatedProductCategory.image[0];
-        await this.prisma.uploadFile.delete({
-          where: {
-            id: oldImage.uploadFileId,
+      if (newImageRecord) {
+        //delete old image
+        if (updatedProductCategory.image.length > 0) {
+          const oldImage = updatedProductCategory.image[0];
+          await this.prisma.uploadFile.delete({
+            where: {
+              id: oldImage.uploadFileId,
+            },
+          });
+          // await this.fileService.deleteProductImages([
+          //   new URL(oldImage.uploadFile.path).pathname,
+          // ]);
+        }
+
+        //create new image
+        await this.prisma.categoryImage.create({
+          data: {
+            categoryId: updatedProductCategory.id,
+            uploadFileId: newImageRecord.id,
           },
         });
-        // await this.fileService.deleteProductImages([
-        //   new URL(oldImage.uploadFile.path).pathname,
-        // ]);
       }
-
-      //create new image
-      await this.prisma.categoryImage.create({
-        data: {
-          categoryId: updatedProductCategory.id,
-          uploadFileId: uploadFileRecord.id,
-        },
-      });
 
       const categoryWithImage = await this.prisma.productCategory.findUnique({
         where: { id: updatedProductCategory.id },

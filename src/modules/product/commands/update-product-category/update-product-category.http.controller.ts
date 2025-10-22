@@ -25,7 +25,7 @@ import { UpdateProductCategoryService } from './update-product-category.service'
 @Controller(routesV1.version)
 export class UpdateProductCategoryHttpController {
   constructor(private createProductCategory: UpdateProductCategoryService) {}
-  @ApiOperation({ summary: 'create product category' })
+  @ApiOperation({ summary: 'update product category' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: '',
