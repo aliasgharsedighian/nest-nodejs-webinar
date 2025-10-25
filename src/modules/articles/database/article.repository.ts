@@ -66,6 +66,58 @@ export class PrismaArticleRepository {
     }
   }
 
+  async findAllAdminPaginate(page: number, skip: number, limit: number) {
+    try {
+      const [articles, totalCount] = await Promise.all([
+        this.prisma.article.findMany({
+          skip,
+          take: limit,
+          orderBy: {
+            createdAt: 'desc',
+          },
+          include: {
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            coverImage: {
+              select: {
+                path: true,
+              },
+            },
+            author: {
+              select: {
+                email: true,
+                profile: {
+                  select: {
+                    firstname: true,
+                    lastname: true,
+                  },
+                },
+              },
+            },
+          },
+        }),
+        this.prisma.article.count({
+          where: {
+            published: true,
+          },
+        }),
+      ]);
+
+      return {
+        articles,
+        totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findAllPaginate(page: number, skip: number, limit: number) {
     try {
       const [articles, totalCount] = await Promise.all([
@@ -117,7 +169,47 @@ export class PrismaArticleRepository {
         currentPage: page,
         totalPages: Math.ceil(totalCount / limit),
       };
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findBySlugAdmin(articleSlug: string) {
+    try {
+      const article = await this.prisma.article.findUnique({
+        where: {
+          slug: articleSlug,
+        },
+        include: {
+          coverImage: {
+            select: {
+              path: true,
+              id: true,
+            },
+          },
+          author: {
+            select: {
+              email: true,
+              profile: {
+                select: {
+                  firstname: true,
+                  lastname: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!article) {
+        return article;
+      }
+      return {
+        ...article,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findBySlug(articleSlug: string) {
@@ -176,6 +268,8 @@ export class PrismaArticleRepository {
       if (article.body !== undefined) updateData.body = article.body;
       if (article.categoryId !== undefined)
         updateData.categoryId = article.categoryId;
+      if (article.isFeatured !== undefined)
+        updateData.isFeatured = article.isFeatured;
 
       if (image) {
         const uploadedImage = await this.fileService.uploadArticleImage(image);
@@ -246,5 +340,78 @@ export class PrismaArticleRepository {
     });
 
     return softDelete;
+  }
+
+  async findAllArticleCategory(page: number, skip: number, limit: number) {
+    try {
+      const [categoryArticle, totalCount] = await Promise.all([
+        this.prisma.articleCategory.findMany({
+          skip,
+          take: limit,
+        }),
+        this.prisma.articleCategory.count(),
+      ]);
+
+      return {
+        articleCategories: categoryArticle.map((category) => ({
+          id: category.id,
+          name: category.name,
+        })),
+        totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findCategoryArticleById(categoryId: number) {
+    try {
+      const category = await this.prisma.articleCategory.findUnique({
+        where: {
+          id: categoryId,
+        },
+      });
+
+      return {
+        ...category,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateArticleCategoryById(
+    name: string | undefined,
+    articleCategoryId: number,
+  ) {
+    try {
+      const categoryExists = await this.prisma.articleCategory.findUnique({
+        where: {
+          id: articleCategoryId,
+        },
+      });
+      if (!categoryExists) {
+        return null;
+      }
+      let updateData: any = {};
+      if (name !== undefined) updateData.name = name;
+
+      const updatedArticleCategory = await this.prisma.articleCategory.update({
+        where: {
+          id: articleCategoryId,
+        },
+        data: {
+          ...updateData,
+        },
+      });
+
+      return {
+        ...updatedArticleCategory,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 }

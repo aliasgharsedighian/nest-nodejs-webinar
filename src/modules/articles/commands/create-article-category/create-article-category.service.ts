@@ -13,7 +13,7 @@ export class CreateArticleCategoryService {
       const category = await this.ArticleRepo.createCategory(command.name);
 
       return {
-        status: HttpStatus.CREATED,
+        statusCode: HttpStatus.CREATED,
         message: 'product category created successfully.',
         data: category,
       };

@@ -40,10 +40,15 @@ export const routesV1 = {
   article: {
     getAllArticles: `${articleRoot}/get-all-articles`,
     showArticle: `${articleRoot}/show-article/:slug`,
+    getAllAdminArticles: `${articleRoot}/get-all-articles-admin`,
+    showAdminArticle: `${articleRoot}/show-article-admin/:slug`,
     createArticle: `${articleRoot}/add-article`,
     createArticleCategory: `${articleRoot}/add-article-category`,
     editArticle: `${articleRoot}/edit-article/:slug`,
     removeArticle: `${articleRoot}/remove-article/:slug`,
+    showCategoriesArticle: `${articleRoot}/show-categories-article`,
+    showArticleCategory: `${articleRoot}/show-category-article/:id`,
+    editArticleCategory: `${articleRoot}/edit-article-category/:id`,
   },
   user: {
     updateProfile: `${userRoot}/update-profile`,
