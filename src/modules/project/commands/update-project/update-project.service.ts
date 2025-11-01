@@ -15,7 +15,7 @@ export class UpdateProjectService {
     user: User,
   ) {
     try {
-      const project = await this.projectRepo.findById(projectId);
+      const project = await this.projectRepo.findByIdAdmin(projectId);
       if (!project) {
         return {
           statusCode: HttpStatus.NOT_FOUND,

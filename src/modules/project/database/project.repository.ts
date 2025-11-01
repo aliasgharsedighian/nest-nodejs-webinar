@@ -45,7 +45,7 @@ export class PrismaProjectRepository {
           return {
             id: img.uploadFile.id,
             images: img.uploadFile.path,
-            label: img.label,
+            label: img.label || '',
           };
         }),
       };
@@ -88,7 +88,7 @@ export class PrismaProjectRepository {
           return {
             id: img.uploadFile.id,
             images: img.uploadFile.path,
-            label: img.label,
+            label: img.label || '',
           };
         }),
       };
@@ -215,7 +215,7 @@ export class PrismaProjectRepository {
             data: {
               projectId: updatedProject.id,
               uploadFileId: image.id,
-              label: command.labels?.[index]?.toLowerCase() ?? null, // 🟢 NEW: attach label
+              label: command.labels?.[index]?.toLowerCase() ?? '', // 🟢 NEW: attach label
             },
           }),
         ),
@@ -239,7 +239,7 @@ export class PrismaProjectRepository {
         images: projectWithImages?.images.map((img) => ({
           id: img.uploadFile.id,
           path: img.uploadFile.path,
-          label: img.label ?? null, // 🟢 Include label
+          label: img.label ?? '', // 🟢 Include label
         })),
       };
     } catch (error) {
@@ -312,7 +312,7 @@ export class PrismaProjectRepository {
               projectId: created.id,
               uploadFileId: image.id,
               // ✅ add label if provided (from DTO)
-              label: labels?.[index]?.toLowerCase() ?? null,
+              label: labels?.[index]?.toLowerCase() ?? '',
             },
           }),
         ),
@@ -594,5 +594,142 @@ export class PrismaProjectRepository {
         },
       },
     });
+  }
+
+  async findAllProjectCategories(page: number, skip: number, limit: number) {
+    try {
+      const [categoryProject, totalCount] = await Promise.all([
+        this.prisma.projectCategory.findMany({
+          skip,
+          take: limit,
+          include: {
+            image: true,
+          },
+        }),
+        this.prisma.projectCategory.count(),
+      ]);
+
+      return {
+        projectCategories: categoryProject.map((category) => ({
+          id: category.id,
+          name: category.name,
+          image: category.image.path || null, // or undefined
+        })),
+        totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findCategoryProjectById(categoryId: number) {
+    try {
+      const category = await this.prisma.projectCategory.findUnique({
+        where: {
+          id: categoryId,
+        },
+        include: {
+          image: true,
+        },
+      });
+
+      return {
+        ...category,
+        image: category?.image.path || null,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateProjectCategoryById(
+    name: string | undefined,
+    projectCategoryId: number,
+    image: Express.Multer.File | undefined,
+  ) {
+    try {
+      const categoryExists = await this.prisma.projectCategory.findUnique({
+        where: {
+          id: projectCategoryId,
+        },
+      });
+      if (!categoryExists) {
+        return null;
+      }
+      let updateData: any = {};
+      if (name !== undefined) updateData.name = name;
+
+      // 3️⃣ Handle new image upload (optional)
+      let newImageRecord: any = null;
+      if (image) {
+        const uploadedImage =
+          await this.fileService.uploadProjectCategoryImage(image);
+        newImageRecord = await this.prisma.uploadFile.create({
+          data: {
+            path: `${process.env.DOMAIN_ADDRESS}${uploadedImage.thumbnailPath}`,
+            mimetype: uploadedImage.mimetype,
+            size: uploadedImage.size,
+          },
+        });
+      }
+
+      //update project category without image
+      const updatedProjectCategory = await this.prisma.projectCategory.update({
+        where: {
+          id: projectCategoryId,
+        },
+        data: {
+          ...updateData,
+        },
+        include: {
+          image: true,
+        },
+      });
+
+      if (newImageRecord) {
+        //delete old image
+        // if (updatedProjectCategory.image.path) {
+        //   const oldImage = updatedProjectCategory.image;
+        //   console.log(oldImage);
+        //   await this.prisma.uploadFile.delete({
+        //     where: {
+        //       id: oldImage.id,
+        //     },
+        //   });
+        //   // await this.fileService.deleteProjectImages([
+        //   //   new URL(oldImage.path).pathname,
+        //   // ]);
+        // }
+
+        //create new image
+        await this.prisma.projectCategory.update({
+          where: {
+            id: updatedProjectCategory.id,
+          },
+          data: {
+            ...updateData,
+            imageId: newImageRecord.id,
+          },
+          include: {
+            image: true,
+          },
+        });
+      }
+
+      const categoryWithImage = await this.prisma.projectCategory.findUnique({
+        where: { id: updatedProjectCategory.id },
+        include: {
+          image: true,
+        },
+      });
+
+      return {
+        ...categoryWithImage,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 }

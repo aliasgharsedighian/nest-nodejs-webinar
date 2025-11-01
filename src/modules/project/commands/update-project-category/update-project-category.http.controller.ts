@@ -4,7 +4,6 @@ import {
   Controller,
   HttpStatus,
   Param,
-  Post,
   Put,
   UploadedFile,
   UseGuards,
@@ -19,21 +18,21 @@ import { RolesGuard } from 'src/libs/guard/role.guard';
 import { Roles } from 'src/libs/decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { GetProductsParamsDto } from '../../queries/find-product/find-product.request.dto';
-import { UpdateProductCategoryRequestDto } from './update-product-category.request.dto';
-import { UpdateProductCategoryService } from './update-product-category.service';
+import { GetProjectsParamsDto } from '../../queries/find-single-project/find-single-project.request.dto';
+import { UpdateProjectCategoryRequestDto } from './update-project-category.request.dto';
+import { UpdateProjectCategoryService } from './update-project-category.service';
 
 @Controller(routesV1.version)
-export class UpdateProductCategoryHttpController {
-  constructor(private updateProductCategory: UpdateProductCategoryService) {}
-  @ApiOperation({ summary: 'update product category' })
+export class UpdateProjectCategoryHttpController {
+  constructor(private createProjectCategory: UpdateProjectCategoryService) {}
+  @ApiOperation({ summary: 'update project category' })
   @ApiResponse({
     status: HttpStatus.OK,
     type: '',
   })
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('ADMIN')
-  @Put(routesV1.product.editProductCategory)
+  @Put(routesV1.project.editProjectCategory)
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -61,11 +60,11 @@ export class UpdateProductCategoryHttpController {
   )
   async edit(
     @UploadedFile() image: Express.Multer.File | undefined,
-    @Body() body: UpdateProductCategoryRequestDto,
+    @Body() body: UpdateProjectCategoryRequestDto,
     @GetUser() user: User,
-    @Param() params: GetProductsParamsDto,
+    @Param() params: GetProjectsParamsDto,
   ) {
-    const result = await this.updateProductCategory.execute(
+    const result = await this.createProjectCategory.execute(
       body,
       params.id,
       image,

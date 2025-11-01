@@ -65,6 +65,9 @@ export const routesV1 = {
     removeProject: `${projectRoot}/remove-project/:id`,
     projectLabelImagesById: `${projectRoot}/projects-label/:projectId`,
     projectLabelImagesByLabel: `${projectRoot}/all-projects-label/:label`,
+    showProjectCategories: `${projectRoot}/show-all-project-categories`,
+    showProjectCategory: `${projectRoot}/show-project-category/:id`,
+    editProjectCategory: `${projectRoot}/edit-project-category/:id`,
   },
   search: {
     searchAll: `${searchRoot}/search-all`,

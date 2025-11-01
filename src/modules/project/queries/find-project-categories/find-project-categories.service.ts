@@ -1,17 +1,17 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaProductRepository } from '../../database/product.repository';
 import { PaginatedQueryRequestDto } from 'src/libs/api/paginated-query.request.dto';
+import { PrismaProjectRepository } from '../../database/project.repository';
 
 @Injectable()
-export class FindAllCategoriesProductService {
-  constructor(private productRepo: PrismaProductRepository) {}
+export class FindAllProjectCategoriesService {
+  constructor(private projectRepo: PrismaProjectRepository) {}
 
   async execute(command: PaginatedQueryRequestDto) {
     try {
       const page = command.page || 1;
       const limit = command.limit || 12;
       const skip = (+page - 1) * +limit;
-      const categoryProduct = await this.productRepo.findAllProductCategory(
+      const categoryProject = await this.projectRepo.findAllProjectCategories(
         page,
         skip,
         limit,
@@ -19,8 +19,8 @@ export class FindAllCategoriesProductService {
 
       return {
         status: HttpStatus.OK,
-        message: 'get product category successfully',
-        data: categoryProduct,
+        message: 'get project category successfully',
+        data: categoryProject,
       };
     } catch (error) {
       throw new Error(`Service Error: ${error.message}`);

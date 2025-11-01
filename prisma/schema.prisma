@@ -222,7 +222,7 @@ model ProjectCategory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  image    UploadFile @relation(fields: [imageId], references: [id])
+  image    UploadFile @relation(fields: [imageId], references: [id], onDelete: Cascade)
   projects Project[] // assuming each category can have multiple projects
 }
 

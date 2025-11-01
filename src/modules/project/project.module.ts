@@ -16,6 +16,12 @@ import { FindProjectLabelImagesHttpController } from './queries/find-projects-la
 import { FindProjectLabelImageService } from './queries/find-projects-label/find-projects-label.service';
 import { FindAllAdminProjectsHttpController } from './queries/find-all-projects-admin/find-all-projects-admin.http.controller';
 import { FindAllProjectsAdminService } from './queries/find-all-projects-admin/find-all-projects-admin.service';
+import { FindAllProjectCategoriesHttpController } from './queries/find-project-categories/find-project-categories.http.controller';
+import { FindAllProjectCategoriesService } from './queries/find-project-categories/find-project-categories.service';
+import { FindProjectCategoryByIdHttpController } from './queries/find-single-project-category/find-single-project-category.http.controller';
+import { FindProjectCategoryService } from './queries/find-single-project-category/find-single-project-category.service';
+import { UpdateProjectCategoryHttpController } from './commands/update-project-category/update-project-category.http.controller';
+import { UpdateProjectCategoryService } from './commands/update-project-category/update-project-category.service';
 
 const httpControllers = [
   FindProjectByIdHttpController,
@@ -25,12 +31,18 @@ const httpControllers = [
   FindAllProjectsHttpController,
   FindProjectLabelImagesHttpController,
   FindAllAdminProjectsHttpController,
+  FindAllProjectCategoriesHttpController,
+  FindProjectCategoryByIdHttpController,
+  UpdateProjectCategoryHttpController,
 ];
 
 const commandHandlers: Provider[] = [
   CreateProjectService,
   CreateProjectCategoryService,
   UpdateProjectService,
+  FindAllProjectCategoriesService,
+  FindProjectCategoryService,
+  UpdateProjectCategoryService,
 ];
 
 const queryHandlers: Provider[] = [

@@ -14,14 +14,14 @@ import { RemoveProductService } from './commands/remove-product/remove-product.s
 import { CreateProductCategoryHttpController } from './commands/create-product-category/create-product-category.http.controller';
 import { CreateProductCategoryService } from './commands/create-product-category/create-product-category.service';
 import { FileUploadModule } from '../files-upload/file-upload.module';
-import { FindCategoryProjectService } from './queries/show-product-category/show-product-category.service';
-import { FindCategoryProjectHttpController } from './queries/show-product-category/show-product-category.http.controller';
 import { FindAllAdminProductsHttpController } from './queries/find-all-products-admin/find-all-products-admin.http.controller';
 import { FindAllProductsAdminService } from './queries/find-all-products-admin/find-all-products-admin.service';
 import { UpdateProductCategoryHttpController } from './commands/update-product-category/update-product-category.http.controller';
 import { UpdateProductCategoryService } from './commands/update-product-category/update-product-category.service';
 import { FindProductCategoryByIdHttpController } from './queries/show-single-product-category/show-single-product-category.http.controller';
 import { FindProductCategoryService } from './queries/show-single-product-category/show-single-product-category.service';
+import { FindAllCategoriesProductService } from './queries/show-product-category/show-product-category.service';
+import { FindCategoryProductHttpController } from './queries/show-product-category/show-product-category.http.controller';
 
 const httpControllers = [
   CreateProductHttpController,
@@ -30,7 +30,7 @@ const httpControllers = [
   EditProductByIdHttpController,
   RemoveProductByIdHttpController,
   CreateProductCategoryHttpController,
-  FindCategoryProjectHttpController,
+  FindCategoryProductHttpController,
   FindAllAdminProductsHttpController,
   UpdateProductCategoryHttpController,
   FindProductCategoryByIdHttpController,
@@ -47,7 +47,7 @@ const commandHandlers: Provider[] = [
 const queryHandlers: Provider[] = [
   FindProductsService,
   FindProductService,
-  FindCategoryProjectService,
+  FindAllCategoriesProductService,
   FindAllProductsAdminService,
   FindProductCategoryService,
 ];

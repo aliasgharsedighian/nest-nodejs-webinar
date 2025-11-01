@@ -2,12 +2,12 @@ import { Controller, Get, HttpStatus, Param, Query } from '@nestjs/common';
 import { routesV1 } from 'src/config/app.routes';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { GetCategoryProductsParamsDto } from './show-product-category.http.controller.reuqest.dto';
-import { FindCategoryProjectService } from './show-product-category.service';
+import { FindAllCategoriesProductService } from './show-product-category.service';
 import { PaginatedQueryRequestDto } from 'src/libs/api/paginated-query.request.dto';
 
 @Controller(routesV1.version)
-export class FindCategoryProjectHttpController {
-  constructor(private findProduct: FindCategoryProjectService) {}
+export class FindCategoryProductHttpController {
+  constructor(private findProduct: FindAllCategoriesProductService) {}
   @Get(routesV1.product.showCategoryProduct)
   @ApiOperation({ summary: 'find all category products' })
   @ApiResponse({
