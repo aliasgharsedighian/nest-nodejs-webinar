@@ -3,6 +3,7 @@ import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
 import { Project } from '../domain/entities/create-project.entity';
 import { UpdateProjectRequestDto } from '../commands/update-project/update-project.request.dto';
+import { CreateExternalImageDto } from '../commands/create-external-image/create-external-image.request.dto';
 
 @Injectable()
 export class PrismaProjectRepository {
@@ -408,6 +409,7 @@ export class PrismaProjectRepository {
                 },
               },
             },
+            externalImages: true,
           },
         }),
         this.prisma.project.count({
@@ -479,6 +481,7 @@ export class PrismaProjectRepository {
                 },
               },
             },
+            externalImages: true,
           },
         }),
         this.prisma.project.count({
@@ -728,6 +731,50 @@ export class PrismaProjectRepository {
       return {
         ...categoryWithImage,
       };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createExternalImage(
+    body: CreateExternalImageDto,
+    afterImaes: Express.Multer.File,
+    beforeImages: Express.Multer.File | null,
+  ) {
+    try {
+      let uploadedBeforeRecord: any = null;
+      if (beforeImages) {
+        const beforeUpload =
+          await this.fileService.uploadProjectCoverImage(beforeImages);
+        uploadedBeforeRecord = await this.prisma.uploadFile.create({
+          data: {
+            path: `${process.env.DOMAIN_ADDRESS}${beforeUpload.thumbnailPath}`,
+            mimetype: beforeUpload.mimetype,
+            size: beforeUpload.size,
+          },
+        });
+      }
+      const afterUpload =
+        await this.fileService.uploadProjectCoverImage(afterImaes);
+      const uploadedAfterRecord = await this.prisma.uploadFile.create({
+        data: {
+          path: `${process.env.DOMAIN_ADDRESS}${afterUpload.thumbnailPath}`,
+          mimetype: afterUpload.mimetype,
+          size: afterUpload.size,
+        },
+      });
+
+      const data = {
+        ...body,
+        before: uploadedBeforeRecord ? uploadedBeforeRecord.path : null,
+        after: uploadedAfterRecord.path,
+        uploadFileId: uploadedAfterRecord.id,
+      };
+
+      const created = await this.prisma.externalImages.create({
+        data,
+      });
+      return created;
     } catch (error) {
       throw error;
     }

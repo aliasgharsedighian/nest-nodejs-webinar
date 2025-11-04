@@ -22,6 +22,8 @@ import { FindProjectCategoryByIdHttpController } from './queries/find-single-pro
 import { FindProjectCategoryService } from './queries/find-single-project-category/find-single-project-category.service';
 import { UpdateProjectCategoryHttpController } from './commands/update-project-category/update-project-category.http.controller';
 import { UpdateProjectCategoryService } from './commands/update-project-category/update-project-category.service';
+import { CreateExternalProjectImagesHttpController } from './commands/create-external-image/create-external-image.http.controller';
+import { CreateExternalProjectImagesService } from './commands/create-external-image/create-external-image.service';
 
 const httpControllers = [
   FindProjectByIdHttpController,
@@ -34,6 +36,7 @@ const httpControllers = [
   FindAllProjectCategoriesHttpController,
   FindProjectCategoryByIdHttpController,
   UpdateProjectCategoryHttpController,
+  CreateExternalProjectImagesHttpController,
 ];
 
 const commandHandlers: Provider[] = [
@@ -43,6 +46,7 @@ const commandHandlers: Provider[] = [
   FindAllProjectCategoriesService,
   FindProjectCategoryService,
   UpdateProjectCategoryService,
+  CreateExternalProjectImagesService,
 ];
 
 const queryHandlers: Provider[] = [
