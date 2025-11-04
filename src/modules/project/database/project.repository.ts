@@ -3,7 +3,6 @@ import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
 import { Project } from '../domain/entities/create-project.entity';
 import { UpdateProjectRequestDto } from '../commands/update-project/update-project.request.dto';
-import { CreateExternalImageDto } from '../commands/create-external-image/create-external-image.request.dto';
 
 @Injectable()
 export class PrismaProjectRepository {
@@ -737,8 +736,8 @@ export class PrismaProjectRepository {
   }
 
   async createExternalImage(
-    body: CreateExternalImageDto,
-    afterImaes: Express.Multer.File,
+    body: any,
+    afterImages: Express.Multer.File,
     beforeImages: Express.Multer.File | null,
   ) {
     try {
@@ -754,8 +753,9 @@ export class PrismaProjectRepository {
           },
         });
       }
+
       const afterUpload =
-        await this.fileService.uploadProjectCoverImage(afterImaes);
+        await this.fileService.uploadProjectCoverImage(afterImages);
       const uploadedAfterRecord = await this.prisma.uploadFile.create({
         data: {
           path: `${process.env.DOMAIN_ADDRESS}${afterUpload.thumbnailPath}`,
@@ -771,10 +771,7 @@ export class PrismaProjectRepository {
         uploadFileId: uploadedAfterRecord.id,
       };
 
-      const created = await this.prisma.externalImages.create({
-        data,
-      });
-      return created;
+      return await this.prisma.externalImages.create({ data });
     } catch (error) {
       throw error;
     }

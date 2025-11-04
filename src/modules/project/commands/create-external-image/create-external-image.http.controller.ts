@@ -3,7 +3,6 @@ import {
   Body,
   Controller,
   HttpStatus,
-  Param,
   Post,
   UploadedFiles,
   UseGuards,
@@ -19,39 +18,25 @@ import { GetUser } from 'src/libs/decorators';
 import { Roles } from 'src/libs/decorators/roles.decorator';
 import { JwtGuard } from 'src/libs/guard';
 import { RolesGuard } from 'src/libs/guard/role.guard';
-import * as path from 'path';
-import * as fs from 'fs';
-import { CreateExternalImageDto } from './create-external-image.request.dto';
+import { CreateExternalImageRequestDto } from './create-external-image.request.dto';
 import { CreateExternalProjectImagesService } from './create-external-image.service';
 
 @Controller(routesV1.version)
 export class CreateExternalProjectImagesHttpController {
   constructor(
-    private externalImagesService: CreateExternalProjectImagesService,
+    private readonly externalImagesService: CreateExternalProjectImagesService,
   ) {}
 
-  @ApiOperation({ summary: 'Create a external images for project by id' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    type: IdResponse,
-  })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
-    description: 'Project Already have external images',
-    type: '',
-  })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    type: '',
-  })
+  @ApiOperation({ summary: 'Create one or multiple external project images' })
+  @ApiResponse({ status: HttpStatus.CREATED, type: IdResponse })
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('ADMIN')
   @Post(routesV1.project.createExternalProjectImages)
   @UseInterceptors(
     FileFieldsInterceptor(
       [
-        { name: 'beforeImage', maxCount: 1 },
-        { name: 'afterImage', maxCount: 1 },
+        { name: 'beforeImages', maxCount: 10 },
+        { name: 'afterImages', maxCount: 10 },
       ],
       {
         storage: diskStorage({
@@ -62,7 +47,7 @@ export class CreateExternalProjectImagesHttpController {
             callback(null, filename);
           },
         }),
-        limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+        limits: { fileSize: 5 * 1024 * 1024 },
         fileFilter: (req, file, cb) => {
           const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
           if (allowedMimeTypes.includes(file.mimetype)) cb(null, true);
@@ -78,19 +63,16 @@ export class CreateExternalProjectImagesHttpController {
   async createExternalImages(
     @UploadedFiles()
     files: {
-      beforeImage?: Express.Multer.File[];
-      afterImage?: Express.Multer.File[];
+      beforeImages?: Express.Multer.File[];
+      afterImages: Express.Multer.File[];
     },
-    @Body() body: CreateExternalImageDto,
+    @Body() body: CreateExternalImageRequestDto,
     @GetUser() user: User,
   ) {
-    if (!files.afterImage?.[0]) {
-      throw new BadRequestException('After image is required');
+    if (!files.afterImages || files.afterImages.length === 0) {
+      throw new BadRequestException('At least one afterImage is required');
     }
 
-    const before = files.beforeImage?.[0] ?? null;
-    const after = files.afterImage?.[0];
-
-    return this.externalImagesService.execute(before, after, body);
+    return this.externalImagesService.execute(body, files);
   }
 }
