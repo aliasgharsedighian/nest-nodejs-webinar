@@ -776,4 +776,90 @@ export class PrismaProjectRepository {
       throw error;
     }
   }
+
+  async createExternalImagesCategory(name: string, image: Express.Multer.File) {
+    const uploadedImage =
+      await this.fileService.uploadProjectCategoryImage(image);
+    const uploadFileRecord = await this.prisma.uploadFile.create({
+      data: {
+        path: `${process.env.DOMAIN_ADDRESS}${uploadedImage.thumbnailPath}`,
+        mimetype: uploadedImage.mimetype,
+        size: uploadedImage.size,
+      },
+    });
+    try {
+      // create category without image
+      const category = await this.prisma.externalImagesCategory.create({
+        data: {
+          name,
+          imageId: uploadFileRecord.id,
+        },
+        include: {
+          image: true,
+        },
+      });
+
+      return {
+        ...category,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findAllExternalProjectImageCategories(
+    page: number,
+    skip: number,
+    limit: number,
+  ) {
+    try {
+      const [categoryProject, totalCount] = await Promise.all([
+        this.prisma.externalImagesCategory.findMany({
+          skip,
+          take: limit,
+          include: {
+            image: true,
+          },
+        }),
+        this.prisma.externalImagesCategory.count(),
+      ]);
+
+      return {
+        projectCategories: categoryProject.map((category) => ({
+          id: category.id,
+          name: category.name,
+          image: category.image.path || null, // or undefined
+        })),
+        totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findExternalCategoryImageProjectById(categoryId: number) {
+    try {
+      const category = await this.prisma.externalImagesCategory.findUnique({
+        where: {
+          id: categoryId,
+        },
+        include: {
+          image: true,
+        },
+      });
+
+      if (!category) {
+        return null;
+      }
+
+      return {
+        ...category,
+        image: category?.image.path || null,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

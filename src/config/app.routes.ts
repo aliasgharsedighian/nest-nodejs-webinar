@@ -68,7 +68,12 @@ export const routesV1 = {
     showProjectCategories: `${projectRoot}/show-all-project-categories`,
     showProjectCategory: `${projectRoot}/show-project-category/:id`,
     editProjectCategory: `${projectRoot}/edit-project-category/:id`,
-    createExternalProjectImages: `${projectRoot}/create-external-images`,
+    externalImages: {
+      createImages: `${projectRoot}/create-external-images`,
+      createCategory: `${projectRoot}/create-external-images-category`,
+      showAllCategories: `${projectRoot}/show-all-external-project-image-categories`,
+      showCategoryById: `${projectRoot}/show-external-project-category/:id`,
+    },
   },
   search: {
     searchAll: `${searchRoot}/search-all`,

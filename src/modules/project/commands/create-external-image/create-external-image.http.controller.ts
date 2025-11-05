@@ -31,7 +31,7 @@ export class CreateExternalProjectImagesHttpController {
   @ApiResponse({ status: HttpStatus.CREATED, type: IdResponse })
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('ADMIN')
-  @Post(routesV1.project.createExternalProjectImages)
+  @Post(routesV1.project.externalImages.createImages)
   @UseInterceptors(
     FileFieldsInterceptor(
       [

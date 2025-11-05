@@ -24,6 +24,12 @@ import { UpdateProjectCategoryHttpController } from './commands/update-project-c
 import { UpdateProjectCategoryService } from './commands/update-project-category/update-project-category.service';
 import { CreateExternalProjectImagesHttpController } from './commands/create-external-image/create-external-image.http.controller';
 import { CreateExternalProjectImagesService } from './commands/create-external-image/create-external-image.service';
+import { CreateExternalProjectImagesCategoryHttpController } from './commands/create-external-image-categories/create-external-image-categories.http.controller';
+import { CreateExternalProjectImagesCategoryService } from './commands/create-external-image-categories/create-external-image-categories.service';
+import { FindAllExternalImageProjectCategoriesHttpController } from './queries/find-external-image-categories/find-external-image-categories.http.controller';
+import { FindAllExternalImageProjectCategoriesService } from './queries/find-external-image-categories/find-external-image-categories.service';
+import { FindExternalProjectImageCategoryByIdHttpController } from './queries/find-single-external-project-image/find-single-external-project-image.http.controller';
+import { FindExternalProjectImageCategoryService } from './queries/find-single-external-project-image/find-single-external-project-image.service';
 
 const httpControllers = [
   FindProjectByIdHttpController,
@@ -37,16 +43,18 @@ const httpControllers = [
   FindProjectCategoryByIdHttpController,
   UpdateProjectCategoryHttpController,
   CreateExternalProjectImagesHttpController,
+  CreateExternalProjectImagesCategoryHttpController,
+  FindAllExternalImageProjectCategoriesHttpController,
+  FindExternalProjectImageCategoryByIdHttpController,
 ];
 
 const commandHandlers: Provider[] = [
   CreateProjectService,
   CreateProjectCategoryService,
   UpdateProjectService,
-  FindAllProjectCategoriesService,
-  FindProjectCategoryService,
   UpdateProjectCategoryService,
   CreateExternalProjectImagesService,
+  CreateExternalProjectImagesCategoryService,
 ];
 
 const queryHandlers: Provider[] = [
@@ -54,6 +62,10 @@ const queryHandlers: Provider[] = [
   FindProjectsService,
   FindProjectLabelImageService,
   FindAllProjectsAdminService,
+  FindAllProjectCategoriesService,
+  FindProjectCategoryService,
+  FindAllExternalImageProjectCategoriesService,
+  FindExternalProjectImageCategoryService,
 ];
 
 const repositories: Provider[] = [PrismaProjectRepository];
