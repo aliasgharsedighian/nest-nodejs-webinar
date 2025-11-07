@@ -31,8 +31,6 @@ export class CreateProductRequestDto {
   readonly title: string;
 
   @ApiProperty({ example: 'France', description: 'description for product' })
-  @MaxLength(320)
-  @MinLength(5)
   @IsString()
   @IsNotEmpty({ message: 'description is required' })
   readonly description: string;
