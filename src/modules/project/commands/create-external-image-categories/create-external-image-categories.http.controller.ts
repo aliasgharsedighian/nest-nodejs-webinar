@@ -19,6 +19,7 @@ import { JwtGuard } from 'src/libs/guard';
 import { RolesGuard } from 'src/libs/guard/role.guard';
 import { CreateExternalProjectImagesCategoryRequestDto } from './create-external-image-categories.request.dto';
 import { CreateExternalProjectImagesCategoryService } from './create-external-image-categories.service';
+import { ImageUploadInterceptor } from 'src/libs/common/image-upload.interceptor';
 
 @Controller(routesV1.version)
 export class CreateExternalProjectImagesCategoryHttpController {
@@ -34,30 +35,7 @@ export class CreateExternalProjectImagesCategoryHttpController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('ADMIN')
   @Post(routesV1.project.externalImages.createCategory)
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          // @ts-ignore
-          const filename = `${Date.now()}-${file.originalname.replaceAll(' ', '-')}`; // Rename the file to include the timestamp
-          callback(null, filename);
-        },
-      }),
-      limits: { fileSize: 5 * 1024 * 1024 }, //5 mb limit
-      fileFilter: (req, file, cb) => {
-        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
-        if (allowedMimeTypes.includes(file.mimetype)) {
-          cb(null, true); // Accept the file
-        } else {
-          cb(
-            new BadRequestException(`Unsupported file type ${file.mimetype}`),
-            false,
-          ); // Reject the file
-        }
-      },
-    }),
-  )
+  @ImageUploadInterceptor({ type: 'single', fieldName: 'image' })
   async create(
     @UploadedFile() image: Express.Multer.File,
     @Body() body: CreateExternalProjectImagesCategoryRequestDto,

@@ -20,6 +20,7 @@ import { JwtGuard } from 'src/libs/guard';
 import { RolesGuard } from 'src/libs/guard/role.guard';
 import { CreateExternalImageRequestDto } from './create-external-image.request.dto';
 import { CreateExternalProjectImagesService } from './create-external-image.service';
+import { ImageUploadInterceptor } from 'src/libs/common/image-upload.interceptor';
 
 @Controller(routesV1.version)
 export class CreateExternalProjectImagesHttpController {
@@ -32,34 +33,13 @@ export class CreateExternalProjectImagesHttpController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('ADMIN')
   @Post(routesV1.project.externalImages.createImages)
-  @UseInterceptors(
-    FileFieldsInterceptor(
-      [
-        { name: 'beforeImages', maxCount: 10 },
-        { name: 'afterImages', maxCount: 10 },
-      ],
-      {
-        storage: diskStorage({
-          destination: './uploads',
-          filename: (req, file, callback) => {
-            const sanitized = file.originalname.replace(/\s+/g, '-');
-            const filename = `${Date.now()}-${sanitized}`;
-            callback(null, filename);
-          },
-        }),
-        limits: { fileSize: 5 * 1024 * 1024 },
-        fileFilter: (req, file, cb) => {
-          const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
-          if (allowedMimeTypes.includes(file.mimetype)) cb(null, true);
-          else
-            cb(
-              new BadRequestException(`Unsupported file type ${file.mimetype}`),
-              false,
-            );
-        },
-      },
-    ),
-  )
+  @ImageUploadInterceptor({
+    type: 'multiple',
+    fields: [
+      { name: 'beforeImages', maxCount: 10 },
+      { name: 'afterImages', maxCount: 10 },
+    ],
+  })
   async createExternalImages(
     @UploadedFiles()
     files: {

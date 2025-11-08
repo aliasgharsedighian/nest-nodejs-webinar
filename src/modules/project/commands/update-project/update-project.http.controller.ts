@@ -22,6 +22,7 @@ import { RolesGuard } from 'src/libs/guard/role.guard';
 import { UpdateProjectRequestDto } from './update-project.request.dto';
 import { UpdateProjectService } from './update-project.service';
 import { GetProjectsParamsDto } from '../../queries/find-single-project/find-single-project.request.dto';
+import { ImageUploadInterceptor } from 'src/libs/common/image-upload.interceptor';
 
 @Controller(routesV1.version)
 export class UpdateProjectHttpController {
@@ -44,36 +45,14 @@ export class UpdateProjectHttpController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('ADMIN')
   @Put(routesV1.project.editProject)
-  @UseInterceptors(
-    FileFieldsInterceptor(
-      [
-        { name: 'images', maxCount: 20 },
-        { name: 'coverImage', maxCount: 1 },
-      ],
-      {
-        storage: diskStorage({
-          destination: './uploads',
-          filename: (req, file, callback) => {
-            // @ts-ignore
-            const filename = `${Date.now()}-${file.originalname.replaceAll(' ', '-')}`;
-            callback(null, filename);
-          },
-        }),
-        limits: { fileSize: 5 * 1024 * 1024 },
-        fileFilter: (req, file, cb) => {
-          const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
-          if (allowedMimeTypes.includes(file.mimetype)) {
-            cb(null, true);
-          } else {
-            cb(
-              new BadRequestException(`Unsupported file type ${file.mimetype}`),
-              false,
-            );
-          }
-        },
-      },
-    ),
-  )
+  @ImageUploadInterceptor({
+    type: 'multiple',
+    fields: [
+      { name: 'images', maxCount: 20 },
+      { name: 'images[]', maxCount: 20 },
+      { name: 'coverImage', maxCount: 1 },
+    ],
+  })
   async update(
     @UploadedFiles()
     files: {

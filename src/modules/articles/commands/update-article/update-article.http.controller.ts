@@ -21,6 +21,7 @@ import { GetUser } from 'src/libs/decorators';
 import { User } from '@prisma/client';
 import { EditArticleRequestDto } from './update-article.request.dto';
 import { EditArticleService } from './update-article.service';
+import { ImageUploadInterceptor } from 'src/libs/common/image-upload.interceptor';
 
 @Controller(routesV1.version)
 export class EditArticleBySlugHttpController {
@@ -34,30 +35,7 @@ export class EditArticleBySlugHttpController {
   @UseGuards(JwtGuard, RolesGuard)
   @Roles('ADMIN')
   @Put(routesV1.article.editArticle)
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          // @ts-ignore
-          const filename = `${Date.now()}-${file.originalname.replaceAll(' ', '-')}`; // Rename the file to include the timestamp
-          callback(null, filename);
-        },
-      }),
-      limits: { fileSize: 5 * 1024 * 1024 }, //5 mb limit
-      fileFilter: (req, file, cb) => {
-        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
-        if (allowedMimeTypes.includes(file.mimetype)) {
-          cb(null, true); // Accept the file
-        } else {
-          cb(
-            new BadRequestException(`Unsupported file type ${file.mimetype}`),
-            false,
-          ); // Reject the file
-        }
-      },
-    }),
-  )
+  @ImageUploadInterceptor({ type: 'single', fieldName: 'image' })
   async edit(
     @Body() body: EditArticleRequestDto,
     @Param() params: GetArticleParamsDto,
