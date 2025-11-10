@@ -6,12 +6,9 @@ import {
   Post,
   UploadedFiles,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { User } from '@prisma/client';
-import { diskStorage } from 'multer';
 import { routesV1 } from 'src/config/app.routes';
 import { IdResponse } from 'src/libs/api/id.response.dto';
 import { GetUser } from 'src/libs/decorators';

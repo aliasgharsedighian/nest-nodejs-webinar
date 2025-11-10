@@ -37,7 +37,7 @@ export class EditProductService {
         };
       }
       return {
-        status: HttpStatus.OK,
+        statusCode: HttpStatus.OK,
         message: 'product updated successfully',
         data: updatedProduct,
       };

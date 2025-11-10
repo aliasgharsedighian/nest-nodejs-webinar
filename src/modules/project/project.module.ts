@@ -30,6 +30,8 @@ import { FindAllExternalImageProjectCategoriesHttpController } from './queries/f
 import { FindAllExternalImageProjectCategoriesService } from './queries/find-external-image-categories/find-external-image-categories.service';
 import { FindExternalProjectImageCategoryByIdHttpController } from './queries/find-single-external-project-image/find-single-external-project-image.http.controller';
 import { FindExternalProjectImageCategoryService } from './queries/find-single-external-project-image/find-single-external-project-image.service';
+import { UpdateExternalProjectImagesHttpController } from './commands/update-external-images/update-external-images.http.controller';
+import { UpdateExternalProjectImagesService } from './commands/update-external-images/update-external-images.service';
 
 const httpControllers = [
   FindProjectByIdHttpController,
@@ -46,6 +48,7 @@ const httpControllers = [
   CreateExternalProjectImagesCategoryHttpController,
   FindAllExternalImageProjectCategoriesHttpController,
   FindExternalProjectImageCategoryByIdHttpController,
+  UpdateExternalProjectImagesHttpController,
 ];
 
 const commandHandlers: Provider[] = [
@@ -55,6 +58,7 @@ const commandHandlers: Provider[] = [
   UpdateProjectCategoryService,
   CreateExternalProjectImagesService,
   CreateExternalProjectImagesCategoryService,
+  UpdateExternalProjectImagesService,
 ];
 
 const queryHandlers: Provider[] = [

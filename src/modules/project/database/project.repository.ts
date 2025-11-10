@@ -3,6 +3,7 @@ import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { OptimizedImagesService } from 'src/modules/files-upload/optimizedProductImages.service';
 import { Project } from '../domain/entities/create-project.entity';
 import { UpdateProjectRequestDto } from '../commands/update-project/update-project.request.dto';
+import { UpdateExternalImageRequestDto } from '../commands/update-external-images/update-external-images.request.dto';
 
 @Injectable()
 export class PrismaProjectRepository {
@@ -858,6 +859,131 @@ export class PrismaProjectRepository {
         ...category,
         image: category?.image.path || null,
       };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findExternalImageById(externalImageId: number) {
+    try {
+      const externalImage = await this.prisma.externalImages.findUnique({
+        where: {
+          id: externalImageId,
+        },
+      });
+
+      return externalImage;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateExternalImageById(
+    body: UpdateExternalImageRequestDto,
+    projectId: number,
+    files: {
+      beforeImages?: Express.Multer.File[];
+      afterImages: Express.Multer.File[];
+    },
+    userId: number,
+  ) {
+    try {
+      // console.log(files);
+      let uploadedAfterRecord: any = null;
+      let uploadedBeforeRecord: any = null;
+      let updateData: any = {};
+
+      if (files.beforeImages && files.beforeImages.length > 0) {
+        const beforeUpload = await this.fileService.uploadProjectImages(
+          files.beforeImages,
+        );
+        uploadedBeforeRecord = await Promise.all(
+          beforeUpload.map((image) =>
+            this.prisma.uploadFile.create({
+              data: {
+                path: `${process.env.DOMAIN_ADDRESS}${image.thumbnailPath}`,
+                mimetype: image.mimetype,
+                size: image.size,
+              },
+            }),
+          ),
+        );
+      }
+
+      if (files.afterImages && files.afterImages.length > 0) {
+        const afterUpload = await this.fileService.uploadProjectImages(
+          files.afterImages,
+        );
+        uploadedAfterRecord = await Promise.all(
+          afterUpload.map((image) =>
+            this.prisma.uploadFile.create({
+              data: {
+                path: `${process.env.DOMAIN_ADDRESS}${image.thumbnailPath}`,
+                mimetype: image.mimetype,
+                size: image.size,
+              },
+            }),
+          ),
+        );
+
+        for (let i = 0; i < uploadedAfterRecord.length; i++) {
+          const before = uploadedBeforeRecord[i]?.path || null;
+          const after = uploadedAfterRecord[i].path;
+          const type = body.types ? +body.types[i] : null;
+          const uploadFileId = uploadedAfterRecord[i].id;
+          await this.prisma.externalImages.create({
+            data: {
+              before: before,
+              after: after,
+              type,
+              projectId,
+              uploadFileId,
+            },
+          });
+        }
+      }
+
+      if (body.deletedImages && body.deletedImages.length > 0) {
+        const matchedImages = await this.prisma.externalImages.findMany({
+          where: { id: { in: body.deletedImages } },
+        });
+
+        const matchedIds = matchedImages.map((exId) => exId.id);
+
+        // console.log('matchedIds', matchedIds);
+
+        const invalidIds = body.deletedImages.filter(
+          (id) => !matchedIds.includes(id),
+        );
+
+        // console.log('invalidIds', invalidIds);
+
+        if (invalidIds.length > 0) {
+          throw new BadRequestException(
+            `These image IDs are not part of the external image ${body.deletedImages}: [${invalidIds.join(', ')}]`,
+          );
+        }
+        await this.prisma.externalImages.deleteMany({
+          where: { id: { in: matchedIds } },
+        });
+        //   const deletedImagesId = matchedImages.map((img) => img.id);
+        //   let matchedPaths = []
+
+        //  const matchedAfterPath = matchedImages.map(
+        //     (img) => new URL(img.after).pathname,
+        //   );
+        //   // Delete from DB + filesystem
+        //   await this.prisma.uploadFile.deleteMany({
+        //     where: { id: { in: deletedImagesId } },
+        //   });
+        //   await this.fileService.deleteProjectImages(matchedPaths);
+      }
+
+      const updatedExternalImage = await this.prisma.externalImages.findMany({
+        where: { projectId: projectId },
+      });
+
+      return updatedExternalImage;
     } catch (error) {
       throw error;
     }

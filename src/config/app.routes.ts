@@ -70,6 +70,7 @@ export const routesV1 = {
     editProjectCategory: `${projectRoot}/edit-project-category/:id`,
     externalImages: {
       createImages: `${projectRoot}/create-external-images`,
+      updateImages: `${projectRoot}/update-external-images/:id`,
       createCategory: `${projectRoot}/create-external-images-category`,
       showAllCategories: `${projectRoot}/show-all-external-project-image-categories`,
       showCategoryById: `${projectRoot}/show-external-project-category/:id`,
