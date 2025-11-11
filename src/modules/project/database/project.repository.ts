@@ -372,6 +372,7 @@ export class PrismaProjectRepository {
 
   async findAllAdminPaginate(page: number, skip: number, limit: number) {
     try {
+      console.log(page, limit, skip);
       const [projects, totalCount] = await Promise.all([
         this.prisma.project.findMany({
           skip,

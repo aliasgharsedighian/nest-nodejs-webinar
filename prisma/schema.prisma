@@ -26,6 +26,7 @@ model User {
   products    Product[]        @relation("UserProducts")
   articles    Article[]        @relation("UserArticle")
   projects    Project[]        @relation("UserProjects")
+  requests    SupportRequest[]
   cart        Cart?
   invoice     Invoices[]
   comments    ProjectComment[]
@@ -274,4 +275,26 @@ model ExternalImagesCategory {
 
   image     UploadFile       @relation(fields: [imageId], references: [id])
   imageType ExternalImages[]
+}
+
+model SupportRequest {
+  id          Int       @id @default(autoincrement())
+  name        String
+  phoneNumber String
+  email       String?
+  description String
+  status      SupportStatus @default(PENDING)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // optional relation if the user is logged in
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id])
+}
+
+enum SupportStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
 }

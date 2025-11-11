@@ -53,6 +53,9 @@ export const routesV1 = {
   user: {
     updateProfile: `${userRoot}/update-profile`,
     updateUser: `${userRoot}/update-user/:id`,
+    createSupportRequest: `${userRoot}/create-support-request`,
+    getAllSupportRequests: `${userRoot}/support-requests`,
+    getSingleSupportRequest: `${userRoot}/support-request/:id`,
   },
   project: {
     getAllProjects: `${projectRoot}/get-all-projects`,

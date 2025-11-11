@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { UpdateUserRequestDto } from '../commands/update-profile/update-profile.request.dto';
 import { EditUserRequestDto } from '../commands/update-user/update-user.request.dto';
+import { CreateSupportRequestDto } from '../commands/create-support-request/create-support-request.request.dto';
 
 @Injectable()
 export class PrismaUserRepository {
@@ -133,6 +134,55 @@ export class PrismaUserRepository {
       });
 
       return updatedUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createSupportRequest(data: CreateSupportRequestDto, userId?: number) {
+    try {
+      await this.prisma.supportRequest.create({ data });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findAllSupportRequests(page: number, skip: number, limit: number) {
+    try {
+      // const test = await this.prisma.supportRequest.findMany();
+      // console.log(page, limit, skip);
+      // console.log('test', test);
+      const [data, total] = await Promise.all([
+        this.prisma.supportRequest.findMany({
+          skip,
+          take: limit,
+          orderBy: {
+            createdAt: 'desc',
+          },
+        }),
+        this.prisma.supportRequest.count(),
+      ]);
+      // console.log(data);
+      return {
+        data,
+        currentPage: page,
+        totalCount: total,
+        totalPages: Math.ceil(total / limit),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findSupportRequestById(id: number) {
+    try {
+      const requestSupport = await this.prisma.supportRequest.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      return requestSupport;
     } catch (error) {
       throw error;
     }
