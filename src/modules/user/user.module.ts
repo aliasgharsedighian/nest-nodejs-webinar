@@ -12,6 +12,8 @@ import { GetAllSupportRequestHttpController } from './queries/find-all-support-r
 import { FindSingleSupportRequestHttpController } from './queries/find-single-support-request/find-single-support-request.http.controller';
 import { GetAllSupportRequestsService } from './queries/find-all-support-request/find-all-support-request.service';
 import { GetSupportRequestByIdService } from './queries/find-single-support-request/find-single-support-request.service';
+import { UpdateUserRequestSupportHttpController } from './commands/update-request-support/update-request-support.http.controller';
+import { EditRequestService } from './commands/update-request-support/update-request-support.service';
 
 const httpControllers = [
   FindUserHttpController,
@@ -20,11 +22,13 @@ const httpControllers = [
   CreateSupportRequestHttpController,
   GetAllSupportRequestHttpController,
   FindSingleSupportRequestHttpController,
+  UpdateUserRequestSupportHttpController,
 ];
 const commandHandlers: Provider[] = [
   UpdateProfileService,
   EditUserService,
   CreateSupportRequestService,
+  EditRequestService,
 ];
 const queryHandlers: Provider[] = [
   FindUserService,

@@ -3,6 +3,7 @@ import { PrismaService } from 'src/libs/db/prisma/prisma.service';
 import { UpdateUserRequestDto } from '../commands/update-profile/update-profile.request.dto';
 import { EditUserRequestDto } from '../commands/update-user/update-user.request.dto';
 import { CreateSupportRequestDto } from '../commands/create-support-request/create-support-request.request.dto';
+import { EditUserRequestSupportRequestDto } from '../commands/update-request-support/update-request-support.request.dto';
 
 @Injectable()
 export class PrismaUserRepository {
@@ -164,7 +165,7 @@ export class PrismaUserRepository {
       ]);
       // console.log(data);
       return {
-        data,
+        requests: data,
         currentPage: page,
         totalCount: total,
         totalPages: Math.ceil(total / limit),
@@ -183,6 +184,26 @@ export class PrismaUserRepository {
       });
 
       return requestSupport;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUserRequest(
+    command: EditUserRequestSupportRequestDto,
+    id: number,
+  ) {
+    try {
+      const updatedUserRequest = await this.prisma.supportRequest.update({
+        where: {
+          id,
+        },
+        data: {
+          ...command,
+        },
+      });
+
+      return updatedUserRequest;
     } catch (error) {
       throw error;
     }
